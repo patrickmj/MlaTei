@@ -2,9 +2,6 @@
 
 class MlaTeiImporter_Speech extends MlaTeiImporter
 {
-
-    
-    public function processXSL($domNode) {}
     
     public function parseToItem($domNode, $mlaEl)
     {
@@ -16,8 +13,7 @@ class MlaTeiImporter_Speech extends MlaTeiImporter
     public function importEl($mlaEl, $domNode)
     {
         $mlaEl = parent::importEl($mlaEl, $domNode);
-        $who = $domNode->getAttribute('who');
-        
+        $who = $domNode->getAttribute('who');        
         $mlaEl->role_xml_id = substr($who, 1);
         $role = get_db()->getTable('MlaTeiElement_Role')->findByXmlId($mlaEl->role_xml_id);
         $mlaEl->role_id = $role->id;

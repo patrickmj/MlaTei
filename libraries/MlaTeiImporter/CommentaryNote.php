@@ -6,8 +6,8 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
     
     public function importEl($mlaEl, $domNode)
     {
-        $labelNode = $this->getFirstChildNodeByName('label', $domNode);
-        $mlaEl->label = $labelNode->textContent;
+        $labelNode = $this->getFirstChildNodeByName('label', $domNode);        
+        $mlaEl->label = preg_replace( '/\s+/', ' ', $labelNode->textContent ); 
         $mlaEl = parent::importEl($mlaEl, $domNode);
         return $mlaEl;
     }
@@ -18,11 +18,14 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
         $speechTable = $db->getTable('MlaTeiElement_Speech');
         $stageDirTable = $db->getTable('MlaTeiElement_StageDir');
         $bibEntryTable = $db->getTable('MlaTeiElement_BibEntry');
-        $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech'); 
-        $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter');        
-        $citedInCommentaryNoteId = record_relations_property_id(MLATEINS, 'citedInCommentaryNote');
-        $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
+        $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
+        $commentsOnStageDirId = record_relations_property_id(MLATEINS, 'commentsOnStageDirection');
+        $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter'); //@TODO
+        $citedInCommentaryNoteId = record_relations_property_id(MLATEINS, 'citedInCommentaryNote'); //@TODO
+        $citoCitesId = record_relations_property_id(CITO, 'cites');
+        $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl'); 
         $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
+        $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
         
         $biblRefs = $this->xpath->query("nvs:p/nvs:ref[@targType='bibl']", $domNode);
         $lbRefs = $this->xpath->query("nvs:p/nvs:ref[@targType='lb']", $domNode);
@@ -36,8 +39,15 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
             //can be multiple target ids      
             $biblXmlRefIdsArrayRaw = explode(' ', $biblXmlRefIdsRaw);
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
+                
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
-                $this->buildRelation($mlaEl, $biblRef, $refsBiblId);                
+                $this->buildRelation($mlaEl, $biblRef, $refsBiblId);    
+                $commentatorItems = $biblRef->getCommentatorItems();
+                //while I have the biblRef, grab the commentators and build a 'shortcut' relation
+                //depends on the sequence of data import following the order of actions in the controller
+                foreach($commentatorItems as $commentator) {
+                    $this->buildRelation($commentator, $mlaEl, $citedInCommentaryNoteId);
+                }            
             }
         }
      
@@ -51,17 +61,37 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
             foreach($targetsRaw as $targetRaw) {
                 //strip off the #tln_ in xml id references and cast to int to ignore leading 0
                 $lineNum = (int) substr($targetRaw, 5);
-                $speech = $speechTable->findSurroundingSpeech($lineNum);
-                if(!$speech) {
+                $context = $speechTable->findSurroundingSpeech($lineNum);
+                if(!$context) {
                     //look in the stage directions
-                    $speech = $stageDirTable->findSurroundingStageDir($lineNum);
+                    $context = $stageDirTable->findSurroundingStageDir($lineNum);
                     
                 }
-                if(! array_key_exists($speech->xml_id, $targets)) {
-                    $targets[$speech->xml_id] = $speech;
+                if(! array_key_exists($context->xml_id, $targets)) {
+                    $targets[$context->xml_id] = $context;
                 }
-                foreach($targets as $targetSpeech) {
-                    $this->buildRelation($mlaEl, $targetSpeech, $refsSpeechId);
+                foreach($targets as $target) {
+                    if(get_class($target) == 'MlaTeiElement_Speech') {
+                        $propId = $refsSpeechId;
+                    } else {
+                        $propId = $refsStageDirId;
+                    }                    
+                    $this->buildRelation($mlaEl, $target, $propId);
+                    
+                    //grab the commentators for the $mlaElement (CommentaryNote), and 
+                    //build more shortcuts between the commentator and the context (Speech or StageDir)
+                    
+                    //safe because the importController saves the mlaElement before building relations
+                    //
+                    $commentatorItems = $mlaEl->getCommentatorItems();              
+                    foreach($commentatorItems as $commentator) {
+                        if(get_class($target) == 'MlaTeiElement_Speech') {
+                            $propId = $commentsOnSpeechId;
+                        } else {
+                            $propId = $commentsOnStageDirId;
+                        }
+                        $this->buildRelation($commentator, $target, $propId);
+                    }
                 }
             }           
         }      
@@ -71,15 +101,7 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
     
     public function parseToItem($domNode, $mlaEl)
     {
-        $commentaryNoteType = get_db()->getTable('ItemType')->findByName('Commentary Note');
-        $elements = array('Dublin Core'=>array(
-                                'Title'=>array(array('text'=>$mlaEl->label, 'html'=>false))
-                
-                ));
-        return insert_item(array('public'=>true, 'item_type_id'=>$commentaryNoteType->id), $elements);
+        //no item for commentary notes
     }
-    
-
-    public function processXSL($domNode) {}
 
 }

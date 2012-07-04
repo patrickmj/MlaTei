@@ -8,29 +8,23 @@
 
 class MlaTeiImporter_Role extends MlaTeiImporter
 {
-    
-    
-    public function importEl($mlaEl, $domNode)
+
+    public function processXSL($domNode)
     {
-        $mlaEl = parent::importEl($mlaEl, $domNode);
-        return $mlaEl;
+        //castItem produces a <li>, so just get the span produced by role
+        if($domNode->nodeName=='castItem') {
+            $domNode = $this->getFirstChildNodeByName('role', $domNode);
+        }
+        return parent::processXSL($domNode);
     }
     
     public function parseToItem($domNode, $mlaEl)
     {        
         $roleType = get_db()->getTable('ItemType')->findByName('Role');
-        $metadataArray = array('public'=>true, 'item_type_id'=>$roleType->id);
-        
-        $itemMetadata = array('public'=>true);
+        $itemMetadata = array('public'=>true, 'item_type_id'=>$roleType->id);        
         $itemElementTexts = $this->processElementTexts($domNode, $mlaEl);
         $item = insert_item($itemMetadata, $itemElementTexts);
         return $item;
-    }
-   
-    
-    public function processXSL($domNode)
-    {
-        
     }
 
     public function getXmlId($domNode)
@@ -59,10 +53,21 @@ class MlaTeiImporter_Role extends MlaTeiImporter
             //try for a parent castGroup, which might have the same description for more than one castItem
             $parentNode = $domNode->parentNode;
             if($parentNode->nodeName == 'castGroup') {
+                //for the twins, include both names in the description
+                $roles = $parentNode->getElementsByTagName('role');
+                $descText = "[";
+                foreach($roles as $role) {
+                    $descText .= $role->textContent;
+                    $descText .= ", ";                     
+                }
+                $descText = substr($descText, 0, -2);
+                $descText .= "] ";
+                
                 $rdNodes = $parentNode->getElementsByTagName('roleDesc');
                 if($rdNodes->length !=0) {
                     $rdNode = $rdNodes->item(0);
-                    $elTexts['Dublin Core']['Description'][] = array('text'=>preg_replace( '/\s+/', ' ', $rdNode->textContent ), 'html'=>false);
+                    $descText .= $rdNode->textContent;
+                    $elTexts['Dublin Core']['Description'][] = array('text'=>preg_replace( '/\s+/', ' ', $descText ), 'html'=>false);
                 }
             }
         } else {

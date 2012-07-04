@@ -26,12 +26,7 @@ class MlaTeiImporter_StageDir extends MlaTeiImporter
     
     public function parseToItem($domNode, $mlaEl) 
     {
-        $stageDirType = get_db()->getTable('ItemType')->findByName('Stage Direction');
-        $meta = array('public'=>true, 'item_type_id'=>$stageDirType->id);
-        
-        $elements = array('Dublin Core' => array('Title' => array(array('text'=>$mlaEl->n, 'html'=>false))));
-        $elements['Dublin Core']['Description'][] = array('text'=>$domNode->textContent, 'html'=>false);
-        return insert_item($meta, $elements);
+        //no item for Stage Directions
         
     }
     

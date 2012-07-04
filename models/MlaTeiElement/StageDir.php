@@ -5,6 +5,7 @@ class MlaTeiElement_StageDir extends MlaTeiElement
     public $last_n;
     public $last_line_xml_id;
     public $n;
+    public $item_id;
 
     
     

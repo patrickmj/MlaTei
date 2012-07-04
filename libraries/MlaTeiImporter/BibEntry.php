@@ -62,9 +62,6 @@ class MlaTeiImporter_BibEntry extends MlaTeiImporter
         } else {
             return $commentatorItems[0];
         }
-    }
-    
-    public function processXSL($domNode) {}
-        
+    }    
 
 }

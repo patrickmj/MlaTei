@@ -19,15 +19,13 @@ class MlaTei_ImportController extends Omeka_Controller_Action
             $roles = $node->getElementsByTagName('role');
             if($roles->length > 1) {
                 foreach($roles as $role) {
-                    $mlaEl = new MlaTeiElement_Role();                    
+                    $mlaEl = new MlaTeiElement_Role();
+                    //skip the usual $importer->importEl to get the correct id
                     $mlaEl->xml = $importer->dom->saveXML($role);
-                    $mlaEl->xml_id = $role->getAttribute('xml:id');
-                    //$mlaEl->html = $this->processXSL($role);
-                    $itemMetadata = array('public'=>true);
-                    $itemElementTexts = array('Dublin Core'=>array('Title'=>array()));
-                    $itemElementTexts['Dublin Core']['Title'][] = array('text'=>$role->textContent, 'html'=>false);
-                    $item = insert_item($itemMetadata, $itemElementTexts);
-                    $mlaEl->item_id = $item->id;
+                    $mlaEl->xml_id = $role->getAttribute('xml:id'); 
+                    $mlaEl->html = $importer->processXSL($role);
+                    $item = $importer->parseToItem($role, $mlaEl);
+                    $mlaEl->item_id = $item->id;                 
                     $mlaEl->save();
                 }
             } else {
@@ -73,9 +71,9 @@ class MlaTei_ImportController extends Omeka_Controller_Action
             $mlaEl->save();
             //build the authors, and some relationships
             $commentatorItems = $importer->getCommentators($node, $mlaEl);
-            $dcContributorPropId = record_relations_property_id(DCTERMS, 'contributor');
+            $citoCitesId = record_relations_property_id(CITO, 'cites');
             foreach($commentatorItems as $commentator) {
-                $rel = $this->buildRelation($commentator, $mlaEl, $dcContributorId);
+                $rel = $importer->buildRelation($mlaEl, $commentator, $citoCitesId);
                 $rel->save();
             }            
         }        
@@ -86,7 +84,6 @@ class MlaTei_ImportController extends Omeka_Controller_Action
         ini_set('max_execution_time', 600);
         $importer = new MlaTeiImporter_CommentaryNote(MLA_TEI_FILES_PATH . '/coe_commentary.xml');
         $nodes = $importer->dom->getElementsByTagName('note');
-        echo "node count: " . $nodes->length;
         foreach($nodes as $node) {
             $mlaEl = new MlaTeiElement_CommentaryNote();
             $mlaEl = $importer->importEl($mlaEl, $node);
@@ -94,4 +91,36 @@ class MlaTei_ImportController extends Omeka_Controller_Action
             $importer->buildRelations($mlaEl, $node);                        
         }
     }
+    
+    public function appendixPImportAction()
+    {
+        ini_set('max_execution_time', 600);
+        $importer = new MlaTeiImporter_AppendixP(MLA_TEI_FILES_PATH . '/coe_appendix.xml');
+        $nodes = $importer->dom->getElementsByTagName('p');
+        foreach($nodes as $node) {
+            $mlaEl = new MlaTeiElement_AppendixP();
+            $mlaEl = $importer->importEl($mlaEl, $node);
+            $mlaEl->save();
+            $importer->buildRelations($mlaEl, $node);
+        }        
+    }
+
+    public function appendixNoteImportAction()
+    {
+        ini_set('max_execution_time', 600);
+        $importer = new MlaTeiImporter_AppendixNote(MLA_TEI_FILES_PATH . '/coe_appendix.xml');
+        $nodes = $importer->xpath->query('//nvs:div/nvs:note');
+        foreach($nodes as $node) {
+            $mlaEl = new MlaTeiElement_AppendixNote();
+            $mlaEl = $importer->importEl($mlaEl, $node);
+            try {
+                $mlaEl->save();
+            } catch (Exception $e) {
+                echo $e;
+                die();
+            }            
+            $importer->buildRelations($mlaEl, $node);
+        }
+    }
+    
 }

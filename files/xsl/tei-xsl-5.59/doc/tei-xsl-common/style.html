@@ -1,0 +1,1462 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The Stylebear: XSL stylesheet maker</title><meta name="author" content="Sebastian Rahtz" /><meta name="generator" content="Text Encoding Initiative Consortium XSLT stylesheets" /><meta name="DC.Title" content="The Stylebear: XSL stylesheet maker" /><meta name="DC.Type" content="Text" /><meta name="DC.Format" content="text/html" /><link href="http://www.tei-c.org/release/xml/tei/stylesheet/tei.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" media="print" type="text/css" href="http://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css" /></head><body class="simple" id="TOP"><div class="stdheader"><h2 class="institution">A TEI Project</h2><h1 class="maintitle">The Stylebear: XSL stylesheet maker</h1></div>
+         <form encoding="utf-8" enctype="multipart/form-data" action="/cgi-bin/stylebear" method="post" id="stylebear"><p>Location of XSL stylesheets:
+ <input type="textbox" name="TEIXSL" size="48" value="http://www.tei-c.org/release/xml" />
+            </p><p>Name of output file:
+ <input type="textbox" name="outputFile" value="myTei.xsl" />
+            </p><p>
+               <span class="hi">3: Standard page features</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#links">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">department</span>
+                  </td>
+                  <td valign="top">
+                     <input name="department" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top"> Name of department within institution</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">homeLabel</span>
+                  </td>
+                  <td valign="top">
+                     <input name="homeLabel" type="textbox" value="Home" size="8" />
+                  </td>
+                  <td valign="top"> Name of link to home page of application</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">homeURL</span>
+                  </td>
+                  <td valign="top">
+                     <input name="homeURL" type="textbox" value="http://www.tei-c.org/" size="25" />
+                  </td>
+                  <td valign="top">Project Home</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">homeWords</span>
+                  </td>
+                  <td valign="top">
+                     <input name="homeWords" type="textbox" value="TEI" size="7" />
+                  </td>
+                  <td valign="top">Project</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">institution</span>
+                  </td>
+                  <td valign="top">
+                     <input name="institution" type="textbox" value="A TEI Project" size="17" />
+                  </td>
+                  <td valign="top"> Institution</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">parentURL</span>
+                  </td>
+                  <td valign="top">
+                     <input name="parentURL" type="textbox" value="http://www.tei-c.org/" size="25" />
+                  </td>
+                  <td valign="top"> Institution link</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">parentWords</span>
+                  </td>
+                  <td valign="top">
+                     <input name="parentWords" type="textbox" value="Parent Institution" size="22" />
+                  </td>
+                  <td valign="top"> Name of overall institution</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">searchURL</span>
+                  </td>
+                  <td valign="top">
+                     <input name="searchURL" type="textbox" value="http://www.google.com" size="25" />
+                  </td>
+                  <td valign="top"> Link to search application</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">alignNavigationPanel</span>
+                  </td>
+                  <td valign="top">
+                     <input name="alignNavigationPanel" type="textbox" value="right" size="9" />
+                  </td>
+                  <td valign="top">How to align the navigation panel at the bottom of the page</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">bottomNavigationPanel</span>
+                  </td>
+                  <td valign="top">
+                     <input name="bottomNavigationPanel" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Display navigation panel at bottom of pages</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">feedbackURL</span>
+                  </td>
+                  <td valign="top">
+                     <input name="feedbackURL" type="textbox" value="mailto:feedback" size="19" />
+                  </td>
+                  <td valign="top">Link for feedback</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">htmlTitlePrefix</span>
+                  </td>
+                  <td valign="top">
+                     <input name="htmlTitlePrefix" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top">Fixed string to insert before normal page title in HTML meta
+&lt;title&gt; element</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">linkPanel</span>
+                  </td>
+                  <td valign="top">
+                     <input name="linkPanel" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Make a panel with next page/previous page links.</td>
+               </tr></table></div><p>
+               <span class="hi">4: Layout</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#layout">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">oddWeaveLite</span>
+                  </td>
+                  <td valign="top">
+                     <input name="oddWeaveLite" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">
+Whether to make simplified display of ODD
+</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">parIndent</span>
+                  </td>
+                  <td valign="top">
+                     <input name="parIndent" type="textbox" value="1em" size="7" />
+                  </td>
+                  <td valign="top">
+Paragraph indentation
+</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">parSkip</span>
+                  </td>
+                  <td valign="top">
+                     <input name="parSkip" type="textbox" value="0pt" size="7" />
+                  </td>
+                  <td valign="top">
+Default spacing between paragraphs
+</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">filePerPage</span>
+                  </td>
+                  <td valign="top">
+                     <input name="filePerPage" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Whether we should construct a separate file for each page
+      (based on page breaks)</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">viewPortWidth</span>
+                  </td>
+                  <td valign="top">
+                     <input name="viewPortWidth" type="textbox" value="1200" />
+                  </td>
+                  <td valign="top">When making fixed format epub, width of viewport</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">viewPortHeight</span>
+                  </td>
+                  <td valign="top">
+                     <input name="viewPortHeight" type="textbox" value="1700" />
+                  </td>
+                  <td valign="top">When making fixed format epub, height of viewport</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">consecutiveFNs</span>
+                  </td>
+                  <td valign="top">
+                     <input name="consecutiveFNs" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Number footnotes consecutively</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">footnoteBackLink</span>
+                  </td>
+                  <td valign="top">
+                     <input name="footnoteBackLink" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Link back from footnotes to reference</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">columnHeader</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="columnHeader" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Banner for top of column</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">contentStructure</span>
+                  </td>
+                  <td valign="top">
+                     <input name="contentStructure" type="textbox" value="body" size="8" />
+                  </td>
+                  <td valign="top">     How to use the front/body/back matter in creating
+columns.
+         
+	   The choice is between
+	   all: use &lt;front&gt; for left-hand column,
+	       use &lt;body&gt; for centre column, and use &lt;back&gt; for
+	     right-hand columnbody: use &lt;body&gt; for right-hand column,
+	     generate left-hand with a TOC or whatever
+         
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">divOffset</span>
+                  </td>
+                  <td valign="top">
+                     <input name="divOffset" type="textbox" value="2" size="4" />
+                  </td>
+                  <td valign="top">     The difference between TEI div levels and HTML.
+headings.
+         TEI &lt;div&gt;s are implicitly or explicitly numbered from 0
+upwards; this offset is added to that number to produce an HTML
+&lt;Hn&gt; element. So a value of 2 here means that a &lt;div1&gt;
+will generate an &lt;h2&gt;
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">footnoteFile</span>
+                  </td>
+                  <td valign="top">
+                     <input name="footnoteFile" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Make a separate file for footnotes</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">hdr</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="hdr" type="textarea" cols="40" rows="5">
+  &lt;xsl:call-template  name="pageHeader"&gt;
+    &lt;xsl:with-param  name="mode"/&gt;
+  &lt;/xsl:call-template&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Header section across top of page </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">hdr2</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="hdr2" type="textarea" cols="40" rows="5">
+  &lt;xsl:call-template  name="navbar"/&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Navigation bar </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">preBreadCrumbPath</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="preBreadCrumbPath" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Text or action to take at the start of the
+    breadcrumb trail </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">hdr3</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="hdr3" type="textarea" cols="40" rows="5">
+  &lt;a  href="#rh-col"  title="Go to main page content"  class="skiplinks"&gt;Skip links&lt;/a&gt;
+  &lt;a  class="hide"&gt;|&lt;/a&gt;
+  &lt;xsl:call-template  name="crumbPath"/&gt;
+  &lt;a  class="hide"&gt;|&lt;/a&gt;
+  &lt;a  class="bannerright"  href="{$parentURL}"  title="Go to home page"&gt;
+    &lt;xsl:value-of  select="$parentWords"/&gt;
+  &lt;/a&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Breadcrumb trail </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">lh-col-bottom</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="lh-col-bottom" type="textarea" cols="40" rows="5">
+  &lt;xsl:param  name="currentID"/&gt;
+  &lt;xsl:call-template  name="leftHandFrame"&gt;
+    &lt;xsl:with-param  name="currentID"  select="$currentID"/&gt;
+  &lt;/xsl:call-template&gt;</textarea>
+                  </td>
+                  <td valign="top">[html]Bottom of left-hand columnID of selected section
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">lh-col-top</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="lh-col-top" type="textarea" cols="40" rows="5">
+  &lt;xsl:call-template  name="searchbox"/&gt;
+  &lt;xsl:call-template  name="printLink"/&gt;</textarea>
+                  </td>
+                  <td valign="top">[html]Top of left-hand column </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">linksWidth</span>
+                  </td>
+                  <td valign="top">
+                     <input name="linksWidth" type="textbox" value="15%" size="7" />
+                  </td>
+                  <td valign="top">Width of left-hand column when $pageLayout is "Table"</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">logoPicture</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="logoPicture" type="textarea" cols="40" rows="5">
+  &lt;a
+      class="framelogo"
+      href="http://www.tei-c.org/Stylesheets/"&gt;
+    &lt;img
+        src="http://www.tei-c.org/release/common/doc/tei-xsl-common/teixsl.png"
+        vspace="5"
+        width="124"
+        height="161"
+        border="0"
+        alt="created by TEI XSL Stylesheets"/&gt;
+  &lt;/a&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Logo</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">metaHTML</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="metaHTML" type="textarea" cols="40" rows="5">
+  &lt;xsl:param  name="title"/&gt;
+  &lt;meta  name="author"&gt;
+    &lt;xsl:attribute  name="content"&gt;
+      &lt;xsl:call-template  name="generateAuthor"/&gt;
+    &lt;/xsl:attribute&gt;
+  &lt;/meta&gt;
+  &lt;xsl:if  test="$filePerPage='true'"&gt;
+    &lt;meta
+        name="viewport"
+        content="width={$viewPortWidth}, height={$viewPortHeight}"/&gt;
+  &lt;/xsl:if&gt;
+  &lt;meta
+      name="generator"
+      content="Text Encoding Initiative Consortium XSLT stylesheets"/&gt;
+  &lt;xsl:choose&gt;
+    &lt;xsl:when  test="$outputTarget='html5'"&gt;
+      &lt;meta  charset="utf-8"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;meta
+          http-equiv="Content-Type"
+          content="text/html; charset={$outputEncoding}"/&gt;
+      &lt;meta  name="DC.Title"&gt;
+        &lt;xsl:attribute  name="content"&gt;
+          &lt;xsl:value-of
+              select="normalize-space(translate($title,'&lt;&gt;','〈〉'))"/&gt;
+        &lt;/xsl:attribute&gt;
+      &lt;/meta&gt;
+      &lt;meta  name="DC.Type"  content="Text"/&gt;
+      &lt;meta  name="DC.Format"  content="text/html"/&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Making elements in HTML &lt;head&gt;The text used to create the DC.Title field
+    in the HTML header
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">navbar</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="navbar" type="textarea" cols="40" rows="5">
+  &lt;xsl:choose&gt;
+    &lt;xsl:when  test="$navbarFile=''"&gt;
+      &lt;xsl:comment&gt;no nav bar&lt;/xsl:comment&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:for-each  select="document($navbarFile,document(''))"&gt;
+        &lt;xsl:for-each  select="tei:list/tei:item"&gt;
+          &lt;span  class="navbar"&gt;
+            &lt;a  href="{$URLPREFIX}{tei:xref/@url}"  class="navbar"&gt;
+              &lt;xsl:apply-templates  select="tei:xref/text()"/&gt;
+            &lt;/a&gt;
+          &lt;/span&gt;
+          &lt;xsl:if  test="following-sibling::tei:item"&gt; | &lt;/xsl:if&gt;
+        &lt;/xsl:for-each&gt;
+      &lt;/xsl:for-each&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;</textarea>
+                  </td>
+                  <td valign="top">     [html] Construction of navigation bar 
+         A file is looked for relative to the stylesheet (the
+    second parameter of the document function), which is expected to
+    contain a TEI &lt;list&gt; where each &lt;item&gt; has an embedded
+    &lt;xref&gt;
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">navbarFile</span>
+                  </td>
+                  <td valign="top">
+                     <input name="navbarFile" type="textbox" value="" size="4" />
+                  </td>
+                  <td valign="top">     XML resource defining a navigation bar.
+         The XML should provide a &lt;list&gt; containing a series
+of &lt;item&gt; elements, each containing an &lt;xref&gt; link.
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">pageHeader</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="pageHeader" type="textarea" cols="40" rows="5">
+  &lt;xsl:param  name="mode"/&gt;
+  &lt;xsl:choose&gt;
+    &lt;xsl:when  test="$mode='table'"&gt;
+      &lt;table  width="100%"  border="0"&gt;
+        &lt;tr&gt;
+          &lt;td
+              height="98"
+              class="bgimage"
+              onclick="window.location='{$homeURL}'"
+              cellpadding="0"&gt;
+            &lt;xsl:call-template  name="makeHTMLHeading"&gt;
+              &lt;xsl:with-param  name="class"&gt;subtitle&lt;/xsl:with-param&gt;
+              &lt;xsl:with-param  name="text"&gt;
+                &lt;xsl:call-template  name="generateSubTitle"/&gt;
+              &lt;/xsl:with-param&gt;
+              &lt;xsl:with-param  name="level"&gt;2&lt;/xsl:with-param&gt;
+            &lt;/xsl:call-template&gt;
+            &lt;xsl:call-template  name="makeHTMLHeading"&gt;
+              &lt;xsl:with-param  name="class"&gt;title&lt;/xsl:with-param&gt;
+              &lt;xsl:with-param  name="text"&gt;
+                &lt;xsl:call-template  name="generateTitle"/&gt;
+              &lt;/xsl:with-param&gt;
+              &lt;xsl:with-param  name="level"&gt;1&lt;/xsl:with-param&gt;
+            &lt;/xsl:call-template&gt;
+          &lt;/td&gt;
+          &lt;td  valign="top"/&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:call-template  name="makeHTMLHeading"&gt;
+        &lt;xsl:with-param  name="class"&gt;subtitle&lt;/xsl:with-param&gt;
+        &lt;xsl:with-param  name="text"&gt;
+          &lt;xsl:call-template  name="generateSubTitle"/&gt;
+        &lt;/xsl:with-param&gt;
+        &lt;xsl:with-param  name="level"&gt;2&lt;/xsl:with-param&gt;
+      &lt;/xsl:call-template&gt;
+      &lt;xsl:call-template  name="makeHTMLHeading"&gt;
+        &lt;xsl:with-param  name="class"&gt;title&lt;/xsl:with-param&gt;
+        &lt;xsl:with-param  name="text"&gt;
+          &lt;xsl:call-template  name="generateTitle"/&gt;
+        &lt;/xsl:with-param&gt;
+        &lt;xsl:with-param  name="level"&gt;1&lt;/xsl:with-param&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Banner for top of pagelayout mode
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">rh-col-bottom</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="rh-col-bottom" type="textarea" cols="40" rows="5">
+  &lt;xsl:param  name="currentID"/&gt;
+  &lt;xsl:call-template  name="mainFrame"&gt;
+    &lt;xsl:with-param  name="currentID"  select="$currentID"/&gt;
+  &lt;/xsl:call-template&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Bottom of right-hand columnID of selected section
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">rh-col-top</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="rh-col-top" type="textarea" cols="40" rows="5">
+  &lt;xsl:call-template  name="columnHeader"/&gt;</textarea>
+                  </td>
+                  <td valign="top">[html] Top of right-hand column</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">searchbox</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="searchbox" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Make a search box</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">singleFileLabel</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="singleFileLabel" type="textarea" cols="40" rows="5">For Printing</textarea>
+                  </td>
+                  <td valign="top">[html] Construct a label for the link which makes a
+    printable version of the document.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">autoEndNotes</span>
+                  </td>
+                  <td valign="top">
+                     <input name="autoEndNotes" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Make all notes into endnotes
+  </td>
+               </tr></table></div><p>
+               <span class="hi">5: Headings</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#headings">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">autoHead</span>
+                  </td>
+                  <td valign="top">
+                     <input name="autoHead" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Construct a heading 
+    for &lt;div&gt; elements with no &lt;head&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">autoMakeHead</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="autoMakeHead" type="textarea" cols="40" rows="5">
+  &lt;xsl:param  name="display"/&gt;
+  &lt;xsl:choose&gt;
+    &lt;xsl:when  test="tei:head and $display='full'"&gt;
+      &lt;xsl:apply-templates  select="tei:head"  mode="makeheading"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:when  test="tei:head"&gt;
+      &lt;xsl:apply-templates  select="tei:head"  mode="plain"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:when  test="tei:front/tei:head"&gt;
+      &lt;xsl:apply-templates  select="tei:front/tei:head"  mode="plain"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:when  test="@n"&gt;
+      &lt;xsl:value-of  select="@n"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:when  test="@type"&gt;
+      &lt;xsl:text&gt;[&lt;/xsl:text&gt;
+      &lt;xsl:value-of  select="@type"/&gt;
+      &lt;xsl:text&gt;]&lt;/xsl:text&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:text&gt;➤&lt;/xsl:text&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;</textarea>
+                  </td>
+                  <td valign="top">[common] How to make a heading for section if there is no
+      &lt;head&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">headingNumberSuffix</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="headingNumberSuffix" type="textarea" cols="40" rows="5">
+  &lt;xsl:text&gt;.&lt;/xsl:text&gt;
+  &lt;xsl:value-of  select="$numberSpacer"/&gt;</textarea>
+                  </td>
+                  <td valign="top"> Punctuation to insert after a section
+    number</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberSpacer</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberSpacer" type="textbox" value="&#xA;  &lt;xsl:text/&gt;" size="18" />
+                  </td>
+                  <td valign="top"> Character to put after number of
+    section header</td>
+               </tr></table></div><p>
+               <span class="hi">6: Numbering</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#numbering">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">numberBackDiv</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="numberBackDiv" type="textarea" cols="40" rows="5">
+  &lt;xsl:if  test="not($numberBackHeadings='')"&gt;
+    &lt;xsl:number
+        count="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6"
+        format="A.1.1.1.1.1"
+        level="multiple"/&gt;
+  &lt;/xsl:if&gt;</textarea>
+                  </td>
+                  <td valign="top">[common] How to number sections in back matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberBackFigures</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberBackFigures" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number figures in back
+    matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberBackHeadings</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberBackHeadings" type="textbox" value="A.1" size="7" />
+                  </td>
+                  <td valign="top"> How to construct heading numbering in
+    back matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberBackTables</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberBackTables" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number tables in back
+    matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberBodyDiv</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="numberBodyDiv" type="textarea" cols="40" rows="5">
+  &lt;xsl:if  test="$numberHeadings='true'"&gt;
+    &lt;xsl:number
+        count="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6"
+        level="multiple"/&gt;
+  &lt;/xsl:if&gt;</textarea>
+                  </td>
+                  <td valign="top">[common] How to number sections in main matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberBodyHeadings</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberBodyHeadings" type="textbox" value="1.1.1.1" size="11" />
+                  </td>
+                  <td valign="top"> How to construct heading numbering in
+    main matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberFigures</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberFigures" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number figures</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberFrontDiv</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="numberFrontDiv" type="textarea" cols="40" rows="5">
+  &lt;xsl:param  name="minimal"/&gt;
+  &lt;xsl:number
+      count="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6"
+      level="multiple"/&gt;
+  &lt;xsl:if  test="$minimal='false'"&gt;
+    &lt;xsl:value-of  select="$numberSpacer"/&gt;
+  &lt;/xsl:if&gt;</textarea>
+                  </td>
+                  <td valign="top">[common] How to number sections in front matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberFrontFigures</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberFrontFigures" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number figures in
+    front matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberFrontHeadings</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberFrontHeadings" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top"> How to construct heading numbering in
+    front matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberFrontTables</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberFrontTables" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number tables in front
+    matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberHeadings</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberHeadings" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number sections</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberHeadingsDepth</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberHeadingsDepth" type="textbox" value="9" size="4" />
+                  </td>
+                  <td valign="top"> Depth to which sections should be
+    numbered</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberTables</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberTables" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top"> Automatically number tables</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberParagraphs</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberParagraphs" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Use value of "n" attribute to number
+    sections</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">numberParagraphs</span>
+                  </td>
+                  <td valign="top">
+                     <input name="numberParagraphs" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">
+    Automatically number paragraphs.
+  </td>
+               </tr></table></div><p>
+               <span class="hi">7: Output</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#output">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">outputTarget</span>
+                  </td>
+                  <td valign="top">
+                     <input name="outputTarget" type="textbox" value="html" size="8" />
+                  </td>
+                  <td valign="top">Type of output being generated</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">REQUEST</span>
+                  </td>
+                  <td valign="top">
+                     <input name="REQUEST" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top"> The complete URL when the document is
+    being delivered from a web server (normally set by Apache or Cocoon)</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">STDOUT</span>
+                  </td>
+                  <td valign="top">
+                     <input name="STDOUT" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top"> Write to standard output channel</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">ID</span>
+                  </td>
+                  <td valign="top">
+                     <input name="ID" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top">An ID passed to the stylesheet to indicate which section to display</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">requestedID</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="requestedID" type="textarea" cols="40" rows="5">
+  &lt;xsl:value-of  select="$ID"/&gt;</textarea>
+                  </td>
+                  <td valign="top">A wrapper around the ID, to allow for other ways of getting it</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">URLPREFIX</span>
+                  </td>
+                  <td valign="top">
+                     <input name="URLPREFIX" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top">A path fragment to put before all internal URLs </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">outputName</span>
+                  </td>
+                  <td valign="top">
+                     <input name="outputName" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top">The name of the output file</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">outputDir</span>
+                  </td>
+                  <td valign="top">
+                     <input name="outputDir" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top">Directory in which to place generated files.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">outputEncoding</span>
+                  </td>
+                  <td valign="top">
+                     <input name="outputEncoding" type="textbox" value="utf-8" size="9" />
+                  </td>
+                  <td valign="top">Encoding of output file(s).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">outputMethod</span>
+                  </td>
+                  <td valign="top">
+                     <input name="outputMethod" type="textbox" value="xhtml" size="9" />
+                  </td>
+                  <td valign="top">Output method for output file(s).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">outputSuffix</span>
+                  </td>
+                  <td valign="top">
+                     <input name="outputSuffix" type="textbox" value=".html" size="9" />
+                  </td>
+                  <td valign="top">Suffix of output file(s).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">doctypePublic</span>
+                  </td>
+                  <td valign="top">
+                     <input name="doctypePublic" type="textbox" value="-//W3C//DTD XHTML 1.0 Transitional//EN" size="42" />
+                  </td>
+                  <td valign="top">Public Doctype of output file(s).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">doctypeSystem</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="doctypeSystem" type="textarea" cols="40" rows="5">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd</textarea>
+                  </td>
+                  <td valign="top">System Doctype of output file(s).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">pageLayout</span>
+                  </td>
+                  <td valign="top">
+                     <input name="pageLayout" type="textbox" value="Simple" size="10" />
+                  </td>
+                  <td valign="top">     The style of HTML (Simple, CSS or Table) which creates the layout for generated pages.
+         The choice is between
+Simple: A linear presentation is createdCSS: The page is created as a series of nested
+ &lt;div&gt;s which can be arranged using CSS into a multicolumn
+layoutTable: The page is created as an HTML table
+         
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">splitBackmatter</span>
+                  </td>
+                  <td valign="top">
+                     <input name="splitBackmatter" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Break back matter into separate HTML pages (if splitting enabled).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">splitFrontmatter</span>
+                  </td>
+                  <td valign="top">
+                     <input name="splitFrontmatter" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Break front matter into separate HTML pages (if splitting enabled).</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">splitLevel</span>
+                  </td>
+                  <td valign="top">
+                     <input name="splitLevel" type="textbox" value="-1" size="4" />
+                  </td>
+                  <td valign="top">     Level at which to split sections.
+         When processing a &lt;div&gt; or &lt;div[0-5]&gt;, compare
+the nesting depth and see whether to start a new HTML page. Since the
+TEI starts with &lt;div1&gt;, setting this parameter to 0 will cause
+top-level sections to be split apart. The default is not to split at
+all.
+
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">standardSuffix</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="standardSuffix" type="textarea" cols="40" rows="5">
+  &lt;xsl:choose&gt;
+    &lt;xsl:when  test="tei:teiCorpus"&gt;.html&lt;/xsl:when&gt;
+    &lt;xsl:when  test="$STDOUT='true'"/&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:value-of  select="$outputSuffix"/&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;</textarea>
+                  </td>
+                  <td valign="top">Suffix for generated output files.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">topNavigationPanel</span>
+                  </td>
+                  <td valign="top">
+                     <input name="topNavigationPanel" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Display navigation panel at top of pages.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">urlChunkPrefix</span>
+                  </td>
+                  <td valign="top">
+                     <input name="urlChunkPrefix" type="textbox" value="?ID=" size="8" />
+                  </td>
+                  <td valign="top">How to specify infra-document links. When a document is split,
+links need to be constructed between parts of the document. 
+The default is to use a query parameter on the URL.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">useIDs</span>
+                  </td>
+                  <td valign="top">
+                     <input name="useIDs" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">     Construct links using existing ID values.
+         It is often nice if, when making separate files, their names
+correspond to the ID attribute of the &gt;div&lt;. Alternatively, you
+	  can let the system choose names.
+      </td>
+               </tr></table></div><p>
+               <span class="hi">8: Table of contents generation</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#toc">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">autoToc</span>
+                  </td>
+                  <td valign="top">
+                     <input name="autoToc" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Make an automatic table of contents</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">class_subtoc</span>
+                  </td>
+                  <td valign="top">
+                     <input name="class_subtoc" type="textbox" value="subtoc" size="10" />
+                  </td>
+                  <td valign="top">CSS class for second-level TOC entries</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">subTocDepth</span>
+                  </td>
+                  <td valign="top">
+                     <input name="subTocDepth" type="textbox" value="-1" size="4" />
+                  </td>
+                  <td valign="top">
+	Depth at which to stop doing a recursive table of contents.
+         You can have a mini table of contents at the start of each
+         section. The default is only to construct a TOC at the top
+         level; a value of -1 here means no subtoc at all. 
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">tocBack</span>
+                  </td>
+                  <td valign="top">
+                     <input name="tocBack" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Include the back matter in the table of contents.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">tocDepth</span>
+                  </td>
+                  <td valign="top">
+                     <input name="tocDepth" type="textbox" value="5" size="5" />
+                  </td>
+                  <td valign="top">Depth to which table of contents is constructed.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">tocFront</span>
+                  </td>
+                  <td valign="top">
+                     <input name="tocFront" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Include the front matter in the table of contents.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">tocElement</span>
+                  </td>
+                  <td valign="top">
+                     <input name="tocElement" type="textbox" value="p" size="5" />
+                  </td>
+                  <td valign="top">Which HTML element to wrap each TOCs entry in.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">tocContainerElement</span>
+                  </td>
+                  <td valign="top">
+                     <input name="tocContainerElement" type="textbox" value="div" size="7" />
+                  </td>
+                  <td valign="top">Which HTML element to wrap each TOC sections in.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">refDocFooterText</span>
+                  </td>
+                  <td valign="top">
+                     <input name="refDocFooterText" type="textbox" value="TEI Guidelines" size="18" />
+                  </td>
+                  <td valign="top">Text to link back to from foot of ODD reference pages
+  </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">refDocFooterURL</span>
+                  </td>
+                  <td valign="top">
+                     <input name="refDocFooterURL" type="textbox" value="index.html" size="14" />
+                  </td>
+                  <td valign="top">URL to link back to from foot of ODD reference pages
+  </td>
+               </tr></table></div><p>
+               <span class="hi">9: Internationalization</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#i18n">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">copyrightStatement</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="copyrightStatement" type="textarea" cols="40" rows="5">This page is copyrighted</textarea>
+                  </td>
+                  <td valign="top">[html] Make a copyright claim</td>
+               </tr></table></div><p>
+               <span class="hi">10: CSS</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#CSS">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">class_toc</span>
+                  </td>
+                  <td valign="top">
+                     <input name="class_toc" type="textbox" value="toc" size="7" />
+                  </td>
+                  <td valign="top">CSS class for TOC entries</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">class_ptr</span>
+                  </td>
+                  <td valign="top">
+                     <input name="class_ptr" type="textbox" value="ptr" size="7" />
+                  </td>
+                  <td valign="top">  CSS class for links derived from &lt;ptr&gt;    </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">class_ref</span>
+                  </td>
+                  <td valign="top">
+                     <input name="class_ref" type="textbox" value="ref" size="7" />
+                  </td>
+                  <td valign="top">CSS class for links derived from &lt;ref&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">cssFile</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="cssFile" type="textarea" cols="40" rows="5">http://www.tei-c.org/release/xml/tei/stylesheet/tei.css</textarea>
+                  </td>
+                  <td valign="top">CSS style file to be associated with output file(s)</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">cssPrintFile</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="cssPrintFile" type="textarea" cols="40" rows="5">http://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css</textarea>
+                  </td>
+                  <td valign="top">CSS style file for print; this will be given a media=print attribute.
+    </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">cssSecondaryFile</span>
+                  </td>
+                  <td valign="top">
+                     <input name="cssSecondaryFile" type="textbox" value="" size="4" />
+                  </td>
+                  <td valign="top">Secondary CSS style file; this will be given a media=screen attribute,
+so that it does not affect printing. It should be used for screen layout.
+  </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">cssInlineFile</span>
+                  </td>
+                  <td valign="top">
+                     <input name="cssInlineFile" type="textbox" value="" size="4" />
+                  </td>
+                  <td valign="top">CSS file to include in the output file directly</td>
+               </tr></table></div><p>
+               <span class="hi">11: Tables</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#tables">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">cellAlign</span>
+                  </td>
+                  <td valign="top">
+                     <input name="cellAlign" type="textbox" value="left" size="8" />
+                  </td>
+                  <td valign="top"> Default alignment of table cells</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">tableAlign</span>
+                  </td>
+                  <td valign="top">
+                     <input name="tableAlign" type="textbox" value="left" size="8" />
+                  </td>
+                  <td valign="top"> Default alignment of tables</td>
+               </tr></table></div><p>
+               <span class="hi">12: Figures and graphics</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#figures">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">graphicsPrefix</span>
+                  </td>
+                  <td valign="top">
+                     <input name="graphicsPrefix" type="textbox" value="" size="12" />
+                  </td>
+                  <td valign="top">Directory specification to put before names of graphics files,
+      unless they start with "./"</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">graphicsSuffix</span>
+                  </td>
+                  <td valign="top">
+                     <input name="graphicsSuffix" type="textbox" value=".png" size="8" />
+                  </td>
+                  <td valign="top"> Default file suffix for graphics files,
+    if not directly specified</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">standardScale</span>
+                  </td>
+                  <td valign="top">
+                     <input name="standardScale" type="textbox" value="1" />
+                  </td>
+                  <td valign="top"> Scaling of imported graphics</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">dpi</span>
+                  </td>
+                  <td valign="top">
+                     <input name="dpi" type="textbox" value="96" size="4" />
+                  </td>
+                  <td valign="top">Resolution of images. This is needed to calculate
+HTML width and height (in pixels) from supplied dimensions.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">showFigures</span>
+                  </td>
+                  <td valign="top">
+                     <input name="showFigures" type="checkbox" checked="checked" value="true" />
+                  </td>
+                  <td valign="top">Display figures.</td>
+               </tr></table></div><p>
+               <span class="hi">13: Style</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#style">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">pagebreakStyle</span>
+                  </td>
+                  <td valign="top">
+                     <input name="pagebreakStyle" type="textbox" value="visible" size="11" />
+                  </td>
+                  <td valign="top"> Display of &lt;pb&gt; element.
+    Choices are "visible", "active" and "none".</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">displayMode</span>
+                  </td>
+                  <td valign="top">
+                     <input name="displayMode" type="textbox" value="rnc" size="7" />
+                  </td>
+                  <td valign="top"> How to display Relax NG schema fragments
+    (rnc or rng)</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">minimalCrossRef</span>
+                  </td>
+                  <td valign="top">
+                     <input name="minimalCrossRef" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Provide minimal context for a link</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">postQuote</span>
+                  </td>
+                  <td valign="top">
+                     <input name="postQuote" type="textbox" value="’" size="5" />
+                  </td>
+                  <td valign="top"> Character to insert at end of quote.</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">preQuote</span>
+                  </td>
+                  <td valign="top">
+                     <input name="preQuote" type="textbox" value="‘" size="5" />
+                  </td>
+                  <td valign="top"> Character to insert at start of quote</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">urlMarkup</span>
+                  </td>
+                  <td valign="top">
+                     <input name="urlMarkup" type="textbox" value="span" size="8" />
+                  </td>
+                  <td valign="top">HTML element to put around visible text of display URLs</td>
+               </tr></table></div><p>
+               <span class="hi">14: Hooks</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#hook">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">sectionHeadHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="sectionHeadHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[common] Hook where actions can be inserted when making
+     a heading</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">bodyHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="bodyHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted just after &lt;body&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">bodyEndHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="bodyEndHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">     [html] Hook where HTML can be inserted just before the
+    &lt;body&gt; ends.
+         This can be used to add a page-wide footer block.
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">bodyJavascriptHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="bodyJavascriptHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where Javascript calls can be inserted  just after &lt;body&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">cssHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="cssHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">     [html] Hook where extra CSS can be inserted
+           
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">headHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="headHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">     [html] Hook where code can be added to the HTML &lt;head&gt;.
+         This would be used to insert &lt;meta&gt; tags.
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">imgHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="imgHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted when creating an &lt;img&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">figureHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="figureHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted when processing a
+    figure</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">javascriptHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="javascriptHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where extra Javascript functions can be defined</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">preAddressHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="preAddressHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted just before the &lt;address&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">startDivHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="startDivHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted at the start of
+    processing each section</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">startHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="startHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted at the beginning
+    of the main text, after the header</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">teiEndHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="teiEndHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted after processing &lt;TEI&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">teiStartHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="teiStartHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted before processing &lt;TEI&gt;</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">xrefHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="xrefHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hook where HTML can be inserted when creating an
+    &lt;a&gt; element</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">egXMLStartHook</span>
+                  </td>
+                  <td valign="top">
+                     <textarea name="egXMLStartHook" type="textarea" cols="40" rows="5"></textarea>
+                  </td>
+                  <td valign="top">[html] Hooks where HTML can be inserted when processing
+    &lt;egXML&gt; element</td>
+               </tr></table></div><p>
+               <span class="hi">15: Miscellaneous and advanced</span>
+            </p><p>
+               <a class="link_ref" href="customize.html#misc">Details of this section</a>
+            </p><div class="table"><table class="table"><tr>
+                  <td valign="top">
+                     <span class="hi">teixslHome</span>
+                  </td>
+                  <td valign="top">
+                     <input name="teixslHome" type="textbox" value="http://www.tei-c.org/Stylesheets/" size="37" />
+                  </td>
+                  <td valign="top"> The home page for these stylesheets</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">teiP4Compat</span>
+                  </td>
+                  <td valign="top">
+                     <input name="teiP4Compat" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Process elements according to assumptions
+    of TEI P4</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">useHeaderFrontMatter</span>
+                  </td>
+                  <td valign="top">
+                     <input name="useHeaderFrontMatter" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top"> Title, author and date is taken from the
+    &lt;teiHeader&gt; rather than looked for in the front matter</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">useFixedDate</span>
+                  </td>
+                  <td valign="top">
+                     <input name="useFixedDate" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Whether to attempt to work out a current date (set to true
+    for test results which won't differ</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">generateParagraphIDs</span>
+                  </td>
+                  <td valign="top">
+                     <input name="generateParagraphIDs" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Generate a unique ID for all paragraphs</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">rendSeparator</span>
+                  </td>
+                  <td valign="top">
+                     <input name="rendSeparator" type="textbox" value=";" size="5" />
+                  </td>
+                  <td valign="top">     Character separating values in a rend attribute.
+         Some projects use multiple values in rend
+attributes. These are handled, but the separator character must
+be specified.
+      </td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">showTitleAuthor</span>
+                  </td>
+                  <td valign="top">
+                     <input name="showTitleAuthor" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Show a title and author at start of document</td>
+               </tr><tr>
+                  <td valign="top">
+                     <span class="hi">verbose</span>
+                  </td>
+                  <td valign="top">
+                     <input name="verbose" type="checkbox" value="true" />
+                  </td>
+                  <td valign="top">Be talkative while working.</td>
+               </tr></table></div><p>
+               <span class="hi">Time to work!</span>
+            </p><ul><li class="item">
+                  <input value="Submit" type="submit" />
+               </li><li class="item">
+                  <input value="Reset" type="reset" />
+               </li></ul></form>
+      <div class="stdfooter"><div class="footer"><a class="plain" href="http://www.tei-c.org/">Parent Institution</a> | <a class="plain" href="http://www.tei-c.org/">TEI</a>| <a class="plain" href="http://www.google.com">Search</a> | <a class="plain" href="mailto:feedback">Feedback</a></div><address> Sebastian Rahtz.
+      Date: 2011-11-02<br />This page is copyrighted<!--
+	  Generated from index.xml using an XSLT version 2.0 stylesheet
+	  based on http://www.tei-c.org/Stylesheets/
+	  processed using SAXON 9.3.0.4 from Saxonica
+	  on 2011-11-02T23:09:50Z--></address></div></body></html>

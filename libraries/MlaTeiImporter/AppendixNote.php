@@ -2,6 +2,7 @@
 
 class MlaTeiImporter_AppendixNote extends MlaTeiImporter
 {
+    public $xsl = "/component.xsl";
     
     public function importEl($mlaEl, $domNode)
     {

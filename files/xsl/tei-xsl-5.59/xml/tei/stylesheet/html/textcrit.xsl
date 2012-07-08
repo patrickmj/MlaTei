@@ -35,7 +35,7 @@
     <xd:copyright>2008, TEI Consortium</xd:copyright>
   </xd:doc>
 
- <xsl:template match="app">
+ <xsl:template match="tei:app">
     <xsl:variable name="identifier">
       <xsl:text>App</xsl:text>
       <xsl:choose>
@@ -46,7 +46,7 @@
 	  <xsl:value-of select="@n"/>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:number count="app" level="any"/>
+	  <xsl:number count="tei:app" level="any"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -77,12 +77,12 @@
       <xsl:value-of select="@n"/>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:number from="text" level="any"/>
+      <xsl:number from="tei:text" level="any"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="app" mode="printnotes">
+<xsl:template match="tei:app" mode="printnotes">
   <xsl:variable name="identifier">
     <xsl:text>App</xsl:text>
     <xsl:choose>
@@ -93,7 +93,7 @@
 	<xsl:value-of select="@n"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:number count="app" level="any"/>
+	<xsl:number count="tei:app" level="any"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -112,7 +112,7 @@
   
 </xsl:template>
 
-<xsl:template match="rdg">
+<xsl:template match="tei:rdg">
   <span class="rdg">
     <xsl:apply-templates/>
   </span>

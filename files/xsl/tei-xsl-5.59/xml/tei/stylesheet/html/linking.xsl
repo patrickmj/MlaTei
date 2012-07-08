@@ -45,7 +45,7 @@
       </xsl:when>
       <xsl:when test="starts-with(local-name(.),'div')">
         <xsl:variable name="xpath">
-          <xsl:for-each select="ancestor-or-self::*">
+          <xsl:for-each select="ancestor-or-self::tei:*">
 	    <xsl:value-of select="local-name()"/>
 	    <xsl:text>.</xsl:text>
 	    <xsl:number/>
@@ -54,7 +54,7 @@
 	    </xsl:if>
 	  </xsl:for-each>
 	</xsl:variable>
-	<xsl:if test="ancestor::group">
+	<xsl:if test="ancestor::tei:group">
 	  <xsl:value-of select="$BaseFile"/>
 	  <xsl:text>-</xsl:text>
 	</xsl:if>
@@ -91,27 +91,27 @@
         <xsl:value-of select="$urlChunkPrefix"/>
         <xsl:value-of select="$ident"/>
       </xsl:when>
-      <xsl:when test="ancestor::elementSpec and
+      <xsl:when test="ancestor::tei:elementSpec and
 		      not($STDOUT='true')">
 	<xsl:text>ref-</xsl:text>
-	<xsl:value-of select="ancestor::elementSpec/@ident"/>
+	<xsl:value-of select="ancestor::tei:elementSpec/@ident"/>
         <xsl:value-of select="$standardSuffix"/>
 	<xsl:value-of select="concat($Hash,$ident)"/>
       </xsl:when>
-      <xsl:when test="ancestor::classSpec and
+      <xsl:when test="ancestor::tei:classSpec and
 		      not($STDOUT='true')">
 	<xsl:text>ref-</xsl:text>
-	<xsl:value-of select="ancestor::classSpec/@ident"/>
+	<xsl:value-of select="ancestor::tei:classSpec/@ident"/>
         <xsl:value-of select="$standardSuffix"/>
 	<xsl:value-of select="concat($Hash,$ident)"/>
       </xsl:when>
-      <xsl:when test="ancestor::back and not($splitBackmatter)">
+      <xsl:when test="ancestor::tei:back and not($splitBackmatter)">
         <xsl:value-of select="concat($Hash,$ident)"/>
       </xsl:when>
-      <xsl:when test="ancestor::front and not($splitFrontmatter)">
+      <xsl:when test="ancestor::tei:front and not($splitFrontmatter)">
         <xsl:value-of select="concat($Hash,$ident)"/>
       </xsl:when>
-      <xsl:when test="$splitLevel= -1 and ancestor::teiCorpus">
+      <xsl:when test="$splitLevel= -1 and ancestor::tei:teiCorpus">
         <xsl:value-of select="$masterFile"/>
         <xsl:call-template name="addCorpusID"/>
         <xsl:value-of select="$standardSuffix"/>
@@ -158,7 +158,7 @@
         anchor, or needs a parent HTML name prepended </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="TEI" mode="generateLink">
+  <xsl:template match="tei:TEI" mode="generateLink">
     <xsl:variable name="BaseFile">
       <xsl:value-of select="$masterFile"/>
       <xsl:call-template name="addCorpusID"/>
@@ -166,10 +166,10 @@
     <xsl:value-of select="concat($BaseFile,$standardSuffix)"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements anchor</xd:short>
+    <xd:short>Process elements tei:anchor</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="anchor">
+  <xsl:template match="tei:anchor">
       <xsl:call-template name="makeAnchor"/>
   </xsl:template>
   <xd:doc>
@@ -177,14 +177,14 @@
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template
-    match="label|figure|table|item|p|bibl|anchor|cell|lg|list|sp"
+    match="tei:label|tei:figure|tei:table|tei:item|tei:p|tei:bibl|tei:anchor|tei:cell|tei:lg|tei:list|tei:sp"
     mode="generateLink">
     <xsl:variable name="ident">
       <xsl:apply-templates mode="ident" select="."/>
     </xsl:variable>
     <xsl:variable name="file">
       <xsl:apply-templates mode="generateLink"
-        select="ancestor::*[starts-with(local-name(),'div')][1]"/>
+        select="ancestor::tei:*[starts-with(local-name(),'div')][1]"/>
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="starts-with($file,'#')">
@@ -204,10 +204,10 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements note</xd:short>
+    <xd:short>Process elements tei:note</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="note" mode="generateLink">
+  <xsl:template match="tei:note" mode="generateLink">
     <xsl:text>#</xsl:text>
     <xsl:call-template name="noteN"/>
   </xsl:template>
@@ -239,36 +239,36 @@
   </xd:doc>
   <xsl:template name="locateParent">
     <xsl:choose>
-      <xsl:when test="self::div">
+      <xsl:when test="self::tei:div">
         <xsl:apply-templates mode="ident"
-          select="ancestor::div[last() - $splitLevel + 1]"/>
+          select="ancestor::tei:div[last() - $splitLevel + 1]"/>
       </xsl:when>
-      <xsl:when test="ancestor::div">
+      <xsl:when test="ancestor::tei:div">
         <xsl:apply-templates mode="ident"
-          select="ancestor::div[last() - $splitLevel]"/>
+          select="ancestor::tei:div[last() - $splitLevel]"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="$splitLevel = 0">
             <xsl:apply-templates mode="ident"
-              select="ancestor::div1|ancestor::div0"/>
+              select="ancestor::tei:div1|ancestor::tei:div0"/>
           </xsl:when>
           <xsl:when test="$splitLevel = 1">
             <xsl:apply-templates mode="ident"
-              select="ancestor::div2|ancestor::div1|ancestor::div0"
+              select="ancestor::tei:div2|ancestor::tei:div1|ancestor::tei:div0"
             />
           </xsl:when>
           <xsl:when test="$splitLevel = 2">
             <xsl:apply-templates mode="ident"
-              select="ancestor::div3|ancestor::div2"/>
+              select="ancestor::tei:div3|ancestor::tei:div2"/>
           </xsl:when>
           <xsl:when test="$splitLevel = 3">
             <xsl:apply-templates mode="ident"
-              select="ancestor::div4|ancestor::div3"/>
+              select="ancestor::tei:div4|ancestor::tei:div3"/>
           </xsl:when>
           <xsl:when test="$splitLevel = 4">
             <xsl:apply-templates mode="ident"
-              select="ancestor::div5|ancestor::div4"/>
+              select="ancestor::tei:div5|ancestor::tei:div4"/>
           </xsl:when>
         </xsl:choose>
       </xsl:otherwise>
@@ -280,35 +280,35 @@
   </xd:doc>
   <xsl:template name="locateParentdiv">
     <xsl:choose>
-      <xsl:when test="ancestor-or-self::div and $splitLevel &lt; 0">
-        <xsl:apply-templates mode="ident" select="ancestor::div[last()]"/>
+      <xsl:when test="ancestor-or-self::tei:div and $splitLevel &lt; 0">
+        <xsl:apply-templates mode="ident" select="ancestor::tei:div[last()]"/>
       </xsl:when>
-      <xsl:when test="ancestor-or-self::div">
+      <xsl:when test="ancestor-or-self::tei:div">
         <xsl:apply-templates mode="ident"
-          select="ancestor::div[last() - $splitLevel]"/>
+          select="ancestor::tei:div[last() - $splitLevel]"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="$splitLevel = 0">
             <xsl:apply-templates mode="ident"
-              select="ancestor::div1|ancestor::div0"/>
+              select="ancestor::tei:div1|ancestor::tei:div0"/>
           </xsl:when>
           <xsl:when test="$splitLevel = 1">
             <xsl:apply-templates mode="ident"
-              select="(ancestor::div2|ancestor::div1|ancestor::div0)[last()]"
+              select="(ancestor::tei:div2|ancestor::tei:div1|ancestor::tei:div0)[last()]"
             />
           </xsl:when>
           <xsl:when test="$splitLevel = 2">
             <xsl:apply-templates mode="ident"
-              select="(ancestor::div3|ancestor::div2)[last()]"/>
+              select="(ancestor::tei:div3|ancestor::tei:div2)[last()]"/>
           </xsl:when>
           <xsl:when test="$splitLevel = 3">
             <xsl:apply-templates mode="ident"
-              select="(ancestor::div4|ancestor::div3)[last()]"/>
+              select="(ancestor::tei:div4|ancestor::tei:div3)[last()]"/>
           </xsl:when>
           <xsl:when test="$splitLevel = 4">
             <xsl:apply-templates mode="ident"
-              select="(ancestor::div5|ancestor::div4)[last()]"/>
+              select="(ancestor::tei:div5|ancestor::tei:div4)[last()]"/>
           </xsl:when>
         </xsl:choose>
       </xsl:otherwise>
@@ -338,15 +338,15 @@
 	  <xsl:when test="@rendition">
 	    <xsl:call-template name="applyRendition"/>
 	  </xsl:when>
-          <xsl:when test="parent::item/parent::list[@rend]">
+          <xsl:when test="parent::tei:item/parent::tei:list[@rend]">
 	    <xsl:attribute name="class">
 	      <xsl:value-of
-		  select="parent::item/parent::list/@rend"/>
+		  select="parent::tei:item/parent::tei:list/@rend"/>
 	    </xsl:attribute>
           </xsl:when>
-	  <xsl:when test="parent::item[@rend]">
+	  <xsl:when test="parent::tei:item[@rend]">
 	    <xsl:attribute name="class">
-	      <xsl:value-of select="parent::item/@rend"/>
+	      <xsl:value-of select="parent::tei:item/@rend"/>
 	    </xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
@@ -508,7 +508,7 @@
             <xsl:attribute name="title">
               <xsl:choose>
                 <xsl:when test="starts-with(local-name(.),'div')">
-                  <xsl:value-of select="normalize-space(head)"/>
+                  <xsl:value-of select="normalize-space(tei:head)"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="normalize-space(text())"/>

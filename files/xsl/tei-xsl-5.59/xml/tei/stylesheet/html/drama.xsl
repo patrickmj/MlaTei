@@ -31,59 +31,59 @@
     <xd:copyright>2008, TEI Consortium</xd:copyright>
   </xd:doc>
   <xd:doc>
-    <xd:short>Process elements actor</xd:short>
+    <xd:short>Process elements tei:actor</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="actor">
+  <xsl:template match="tei:actor">
     <span class="actor">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements camera</xd:short>
+    <xd:short>Process elements tei:camera</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="camera">
+  <xsl:template match="tei:camera">
     <span class="camera">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements caption</xd:short>
+    <xd:short>Process elements tei:caption</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="caption">
+  <xsl:template match="tei:caption">
     <span class="caption">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements castGroup</xd:short>
+    <xd:short>Process elements tei:castGroup</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="castGroup">
+  <xsl:template match="tei:castGroup">
     <ul>
       <xsl:apply-templates/>
     </ul>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements castItem</xd:short>
+    <xd:short>Process elements tei:castItem</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="castItem">
+  <xsl:template match="tei:castItem">
     <li>
       <xsl:apply-templates/>
     </li>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements castList</xd:short>
+    <xd:short>Process elements tei:castList</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="castList">
-    <xsl:if test="head">
+  <xsl:template match="tei:castList">
+    <xsl:if test="tei:head">
       <p>
         <em>
-          <xsl:for-each select="head">
+          <xsl:for-each select="tei:head">
             <xsl:apply-templates/>
           </xsl:for-each>
         </em>
@@ -94,33 +94,33 @@
     </ul>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements castList/head</xd:short>
+    <xd:short>Process elements tei:castList/tei:head</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="castList/head"/>
+  <xsl:template match="tei:castList/tei:head"/>
   <xd:doc>
-    <xd:short>Process elements role</xd:short>
+    <xd:short>Process elements tei:role</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="role">
+  <xsl:template match="tei:role">
     <span class="role">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements sp/stage</xd:short>
+    <xd:short>Process elements tei:sp/tei:stage</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="sp/stage">
+  <xsl:template match="tei:sp/tei:stage">
     <span class="stage">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements roleDesc</xd:short>
+    <xd:short>Process elements tei:roleDesc</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="roleDesc">
+  <xsl:template match="tei:roleDesc">
     <blockquote>
 	  <xsl:choose>
 	    <xsl:when test="@rend">
@@ -138,7 +138,7 @@
 	    </xsl:otherwise>
 	  </xsl:choose>
       <xsl:choose>
-        <xsl:when test="p">
+        <xsl:when test="tei:p">
           <xsl:apply-templates/>
         </xsl:when>
         <xsl:otherwise>
@@ -150,54 +150,54 @@
     </blockquote>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements set</xd:short>
+    <xd:short>Process elements tei:set</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="set">
+  <xsl:template match="tei:set">
     <span class="set">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements sound</xd:short>
+    <xd:short>Process elements tei:sound</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="sound">
+  <xsl:template match="tei:sound">
     <span class="sound">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements sp</xd:short>
+    <xd:short>Process elements tei:sp</xd:short>
     <xd:detail>
       <p> elaborated by Nick Nicholas &lt;nicholas@uci.edu&gt;, March
         2001 </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="sp">
+  <xsl:template match="tei:sp">
     <dl>
       <dt>
 	<xsl:call-template name="makeAnchor"/>
-        <xsl:apply-templates select="speaker"/>
+        <xsl:apply-templates select="tei:speaker"/>
       </dt>
       <dd>
         <xsl:apply-templates
-          select="p | l | lg | seg | ab | stage"/>
+          select="tei:p | tei:l | tei:lg | tei:seg | tei:ab | tei:stage"/>
       </dd>
     </dl>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements sp/p</xd:short>
+    <xd:short>Process elements tei:sp/tei:p</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="sp/p">
+  <xsl:template match="tei:sp/tei:p">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements stage</xd:short>
+    <xd:short>Process elements tei:stage</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="stage">
+  <xsl:template match="tei:stage">
     <p>
       <span class="stage">
         <xsl:apply-templates/>
@@ -205,19 +205,19 @@
     </p>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements tech</xd:short>
+    <xd:short>Process elements tei:tech</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="tech">
+  <xsl:template match="tei:tech">
     <span class="tech">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements view</xd:short>
+    <xd:short>Process elements tei:view</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="view">
+  <xsl:template match="tei:view">
     <span class="view">
       <xsl:apply-templates/>
     </span>

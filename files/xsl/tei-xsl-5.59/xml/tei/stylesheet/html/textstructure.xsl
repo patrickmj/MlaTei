@@ -47,15 +47,15 @@
   </xd:doc>
   <xsl:template match="*" mode="paging">
     <xsl:choose>
-      <xsl:when test="self::divGen[@type='summary']">
+      <xsl:when test="self::tei:divGen[@type='summary']">
         <xsl:call-template name="summaryToc"/>
       </xsl:when>
-      <xsl:when test="self::divGen">
+      <xsl:when test="self::tei:divGen">
         <xsl:apply-templates select="."/>
       </xsl:when>
       <xsl:when test="starts-with(local-name(),'div')">
         <xsl:if
-          test="not(preceding-sibling::*) or preceding-sibling::titlePage">
+          test="not(preceding-sibling::tei:*) or preceding-sibling::tei:titlePage">
           <h2>
             <xsl:apply-templates mode="xref" select="."/>
 	    <xsl:call-template name="sectionHeadHook"/>
@@ -80,7 +80,7 @@
       <xsl:when test="local-name(..)='front'">
         <xsl:apply-templates select="."/>
         <xsl:apply-templates mode="paging" select="following-sibling::*[1]"/>
-        <xsl:apply-templates mode="paging" select="../../body/*[1]"/>
+        <xsl:apply-templates mode="paging" select="../../tei:body/*[1]"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates select="."/>
@@ -113,12 +113,12 @@ $requestedID: requests a particular page
 -->
       <!-- we are making a composite layout and there is a TEI(2) element -->
       <xsl:when
-        test="($pageLayout = 'CSS' or $pageLayout = 'Table') and (TEI or teiCorpus)">
+        test="($pageLayout = 'CSS' or $pageLayout = 'Table') and (tei:TEI or tei:teiCorpus)">
         <xsl:if test="$verbose='true'">
           <xsl:message>case 1: pageLayout <xsl:value-of select="$pageLayout"
           /></xsl:message>
         </xsl:if>
-        <xsl:for-each select="TEI|teiCorpus">
+        <xsl:for-each select="tei:TEI|tei:teiCorpus">
           <xsl:call-template name="doPageTable">
             <xsl:with-param name="currentID" select="$requestedID"/>
           </xsl:call-template>
@@ -158,7 +158,7 @@ $requestedID: requests a particular page
 		 which starts below TEI/text.
 		 The real XPath syntax is changed to avoid problems
 	    -->
-            <xsl:apply-templates mode="xpath" select="TEI/text">
+            <xsl:apply-templates mode="xpath" select="tei:TEI/tei:text">
               <xsl:with-param name="xpath" select="$requestedID"/>
             </xsl:apply-templates>
           </xsl:otherwise>
@@ -173,7 +173,7 @@ $requestedID: requests a particular page
         <xsl:apply-templates/>
       </xsl:when>
       <!-- we want the document split up into separate files -->
-      <xsl:when test="TEI or teiCorpus and $splitLevel&gt;-1">
+      <xsl:when test="tei:TEI or tei:teiCorpus and $splitLevel&gt;-1">
         <xsl:if test="$verbose='true'">
           <xsl:message>case 5: split output, <xsl:value-of select="$splitLevel"
             /> pageLayout <xsl:value-of select="$pageLayout"/></xsl:message>
@@ -212,10 +212,10 @@ $requestedID: requests a particular page
     <xsl:value-of select="."/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements *</xd:short>
+    <xd:short>Process elements tei:*</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="*" mode="generateNextLink">
+  <xsl:template match="tei:*" mode="generateNextLink">
     <span class="nextLink">
       <xsl:text> </xsl:text>
       <xsl:call-template name="i18n">
@@ -244,7 +244,7 @@ $requestedID: requests a particular page
     <xd:short>Process elements looking for something to link to backwards</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="*" mode="generatePreviousLink">
+  <xsl:template match="tei:*" mode="generatePreviousLink">
     <span class="previousLink">
       <xsl:text> </xsl:text>
       <xsl:call-template name="i18n">
@@ -276,7 +276,7 @@ $requestedID: requests a particular page
       <p> This nice bit of code is from Jeni Tennison </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="*" mode="xpath">
+  <xsl:template match="tei:*" mode="xpath">
     <xsl:param name="xpath"/>
     <xsl:param name="action"/>
     <xsl:choose>
@@ -341,7 +341,7 @@ $requestedID: requests a particular page
               </xsl:call-template>
             </xsl:if>
           </xsl:when>
-          <xsl:when test="self::divGen[@type='summary']">
+          <xsl:when test="self::tei:divGen[@type='summary']">
             <xsl:call-template name="summaryToc"/>
           </xsl:when>
           <xsl:otherwise>
@@ -377,12 +377,12 @@ $requestedID: requests a particular page
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements TEI</xd:short>
+    <xd:short>Process elements tei:TEI</xd:short>
     <xd:detail>
       <p> *****************************************</p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="TEI">
+  <xsl:template match="tei:TEI">
     <xsl:call-template name="teiStartHook"/>
     <xsl:if test="$verbose='true'">
       <xsl:message>TEI HTML in single document mode </xsl:message>
@@ -412,7 +412,7 @@ $requestedID: requests a particular page
         </xsl:attribute>
         <xsl:call-template name="bodyHook"/>
         <xsl:call-template name="bodyJavascriptHook"/>
-        <xsl:if test="not(text/front/titlePage)">
+        <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
 	  <div class="stdheader">
 	    <xsl:call-template name="stdheader">
 	      <xsl:with-param name="title">
@@ -433,12 +433,12 @@ $requestedID: requests a particular page
     <xsl:call-template name="teiEndHook"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements TEI</xd:short>
+    <xd:short>Process elements tei:TEI</xd:short>
     <xd:detail>
       <p> *****************************************</p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="TEI" mode="split">
+  <xsl:template match="tei:TEI" mode="split">
     <xsl:variable name="BaseFile">
       <xsl:value-of select="$masterFile"/>
       <xsl:call-template name="addCorpusID"/>
@@ -455,7 +455,7 @@ $requestedID: requests a particular page
     <xsl:call-template name="outputChunk">
       <xsl:with-param name="ident">
 	<xsl:choose>
-	  <xsl:when test="parent::teiCorpus">
+	  <xsl:when test="parent::tei:teiCorpus">
 	    <xsl:apply-templates select="." mode="ident"/>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -473,10 +473,10 @@ $requestedID: requests a particular page
     <xsl:call-template name="teiEndHook"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements body|back</xd:short>
+    <xd:short>Process elements tei:body|tei:back</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="body|back" mode="split">
+  <xsl:template match="tei:body|tei:back" mode="split">
     <xsl:for-each select="*">
       <xsl:choose>
         <xsl:when test="starts-with(local-name(.),'div')">
@@ -489,20 +489,20 @@ $requestedID: requests a particular page
     </xsl:for-each>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements body in inner mode</xd:short>
+    <xd:short>Process elements tei:body in inner mode</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="body" mode="inner">
+  <xsl:template match="tei:body" mode="inner">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements closer</xd:short>
+    <xd:short>Process elements tei:closer</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="closer">
+  <xsl:template match="tei:closer">
     <blockquote class="closer">
       <xsl:choose>
-        <xsl:when test="p">
+        <xsl:when test="tei:p">
           <xsl:apply-templates/>
         </xsl:when>
         <xsl:otherwise>
@@ -514,25 +514,25 @@ $requestedID: requests a particular page
     </blockquote>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements dateline</xd:short>
+    <xd:short>Process elements tei:dateline</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="dateline">
+  <xsl:template match="tei:dateline">
     <span class="dateline">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements divGen[@type='actions']</xd:short>
+    <xd:short>Process elements tei:divGen[@type='actions']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="divGen[@type='actions']">
+  <xsl:template match="tei:divGen[@type='actions']">
     <h3>Actions arising</h3>
     <dl>
-      <xsl:for-each select="/TEI/text//note[@type='action']">
+      <xsl:for-each select="/tei:TEI/tei:text//tei:note[@type='action']">
         <dt>
           <b>
-            <xsl:number count="note[@type='action']" level="any"/>
+            <xsl:number count="tei:note[@type='action']" level="any"/>
           </b>
         </dt>
         <dd>
@@ -542,12 +542,12 @@ $requestedID: requests a particular page
     </dl>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements divGen[@type='toc']</xd:short>
+    <xd:short>Process elements tei:divGen[@type='toc']</xd:short>
     <xd:detail>
       <p> table of contents </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="divGen[@type='toc']">
+  <xsl:template match="tei:divGen[@type='toc']">
     <h2>
       <xsl:call-template name="i18n">
         <xsl:with-param name="word">tocWords</xsl:with-param>
@@ -556,13 +556,13 @@ $requestedID: requests a particular page
     <xsl:call-template name="mainTOC"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements div[@type='canto']</xd:short>
+    <xd:short>Process elements tei:div[@type='canto']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="div[@type='canto']">
-    <xsl:variable name="divlevel" select="count(ancestor::div)"/>
+  <xsl:template match="tei:div[@type='canto']">
+    <xsl:variable name="divlevel" select="count(ancestor::tei:div)"/>
     <xsl:element name="h{$divlevel + $divOffset}">
-      <xsl:for-each select="head[1]">	      
+      <xsl:for-each select="tei:head[1]">	      
 	<xsl:call-template name="rendToClass">
 	  <xsl:with-param name="default"></xsl:with-param>
 	</xsl:call-template>
@@ -576,44 +576,44 @@ $requestedID: requests a particular page
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements div*, @type='letter'</xd:short>
+    <xd:short>Process elements tei:div*, @type='letter'</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="div1[@type='letter']|div[@type='letter']">
+  <xsl:template match="tei:div1[@type='letter']|tei:div[@type='letter']">
     <div class="letter">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements div[@type='epistle']</xd:short>
+    <xd:short>Process elements tei:div[@type='epistle']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="div[@type='epistle']">
+  <xsl:template match="tei:div[@type='epistle']">
     <div class="epistle">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements div[@type='frontispiece']</xd:short>
+    <xd:short>Process elements tei:div[@type='frontispiece']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="div[@type='frontispiece']">
+  <xsl:template match="tei:div[@type='frontispiece']">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements div[@type='illustration']</xd:short>
+    <xd:short>Process elements tei:div[@type='illustration']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="div[@type='illustration']">
+  <xsl:template match="tei:div[@type='illustration']">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
     <xd:short>Process elements
-      div|div0|div1|div2|div3|div4|div5|div6</xd:short>
+      tei:div|tei:div0|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template
-    match="div|div0|div1|div2|div3|div4|div5|div6">
+    match="tei:div|tei:div0|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
     <xsl:variable name="depth">
       <xsl:apply-templates mode="depth" select="."/>
     </xsl:variable>
@@ -621,7 +621,7 @@ $requestedID: requests a particular page
 	 we may do one of two things: -->
     <xsl:choose>
       <!-- -1. Override at top level -->
-      <xsl:when test="ancestor::floatingText">
+      <xsl:when test="ancestor::tei:floatingText">
         <div>
           <xsl:call-template name="divClassAttribute">
             <xsl:with-param name="depth" select="$depth"/>
@@ -631,7 +631,7 @@ $requestedID: requests a particular page
           </xsl:call-template>
         </div>
       </xsl:when>
-      <xsl:when test="ancestor::TEI/@rend='all'">
+      <xsl:when test="ancestor::tei:TEI/@rend='all'">
         <div>
           <xsl:call-template name="divClassAttribute">
             <xsl:with-param name="depth" select="$depth"/>
@@ -641,7 +641,7 @@ $requestedID: requests a particular page
           </xsl:call-template>
         </div>
       </xsl:when>
-      <xsl:when test="ancestor::TEI/@rend='frontpage'">
+      <xsl:when test="ancestor::tei:TEI/@rend='frontpage'">
         <div>
           <xsl:call-template name="divClassAttribute">
             <xsl:with-param name="depth" select="$depth"/>
@@ -661,7 +661,7 @@ $requestedID: requests a particular page
       </xsl:when>
       <!-- 1. our section depth is below the splitting level -->
       <xsl:when
-        test="$depth &gt; $splitLevel or         @rend='nosplit' or ancestor::TEI/@rend='all' or         ancestor::TEI/@rend='frontpage' or         ancestor::TEI/@rend='nosplit'">
+        test="$depth &gt; $splitLevel or         @rend='nosplit' or ancestor::tei:TEI/@rend='all' or         ancestor::tei:TEI/@rend='frontpage' or         ancestor::tei:TEI/@rend='nosplit'">
         <div>
           <xsl:call-template name="divClassAttribute">
             <xsl:with-param name="depth" select="$depth"/>
@@ -674,18 +674,18 @@ $requestedID: requests a particular page
       <!-- 2. we are at or above splitting level, 
 	   so start a new page  -->
       <xsl:when
-        test="$depth &lt;= $splitLevel and ancestor::front         and $splitFrontmatter='true'">
+        test="$depth &lt;= $splitLevel and ancestor::tei:front         and $splitFrontmatter='true'">
         <xsl:call-template name="makeDivPage">
           <xsl:with-param name="depth" select="$depth"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:when
-        test="$depth &lt;= $splitLevel and ancestor::back and $splitBackmatter='true'">
+        test="$depth &lt;= $splitLevel and ancestor::tei:back and $splitBackmatter='true'">
         <xsl:call-template name="makeDivPage">
           <xsl:with-param name="depth" select="$depth"/>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="$depth &lt;= $splitLevel and ancestor::body">
+      <xsl:when test="$depth &lt;= $splitLevel and ancestor::tei:body">
         <xsl:call-template name="makeDivPage">
           <xsl:with-param name="depth" select="$depth"/>
         </xsl:call-template>
@@ -761,23 +761,23 @@ $requestedID: requests a particular page
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements docAuthor in "author" mode"</xd:short>
+    <xd:short>Process elements tei:docAuthor in "author" mode"</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="docAuthor" mode="author">
-    <xsl:if test="preceding-sibling::docAuthor">
+  <xsl:template match="tei:docAuthor" mode="author">
+    <xsl:if test="preceding-sibling::tei:docAuthor">
       <xsl:text>, </xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements docTitle, docAuthor, docImprint and
-      docDate</xd:short>
+    <xd:short>Process elements tei:docTitle, docAuthor, docImprint and
+      tei:docDate</xd:short>
     <xd:detail>
       <p> Translate these to a corresponding HTML div </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="docTitle|docAuthor|docImprint|docDate">
+  <xsl:template match="tei:docTitle|tei:docAuthor|tei:docImprint|tei:docDate">
     <div>
       <xsl:choose>
 	<xsl:when test="@rendition">
@@ -795,13 +795,13 @@ $requestedID: requests a particular page
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements opener</xd:short>
+    <xd:short>Process elements tei:opener</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="opener">
+  <xsl:template match="tei:opener">
     <blockquote class="opener">
       <xsl:choose>
-        <xsl:when test="p">
+        <xsl:when test="tei:p">
           <xsl:apply-templates/>
         </xsl:when>
         <xsl:otherwise>
@@ -813,15 +813,15 @@ $requestedID: requests a particular page
     </blockquote>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements text</xd:short>
+    <xd:short>Process elements tei:text</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="text">
+  <xsl:template match="tei:text">
     <xsl:choose>
-      <xsl:when test="parent::TEI">
+      <xsl:when test="parent::tei:TEI">
         <xsl:apply-templates/>
       </xsl:when>
-      <xsl:when test="parent::group">
+      <xsl:when test="parent::tei:group">
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise>
@@ -832,10 +832,10 @@ $requestedID: requests a particular page
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements titlePage</xd:short>
+    <xd:short>Process elements tei:titlePage</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="titlePage">
+  <xsl:template match="tei:titlePage">
     <div class="titlePage">
       <xsl:apply-templates/>
     </div>
@@ -856,8 +856,8 @@ $requestedID: requests a particular page
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template name="addCorpusID">
-    <xsl:if test="ancestor-or-self::teiCorpus">
-      <xsl:for-each select="ancestor-or-self::TEI">
+    <xsl:if test="ancestor-or-self::tei:teiCorpus">
+      <xsl:for-each select="ancestor-or-self::tei:TEI">
         <xsl:text>-</xsl:text>
         <xsl:choose>
           <xsl:when test="@xml:id">
@@ -880,8 +880,8 @@ $requestedID: requests a particular page
       <xsl:when test="string-length($doclang)&gt;0">
 	<xsl:value-of select="$doclang"/>
       </xsl:when>
-      <xsl:when test="ancestor-or-self::schemaSpec/@docLang">
-	<xsl:value-of select="//schemaSpec[1]/@docLang"/>
+      <xsl:when test="ancestor-or-self::tei:schemaSpec/@docLang">
+	<xsl:value-of select="//tei:schemaSpec[1]/@docLang"/>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:text>en</xsl:text>
@@ -891,12 +891,12 @@ $requestedID: requests a particular page
 
     <xsl:variable name="supplied">
       <xsl:choose>
-        <xsl:when test="ancestor-or-self::*[@xml:lang]">
-          <xsl:value-of select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"
+        <xsl:when test="ancestor-or-self::tei:*[@xml:lang]">
+          <xsl:value-of select="ancestor-or-self::tei:*[@xml:lang][1]/@xml:lang"
           />
         </xsl:when>
-        <xsl:when test="ancestor-or-self::*[@lang]">
-          <xsl:value-of select="ancestor-or-self::*[@lang][1]/@lang"/>
+        <xsl:when test="ancestor-or-self::tei:*[@lang]">
+          <xsl:value-of select="ancestor-or-self::tei:*[@lang][1]/@lang"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$documentationLanguage"/>
@@ -959,11 +959,11 @@ $requestedID: requests a particular page
       <xsl:apply-templates mode="ident" select="."/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="parent::div/@rend='multicol'">
+      <xsl:when test="parent::tei:div/@rend='multicol'">
         <td valign="top">
           <xsl:if test="not($Head = '')">
             <xsl:element name="h{$Head + $divOffset}">
-	      <xsl:for-each select="head[1]">	      
+	      <xsl:for-each select="tei:head[1]">	      
 		<xsl:call-template name="rendToClass">
 		  <xsl:with-param name="default"></xsl:with-param>
 		</xsl:call-template>
@@ -977,20 +977,20 @@ $requestedID: requests a particular page
 	      <xsl:call-template name="sectionHeadHook"/>
 	    </xsl:element>
           </xsl:if>
-          <xsl:apply-templates select="text/body"/>
+          <xsl:apply-templates select="tei:text/tei:body"/>
         </td>
       </xsl:when>
       <xsl:when test="@rend='multicol'">
         <table>
           <tr>
-            <xsl:apply-templates select="text/body"/>
+            <xsl:apply-templates select="tei:text/tei:body"/>
           </tr>
         </table>
       </xsl:when>
       <xsl:otherwise>
         <xsl:if test="not($Head = '')">
           <xsl:element name="h{$Head + $divOffset}">
-	    <xsl:for-each select="head[1]">
+	    <xsl:for-each select="tei:head[1]">
 	      <xsl:call-template name="rendToClass">
 		  <xsl:with-param name="default"></xsl:with-param>
 	      </xsl:call-template>
@@ -1004,7 +1004,7 @@ $requestedID: requests a particular page
 	    <xsl:call-template name="sectionHeadHook"/>
 	  </xsl:element>
         </xsl:if>
-        <xsl:apply-templates select="text/body"/>
+        <xsl:apply-templates select="tei:text/tei:body"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -1020,11 +1020,11 @@ $requestedID: requests a particular page
       <xsl:apply-templates mode="ident" select="."/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="parent::div/@rend='multicol'">
+      <xsl:when test="parent::tei:div/@rend='multicol'">
         <td valign="top">
           <xsl:if test="not($Type = '')">
             <xsl:element name="h{$Type + $divOffset}">
-	      <xsl:for-each select="head[1]">
+	      <xsl:for-each select="tei:head[1]">
 		<xsl:call-template name="rendToClass">
 		  <xsl:with-param name="default"></xsl:with-param>
 		</xsl:call-template>
@@ -1045,14 +1045,14 @@ $requestedID: requests a particular page
         <xsl:apply-templates select="*[not(local-name(.)='div')]"/>
         <table>
           <tr>
-            <xsl:apply-templates select="div"/>
+            <xsl:apply-templates select="tei:div"/>
           </tr>
         </table>
       </xsl:when>
       <xsl:otherwise>
         <xsl:if test="not($Type = '')">
           <xsl:element name="h{$Type + $divOffset}">
-	    <xsl:for-each select="head[1]">
+	    <xsl:for-each select="tei:head[1]">
 	      <xsl:call-template name="rendToClass">
 		<xsl:with-param name="default"></xsl:with-param>
 	      </xsl:call-template>
@@ -1075,9 +1075,9 @@ $requestedID: requests a particular page
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template name="doDivs">
-    <xsl:for-each select="TEI/text">
-      <xsl:for-each select="front|body|back">
-        <xsl:for-each select="div|div0|div1">
+    <xsl:for-each select="tei:TEI/tei:text">
+      <xsl:for-each select="tei:front|tei:body|tei:back">
+        <xsl:for-each select="tei:div|tei:div0|tei:div1">
           <xsl:variable name="currentID">
             <xsl:apply-templates mode="ident" select="."/>
           </xsl:variable>
@@ -1121,7 +1121,7 @@ $requestedID: requests a particular page
             <xsl:call-template name="pageLayoutSimple"/>
           </xsl:with-param>
         </xsl:call-template>
-        <xsl:apply-templates mode="split" select="TEI"/>
+        <xsl:apply-templates mode="split" select="tei:TEI"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -1194,7 +1194,7 @@ $requestedID: requests a particular page
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template name="generateDivtitle">
-    <xsl:apply-templates select="head/text()"/>
+    <xsl:apply-templates select="tei:head/text()"/>
   </xsl:template>
   <xd:doc>
     <xd:short>[html] </xd:short>
@@ -1210,7 +1210,7 @@ $requestedID: requests a particular page
       <xsl:call-template name="addCorpusID"/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="$myName = 'div' and not(ancestor::div)">
+      <xsl:when test="$myName = 'div' and not(ancestor::tei:div)">
         <xsl:call-template name="upLink">
 	  <xsl:with-param name="up" select="$BaseFile"/>
 	  <xsl:with-param name="title" select="$homeLabel"/>
@@ -1218,7 +1218,7 @@ $requestedID: requests a particular page
       </xsl:when>
       <xsl:when test="$myName = 'div'">
         <xsl:call-template name="upLink">
-          <xsl:with-param name="up" select="ancestor::div[1]"/>
+          <xsl:with-param name="up" select="ancestor::tei:div[1]"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="$myName='div0'">
@@ -1235,28 +1235,28 @@ $requestedID: requests a particular page
       </xsl:when>
       <xsl:when test="$myName='div2'">
 	<xsl:call-template name="upLink">
-	  <xsl:with-param name="up" select="ancestor::div1"/>
+	  <xsl:with-param name="up" select="ancestor::tei:div1"/>
 	</xsl:call-template>
       </xsl:when>
       <xsl:when test="$myName='div3'">
 	<xsl:call-template name="upLink">
-	  <xsl:with-param name="up" select="ancestor::div2"/>
+	  <xsl:with-param name="up" select="ancestor::tei:div2"/>
 	</xsl:call-template>
       </xsl:when>
       <xsl:when test="$myName='div4'">
 	<xsl:call-template name="upLink">
-	  <xsl:with-param name="up" select="ancestor::div3"/>
+	  <xsl:with-param name="up" select="ancestor::tei:div3"/>
 	</xsl:call-template>
       </xsl:when>
       <xsl:when test="$myName='div5'">
 	<xsl:call-template name="upLink">
-	  <xsl:with-param name="up" select="ancestor::div4"/>
+	  <xsl:with-param name="up" select="ancestor::tei:div4"/>
 	</xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:call-template name="upLink">
 	  <xsl:with-param name="up"
-			  select="(ancestor::div1|ancestor::div)[1]"/>
+			  select="(ancestor::tei:div1|ancestor::tei:div)[1]"/>
 	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
@@ -1329,7 +1329,7 @@ $requestedID: requests a particular page
               <xsl:value-of select="$requestedID"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:apply-templates mode="ident" select=".//body/div[1]"
+              <xsl:apply-templates mode="ident" select=".//tei:body/tei:div[1]"
               />
             </xsl:otherwise>
           </xsl:choose>
@@ -1447,7 +1447,7 @@ $requestedID: requests a particular page
           </xsl:when>
           <xsl:otherwise>
             <xsl:apply-templates mode="xpath"
-              select="ancestor-or-self::TEI/text">
+              select="ancestor-or-self::tei:TEI/tei:text">
               <xsl:with-param name="xpath" select="$currentID"/>
               <xsl:with-param name="action" select="'toclist'"/>
             </xsl:apply-templates>
@@ -1460,15 +1460,15 @@ $requestedID: requests a particular page
     <xd:short>[html] bypass sidebar lists in normal mode</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="list[@type='sidebar']"/>
+  <xsl:template match="tei:list[@type='sidebar']"/>
   <xd:doc>
     <xd:short>[html] Summary links in left-hand column</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template name="makeSidebar">
     <xsl:for-each
-      select="ancestor-or-self::TEI/text/body/list[@type='sidebar']">
-      <xsl:for-each select=".//xref|.//ref">
+      select="ancestor-or-self::tei:TEI/tei:text/tei:body/tei:list[@type='sidebar']">
+      <xsl:for-each select=".//tei:xref|.//tei:ref">
         <p class="sidebar">
           <a class="toclist" href="{@url}">
             <xsl:apply-templates/>
@@ -1492,10 +1492,10 @@ $requestedID: requests a particular page
     <xsl:variable name="thisOne">
       <xsl:value-of select="generate-id()"/>
     </xsl:variable>
-    <xsl:for-each select="ancestor-or-self::TEI/text">
+    <xsl:for-each select="ancestor-or-self::tei:TEI/tei:text">
       <!-- front matter -->
-      <xsl:for-each select="front">
-	<xsl:if test="div1|div">
+      <xsl:for-each select="tei:front">
+	<xsl:if test="tei:div1|tei:div">
 	  <div class="tocFront">
 	    <xsl:element name="{$tocContainerElement}">
 	      <xsl:attribute name="class">
@@ -1511,8 +1511,8 @@ $requestedID: requests a particular page
 	</xsl:if>
       </xsl:for-each>
       <!-- body matter -->
-      <xsl:for-each select="body">
-	<xsl:if test="div1|div">
+      <xsl:for-each select="tei:body">
+	<xsl:if test="tei:div1|tei:div">
 	  <div class="tocBody">
 	    <xsl:comment>start TOC</xsl:comment>
 	    <xsl:element name="{$tocContainerElement}">
@@ -1530,8 +1530,8 @@ $requestedID: requests a particular page
 	</xsl:if>
       </xsl:for-each>
       <!-- back matter -->
-      <xsl:for-each select="back">
-	<xsl:if test="div1|div">
+      <xsl:for-each select="tei:back">
+	<xsl:if test="tei:div1|tei:div">
 	  <div class="tocBack">
 	    <xsl:element name="{$tocContainerElement}">
 	      <xsl:attribute name="class">
@@ -1573,14 +1573,14 @@ $requestedID: requests a particular page
         <!-- we need to locate the first interesting object in the file, ie
 	     the first grandchild of <text > -->
         <xsl:for-each
-          select=" descendant-or-self::TEI/text/*[1]/*[1]">
+          select=" descendant-or-self::tei:TEI/tei:text/tei:*[1]/*[1]">
           <xsl:apply-templates mode="paging" select="."/>
           <xsl:if test="$autoToc='true'">
-            <xsl:if test="following-sibling::div/head">
+            <xsl:if test="following-sibling::tei:div/tei:head">
               <xsl:call-template name="contentsHeading"/>
               <ul class="toc">
                 <xsl:apply-templates mode="maketoc"
-                  select="following-sibling::div">
+                  select="following-sibling::tei:div">
                   <xsl:with-param name="forcedepth" select="'0'"/>
                 </xsl:apply-templates>
               </ul>
@@ -1615,19 +1615,19 @@ $requestedID: requests a particular page
           </xsl:when>
           <xsl:otherwise>
             <!-- the passed ID is a pseudo-XPath expression
-		 which starts below TEI/text.
+		 which starts below TEI/tei:text.
 		 The real XPath syntax is changed to avoid problems
 	    -->
             <xsl:choose>
-              <xsl:when test="ancestor-or-self::TEI/group/text">
+              <xsl:when test="ancestor-or-self::tei:TEI/tei:group/tei:text">
                 <xsl:apply-templates mode="xpath"
-                  select="ancestor-or-self::TEI/group/text">
+                  select="ancestor-or-self::tei:TEI/tei:group/tei:text">
                   <xsl:with-param name="xpath" select="$currentID"/>
                 </xsl:apply-templates>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:apply-templates mode="xpath"
-                  select="ancestor-or-self::TEI/text">
+                  select="ancestor-or-self::tei:TEI/tei:text">
                   <xsl:with-param name="xpath" select="$currentID"/>
                 </xsl:apply-templates>
               </xsl:otherwise>
@@ -1652,9 +1652,9 @@ $requestedID: requests a particular page
   </xd:doc>
   <xsl:template name="mainbody">
     <xsl:comment> process front matter </xsl:comment>
-    <xsl:apply-templates select="text/front"/>
+    <xsl:apply-templates select="tei:text/tei:front"/>
     <xsl:if
-      test="$autoToc='true' and (descendant::div or descendant::div0 or descendant::div1) and not(descendant::divGen[@type='toc'])">
+      test="$autoToc='true' and (descendant::tei:div or descendant::tei:div0 or descendant::tei:div1) and not(descendant::tei:divGen[@type='toc'])">
       <h2>
         <xsl:call-template name="i18n">
           <xsl:with-param name="word">tocWords</xsl:with-param>
@@ -1663,8 +1663,8 @@ $requestedID: requests a particular page
       <xsl:call-template name="mainTOC"/>
     </xsl:if>
     <xsl:choose>
-      <xsl:when test="text/group">
-        <xsl:apply-templates select="text/group"/>
+      <xsl:when test="tei:text/tei:group">
+        <xsl:apply-templates select="tei:text/tei:group"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:comment>process body matter </xsl:comment>
@@ -1673,7 +1673,7 @@ $requestedID: requests a particular page
       </xsl:otherwise>
     </xsl:choose>
     <xsl:comment>back matter </xsl:comment>
-    <xsl:apply-templates select="text/back"/>
+    <xsl:apply-templates select="tei:text/tei:back"/>
   </xsl:template>
   <xd:doc>
     <xd:short>[html] </xd:short>
@@ -1683,26 +1683,26 @@ $requestedID: requests a particular page
   <xsl:template name="mainTOC">
     <xsl:param name="force"/>
     <xsl:choose>
-      <xsl:when test="ancestor-or-self::TEI/text/group">
+      <xsl:when test="ancestor-or-self::tei:TEI/tei:text/tei:group">
 	<ol>
 	<xsl:for-each
-	    select="ancestor-or-self::TEI/text/group/text">
+	    select="ancestor-or-self::tei:TEI/tei:text/tei:group/tei:text">
 	  <li>Text <xsl:number/>:
-	    <xsl:for-each select="front">
+	    <xsl:for-each select="tei:front">
 	      <xsl:call-template name="partTOC">
 		<xsl:with-param name="force" select="$force"/>
 		<xsl:with-param name="part">front</xsl:with-param>
 	      </xsl:call-template>
 	    </xsl:for-each>
 
-	    <xsl:for-each select="body">
+	    <xsl:for-each select="tei:body">
 	      <xsl:call-template name="partTOC">
 		<xsl:with-param name="force" select="$force"/>
 		<xsl:with-param name="part">body</xsl:with-param>
 	      </xsl:call-template>
 	    </xsl:for-each>
 
-	    <xsl:for-each select="back">
+	    <xsl:for-each select="tei:back">
 	      <xsl:call-template name="partTOC">
 		<xsl:with-param name="force" select="$force"/>
 		<xsl:with-param name="part">back</xsl:with-param>
@@ -1715,7 +1715,7 @@ $requestedID: requests a particular page
       <xsl:otherwise>
 	<xsl:if test="$tocFront">
 	  <xsl:for-each
-	      select="ancestor-or-self::TEI/text/front">
+	      select="ancestor-or-self::tei:TEI/tei:text/tei:front">
 	    <xsl:call-template name="partTOC">
 	      <xsl:with-param name="force" select="$force"/>
 	      <xsl:with-param name="part">front</xsl:with-param>
@@ -1723,7 +1723,7 @@ $requestedID: requests a particular page
 	  </xsl:for-each>
 	</xsl:if>
 	
-	<xsl:for-each select="ancestor-or-self::TEI/text/body">
+	<xsl:for-each select="ancestor-or-self::tei:TEI/tei:text/tei:body">
 	  <xsl:call-template name="partTOC">
 	    <xsl:with-param name="force" select="$force"/>
 	    <xsl:with-param name="part">body</xsl:with-param>
@@ -1732,7 +1732,7 @@ $requestedID: requests a particular page
 
 	<xsl:if test="$tocBack">
 	  <xsl:for-each
-	      select="ancestor-or-self::TEI/text/back">
+	      select="ancestor-or-self::tei:TEI/tei:text/tei:back">
 	    <xsl:call-template name="partTOC">
 	      <xsl:with-param name="force" select="$force"/>
 	      <xsl:with-param name="part">back</xsl:with-param>
@@ -1747,10 +1747,10 @@ $requestedID: requests a particular page
     <xsl:param name="part"/>
     <xsl:param name="force"/>
     <xsl:if
-	test="div|div0|div1|div2|div3|div4|div5|div6">
+	test="tei:div|tei:div0|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
       <ul class="toc{$force} toc_{$part}">
 	<xsl:apply-templates mode="maketoc"
-			     select="div|div0|div1|div2|div3|div4|div5|div6">
+			     select="tei:div|tei:div0|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
 	  <xsl:with-param name="forcedepth" select="$force"/>
 	</xsl:apply-templates>
       </ul>
@@ -1767,43 +1767,43 @@ $requestedID: requests a particular page
       <xsl:value-of select="local-name(.)"/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="following-sibling::TEI">
+      <xsl:when test="following-sibling::tei:TEI">
         <xsl:apply-templates mode="generateNextLink"
-          select="following-sibling::TEI[1]"/>
+          select="following-sibling::tei:TEI[1]"/>
       </xsl:when>
-      <xsl:when test="following-sibling::div[head or $autoHead='true']">
+      <xsl:when test="following-sibling::tei:div[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generateNextLink"
-          select="following-sibling::div[1]"/>
-      </xsl:when>
-      <xsl:when
-        test="parent::body/following-sibling::back/div[head or $autoHead='true']">
-        <xsl:apply-templates mode="generateNextLink"
-          select="parent::body/following-sibling::back/div[1]"/>
+          select="following-sibling::tei:div[1]"/>
       </xsl:when>
       <xsl:when
-        test="parent::front/following-sibling::body/div[head or $autoHead='true']">
+        test="parent::tei:body/following-sibling::tei:back/tei:div[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generateNextLink"
-          select="parent::front/following-sibling::body/div[1]"/>
+          select="parent::tei:body/following-sibling::tei:back/tei:div[1]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div0' and following-sibling::div0[head or $autoHead='true']">
+        test="parent::tei:front/following-sibling::tei:body/tei:div[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generateNextLink"
-          select="following-sibling::div0[1]"/>
+          select="parent::tei:front/following-sibling::tei:body/tei:div[1]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div1' and following-sibling::div1[head or $autoHead='true']">
+        test="$myName='div0' and following-sibling::tei:div0[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generateNextLink"
-          select="following-sibling::div1[1]"/>
+          select="following-sibling::tei:div0[1]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div2' and following-sibling::div2[head or $autoHead='true']">
+        test="$myName='div1' and following-sibling::tei:div1[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generateNextLink"
-          select="following-sibling::div2[1]"/>
+          select="following-sibling::tei:div1[1]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div3' and following-sibling::div3[head or $autoHead='true']">
+        test="$myName='div2' and following-sibling::tei:div2[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generateNextLink"
-          select="following-sibling::div3[1]"/>
+          select="following-sibling::tei:div2[1]"/>
+      </xsl:when>
+      <xsl:when
+        test="$myName='div3' and following-sibling::tei:div3[tei:head or $autoHead='true']">
+        <xsl:apply-templates mode="generateNextLink"
+          select="following-sibling::tei:div3[1]"/>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
@@ -1951,15 +1951,15 @@ $requestedID: requests a particular page
       <body>
         <xsl:attribute name="onload">
 	  <xsl:choose>
-	    <xsl:when test="text/body/@onload">
-	      <xsl:value-of select="text/body/@onload"/>
+	    <xsl:when test="tei:text/tei:body/@onload">
+	      <xsl:value-of select="tei:text/tei:body/@onload"/>
 	    </xsl:when>
 	    <xsl:otherwise>
 	      <xsl:text>startUp()</xsl:text>
 	    </xsl:otherwise>
 	  </xsl:choose>
         </xsl:attribute>
-	<xsl:copy-of select="text/body/@onunload"/>
+	<xsl:copy-of select="tei:text/tei:body/@onunload"/>
         <xsl:call-template name="bodyHook"/>
         <xsl:call-template name="bodyJavascriptHook"/>
 	<xsl:call-template name="mainPage">
@@ -2007,13 +2007,13 @@ $requestedID: requests a particular page
 	<div class="column-wrapper">
 	  <div id="rh-col">
 	    <xsl:for-each
-		select="descendant-or-self::TEI/text/body">
+		select="descendant-or-self::tei:TEI/tei:text/tei:body">
 	      <xsl:apply-templates/>
 	    </xsl:for-each>
 	  </div>
 	  <div id="lh-col">
 	    <xsl:for-each
-		select="descendant-or-self::TEI/text/front">
+		select="descendant-or-self::tei:TEI/tei:text/tei:front">
 	      <xsl:apply-templates/>
 	    </xsl:for-each>
 	  </div>
@@ -2033,7 +2033,7 @@ $requestedID: requests a particular page
   </xd:doc>
   <xsl:template name="col1">
     <div id="col1">
-      <xsl:for-each select="descendant-or-self::TEI/text/front">
+      <xsl:for-each select="descendant-or-self::tei:TEI/tei:text/tei:front">
         <xsl:apply-templates/>
       </xsl:for-each>
     </div>
@@ -2044,7 +2044,7 @@ $requestedID: requests a particular page
   </xd:doc>
   <xsl:template name="col2">
     <div id="col2">
-      <xsl:for-each select="descendant-or-self::TEI/text/body">
+      <xsl:for-each select="descendant-or-self::tei:TEI/tei:text/tei:body">
         <xsl:apply-templates/>
       </xsl:for-each>
     </div>
@@ -2055,7 +2055,7 @@ $requestedID: requests a particular page
   </xd:doc>
   <xsl:template name="col3">
     <div id="col3">
-      <xsl:for-each select="descendant-or-self::TEI/text/back">
+      <xsl:for-each select="descendant-or-self::tei:TEI/tei:text/tei:back">
         <xsl:apply-templates/>
       </xsl:for-each>
     </div>
@@ -2119,7 +2119,7 @@ $requestedID: requests a particular page
         </xsl:attribute>
         <xsl:call-template name="bodyHook"/>
         <xsl:call-template name="bodyJavascriptHook"/>
-        <xsl:if test="not(text/front/titlePage)">
+        <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
 	  <div class="stdheader">
 	    <xsl:call-template name="stdheader">
 	      <xsl:with-param name="title">
@@ -2160,7 +2160,7 @@ $requestedID: requests a particular page
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:apply-templates mode="xpath"
-                    select="descendant-or-self::TEI/text">
+                    select="descendant-or-self::tei:TEI/tei:text">
                     <xsl:with-param name="xpath" select="$currentID"/>
                     <xsl:with-param name="action" select="'header'"/>
                   </xsl:apply-templates>
@@ -2250,51 +2250,51 @@ $requestedID: requests a particular page
       <xsl:value-of select="local-name(.)"/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="preceding-sibling::TEI">
+      <xsl:when test="preceding-sibling::tei:TEI">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="preceding-sibling::TEI[1]"/>
+          select="preceding-sibling::tei:TEI[1]"/>
       </xsl:when>
-      <xsl:when test="preceding-sibling::div[head or $autoHead='true']">
+      <xsl:when test="preceding-sibling::tei:div[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="preceding-sibling::div[1]"/>
-      </xsl:when>
-      <xsl:when
-        test="parent::body/preceding-sibling::front/div[head or $autoHead='true']">
-        <xsl:apply-templates mode="generatePreviousLink"
-          select="parent::body/preceding-sibling::front/div[last()]"/>
+          select="preceding-sibling::tei:div[1]"/>
       </xsl:when>
       <xsl:when
-        test="parent::back/preceding-sibling::body/div[head or $autoHead='true']">
+        test="parent::tei:body/preceding-sibling::tei:front/tei:div[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="parent::body/preceding-sibling::body/div[last()]"/>
+          select="parent::tei:body/preceding-sibling::tei:front/tei:div[last()]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div0' and preceding-sibling::div0[head or $autoHead='true']">
+        test="parent::tei:back/preceding-sibling::tei:body/tei:div[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="preceding-sibling::div0[1]"/>
+          select="parent::tei:body/preceding-sibling::tei:body/tei:div[last()]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div1' and preceding-sibling::div1[head or $autoHead='true']">
+        test="$myName='div0' and preceding-sibling::tei:div0[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="preceding-sibling::div1[1]"/>
+          select="preceding-sibling::tei:div0[1]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div2' and preceding-sibling::div2[head or $autoHead='true']">
+        test="$myName='div1' and preceding-sibling::tei:div1[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="preceding-sibling::div2[1]"/>
+          select="preceding-sibling::tei:div1[1]"/>
       </xsl:when>
       <xsl:when
-        test="$myName='div3' and preceding-sibling::div3[head or $autoHead='true']">
+        test="$myName='div2' and preceding-sibling::tei:div2[tei:head or $autoHead='true']">
         <xsl:apply-templates mode="generatePreviousLink"
-          select="preceding-sibling::div3[1]"/>
+          select="preceding-sibling::tei:div2[1]"/>
+      </xsl:when>
+      <xsl:when
+        test="$myName='div3' and preceding-sibling::tei:div3[tei:head or $autoHead='true']">
+        <xsl:apply-templates mode="generatePreviousLink"
+          select="preceding-sibling::tei:div3[1]"/>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
   <xsl:template name="simpleBody">
     <!-- front matter -->
-    <xsl:apply-templates select="text/front"/>
+    <xsl:apply-templates select="tei:text/tei:front"/>
     <xsl:if
-      test="$autoToc='true' and (descendant::div or descendant::div0 or descendant::div1) and not(descendant::divGen[@type='toc'])">
+      test="$autoToc='true' and (descendant::tei:div or descendant::tei:div0 or descendant::tei:div1) and not(descendant::tei:divGen[@type='toc'])">
       <h2>
         <xsl:call-template name="i18n">
           <xsl:with-param name="word">tocWords</xsl:with-param>
@@ -2304,15 +2304,15 @@ $requestedID: requests a particular page
     </xsl:if>
     <!-- main text -->
     <xsl:choose>
-      <xsl:when test="text/group">
-        <xsl:apply-templates select="text/group"/>
+      <xsl:when test="tei:text/tei:group">
+        <xsl:apply-templates select="tei:text/tei:group"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-templates select="text/body"/>
+        <xsl:apply-templates select="tei:text/tei:body"/>
       </xsl:otherwise>
     </xsl:choose>
     <!-- back matter -->
-    <xsl:apply-templates select="text/back"/>
+    <xsl:apply-templates select="tei:text/tei:back"/>
     <xsl:call-template name="printNotes"/>
   </xsl:template>
   <xd:doc>
@@ -2527,11 +2527,11 @@ $requestedID: requests a particular page
   </xd:doc>
   <xsl:template name="subtoc">
     <xsl:if
-      test="child::div|div1|div2|div3|div4|div5|div6">
+      test="child::tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
       <xsl:variable name="parent">
         <xsl:choose>
-          <xsl:when test="ancestor::div">
-            <xsl:apply-templates mode="ident" select="ancestor::div[last()]"
+          <xsl:when test="ancestor::tei:div">
+            <xsl:apply-templates mode="ident" select="ancestor::tei:div[last()]"
             />
           </xsl:when>
           <xsl:otherwise>
@@ -2552,7 +2552,7 @@ $requestedID: requests a particular page
       <div class="subtoc">
         <ul class="subtoc">
           <xsl:for-each
-            select="div|div1|div2|div3|div4|div5|div6">
+            select="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
             <xsl:variable name="innerdent">
               <xsl:apply-templates mode="generateLink" select="."/>
             </xsl:variable>
@@ -2592,7 +2592,7 @@ $requestedID: requests a particular page
           </tr>
         </thead>
 	<tbody>
-        <xsl:for-each select="//body/div">
+        <xsl:for-each select="//tei:body/tei:div">
           <xsl:text>&#10;</xsl:text>
           <tr class="summaryline">
             <td align="right" class="summarycell" valign="top">
@@ -2606,7 +2606,7 @@ $requestedID: requests a particular page
                   <xsl:attribute name="href">
                     <xsl:apply-templates mode="generateLink" select="."/>
                   </xsl:attribute>
-                  <xsl:value-of select="head"/>
+                  <xsl:value-of select="tei:head"/>
                 </a>
               </b>
             </td>
@@ -2641,44 +2641,44 @@ $requestedID: requests a particular page
     <xsl:param name="id"/>
     <xsl:param name="force">false</xsl:param>
     <xsl:choose>
-      <xsl:when test="div0">
-        <xsl:for-each select="div0[head or $autoHead='true']">
+      <xsl:when test="tei:div0">
+        <xsl:for-each select="tei:div0[tei:head or $autoHead='true']">
           <xsl:call-template name="tocEntry">
             <xsl:with-param name="style" select="$style"/>
             <xsl:with-param name="id" select="$id"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
-      <xsl:when test="div1">
-        <xsl:for-each select="div1[head or $autoHead='true']">
+      <xsl:when test="tei:div1">
+        <xsl:for-each select="tei:div1[tei:head or $autoHead='true']">
           <xsl:call-template name="tocEntry">
             <xsl:with-param name="style" select="$style"/>
             <xsl:with-param name="id" select="$id"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
-      <xsl:when test="div2 and ($splitLevel &gt;=1 or $force='true')">
-        <xsl:for-each select="div2[head or $autoHead='true']">
+      <xsl:when test="tei:div2 and ($splitLevel &gt;=1 or $force='true')">
+        <xsl:for-each select="tei:div2[tei:head or $autoHead='true']">
           <xsl:call-template name="tocEntry">
             <xsl:with-param name="style" select="$style"/>
             <xsl:with-param name="id" select="$id"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
-      <xsl:when test="div3 and ($splitLevel &gt;=2 or $force='true')">
-        <xsl:for-each select="div3[head or $autoHead='true']">
+      <xsl:when test="tei:div3 and ($splitLevel &gt;=2 or $force='true')">
+        <xsl:for-each select="tei:div3[tei:head or $autoHead='true']">
           <xsl:call-template name="tocEntry">
             <xsl:with-param name="style" select="$style"/>
             <xsl:with-param name="id" select="$id"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
-      <xsl:when test="self::div">
+      <xsl:when test="self::tei:div">
         <xsl:variable name="depth">
           <xsl:apply-templates mode="depth" select="."/>
         </xsl:variable>
-        <xsl:if test="($splitLevel&gt;$depth  or $force='true' or ancestor::TEI/@rend='nosplit')">
-          <xsl:for-each select="div[head or $autoHead='true']">
+        <xsl:if test="($splitLevel&gt;$depth  or $force='true' or ancestor::tei:TEI/@rend='nosplit')">
+          <xsl:for-each select="tei:div[tei:head or $autoHead='true']">
             <xsl:call-template name="tocEntry">
               <xsl:with-param name="style" select="$style"/>
               <xsl:with-param name="id" select="$id"/>
@@ -2687,7 +2687,7 @@ $requestedID: requests a particular page
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:for-each select="div[head or $autoHead='true']">
+        <xsl:for-each select="tei:div[tei:head or $autoHead='true']">
           <xsl:call-template name="tocEntry">
             <xsl:with-param name="style" select="$style"/>
             <xsl:with-param name="id" select="$id"/>
@@ -3041,7 +3041,7 @@ $requestedID: requests a particular page
           <xsl:call-template name="generateUpLink"/>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:if test="not(ancestor-or-self::TEI[@rend='nomenu'])">
+      <xsl:if test="not(ancestor-or-self::tei:TEI[@rend='nomenu'])">
         <xsl:call-template name="previousLink"/>
         <xsl:call-template name="nextLink"/>
       </xsl:if>
@@ -3052,19 +3052,19 @@ $requestedID: requests a particular page
     <xd:short>[html] </xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="floatingText">
+  <xsl:template match="tei:floatingText">
     <div class="floatingText">
-	<xsl:for-each select="front">
+	<xsl:for-each select="tei:front">
 	  <div class="floatingText_front">
 	    <xsl:apply-templates/>
 	  </div>
 	</xsl:for-each>
-	<xsl:for-each select="body">
+	<xsl:for-each select="tei:body">
 	  <div class="floatingText_body">
 	    <xsl:apply-templates/>
 	  </div>
 	</xsl:for-each>
-	<xsl:for-each select="back">
+	<xsl:for-each select="tei:back">
 	  <div class="floatingText_back">
 	    <xsl:apply-templates/>
 	  </div>

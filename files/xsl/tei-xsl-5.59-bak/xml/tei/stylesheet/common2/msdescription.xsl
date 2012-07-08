@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet xmlns:="http://www.-c.org/ns/1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="" version="1.0">
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
+    <desc>
+      <p>  stylesheet dealing with elements from the msdescription module. </p>
+      <p> This library is free software; you can redistribute it and/or modify it under the terms of the
+      GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of
+      the License, or (at your option) any later version. This library is distributed in the hope that it will
+      be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+      A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. You should have
+      received a copy of the GNU Lesser General Public License along with this library; if not, write to the
+      Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA </p>
+      <p>Author: See AUTHORS</p>
+      <p>Id: $Id: msdescription.xsl 9329 2011-09-20 09:47:43Z rahtz $</p>
+      <p>Copyright: 2011,  Consortium</p>
+    </desc>
+  </doc>
+
+
+  <xsl:template name="msSection">
+    <xsl:param name="heading"/>
+    <xsl:param name="level"/>
+    <xsl:param name="implicitBlock"/>
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template name="msBlock">
+    <xsl:param name="style"/>
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template name="msInline">
+    <xsl:param name="before"/>
+    <xsl:param name="after"/>
+    <xsl:param name="style"/>
+    <xsl:value-of select="$before"/>
+    <xsl:apply-templates/>
+    <xsl:value-of select="$after"/>
+  </xsl:template>
+  <xsl:template name="msLabelled">
+    <xsl:param name="before"/>
+    <xsl:value-of select="$before"/>
+    <xsl:text>: </xsl:text>
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template name="msLiteral">
+    <xsl:param name="text"/>
+    <xsl:value-of select="$text"/>
+  </xsl:template>
+  <!-- headings -->
+  <xsl:template match="accMat">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Accompanying material</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="additional">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Additional</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="bindingDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Binding</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="msContents">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">1</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Contents</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="msDesc/head">
+    <xsl:call-template name="msBlock">
+      <xsl:with-param name="style">msHead</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="history">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">1</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>History</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="provenance">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Provenance</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="acquisition">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Acquisition</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="origin">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Origin</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="msIdentifier">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">1</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Identification</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="layoutDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">3</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Layout</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="decoDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">3</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Decoration</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="msWriting">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Writing</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="musicNotation">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Music notation</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="objectDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Object</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="physDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">1</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Physical description</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="seal">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">4</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Seal</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="sealDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">3</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Seal description</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="supportDesc">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">3</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Support description</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="support">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">4</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Support</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="collation">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">4</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Collation</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="extent">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">4</xsl:with-param>
+      <xsl:with-param name="implicitBlock">true</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Extent</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="incipit">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Incipit</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="explicit">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Explicit</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="msItem/listBibl">
+    <xsl:call-template name="msSection">
+      <xsl:with-param name="level">2</xsl:with-param>
+      <xsl:with-param name="heading">
+        <xsl:text>Text editions</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <!-- inline -->
+  <xsl:template match="abbr">
+    <xsl:choose>
+      <xsl:when test="parent::choice">
+	</xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="msInline"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template match="orig">
+    <xsl:choose>
+      <xsl:when test="parent::choice">
+	</xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="msInline"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template match="textLang">
+    <xsl:choose>
+      <xsl:when test="preceding-sibling::summary"/>
+      <xsl:when test="preceding-sibling::*">
+        <xsl:call-template name="msLiteral">
+          <xsl:with-param name="text">
+            <xsl:text>, </xsl:text>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+    </xsl:choose>
+    <xsl:call-template name="msLabelled">
+      <xsl:with-param name="before">Language of text</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="summary">
+    <xsl:choose>
+      <xsl:when test="preceding-sibling::*">
+        <xsl:call-template name="msLiteral">
+          <xsl:with-param name="text">
+            <xsl:text>, </xsl:text>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+    </xsl:choose>
+    <xsl:call-template name="msLabelled">
+      <xsl:with-param name="before">Summary</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="rubric">
+    <xsl:if test="preceding-sibling::*">
+      <xsl:call-template name="msLiteral">
+        <xsl:with-param name="text">
+          <xsl:text> </xsl:text>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:call-template name="msInline"/>
+  </xsl:template>
+  <xsl:template match="msItem/author">
+    <xsl:if test="preceding-sibling::*">
+      <xsl:call-template name="msLiteral">
+        <xsl:with-param name="text">
+          <xsl:text> </xsl:text>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:call-template name="msInline"/>
+  </xsl:template>
+  <xsl:template match="msItem/title">
+    <xsl:if test="preceding-sibling::*">
+      <xsl:call-template name="msLiteral">
+        <xsl:with-param name="text">
+          <xsl:text> </xsl:text>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="style">italic</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="expan/ex">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="before">(</xsl:with-param>
+      <xsl:with-param name="after">)</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="locus">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="style">bold</xsl:with-param>
+      <xsl:with-param name="before"/>
+      <xsl:with-param name="after">: </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="supplied[@reason='damage']">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="before">&lt;</xsl:with-param>
+      <xsl:with-param name="after">&gt;</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="supplied[@reason='illegible']">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="before">[</xsl:with-param>
+      <xsl:with-param name="after">]</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="supplied[@reason='omitted']">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="before">⟨</xsl:with-param>
+      <xsl:with-param name="after">⟩</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="gap" priority="10">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="before">[...]</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="unclear" priority="10">
+    <xsl:call-template name="msInline">
+      <xsl:with-param name="after">[?]</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="placeName|genName|geogName|roleName|name|persName">
+    <xsl:choose>
+      <xsl:when test="*">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="msInline"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template match="dimensions">
+    <xsl:for-each select="*">
+      <xsl:apply-templates select="."/>
+      <xsl:call-template name="msLiteral">
+        <xsl:with-param name="text">
+          <xsl:choose>
+            <xsl:when test="string-length(.)=0 and @extent">
+              <xsl:value-of select="@extent"/>
+            </xsl:when>
+            <xsl:when test="@unit">
+              <xsl:value-of select="@unit"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>mm</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:if test="following-sibling::*">
+            <xsl:text> x </xsl:text>
+          </xsl:if>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:for-each>
+  </xsl:template>
+  <xsl:template match="origDate">
+    <xsl:apply-imports/>
+    <xsl:if test="following-sibling::origPlace">
+      <xsl:call-template name="msLiteral">
+        <xsl:with-param name="text">
+          <xsl:text>, </xsl:text>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match="msIdentifier/*">
+    <xsl:apply-imports/>
+    <xsl:if test="following-sibling::*/text()">
+      <xsl:call-template name="msLiteral">
+        <xsl:with-param name="text">
+          <xsl:text>, </xsl:text>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  <!--
+    <handNote scribe="AM_544_4to_1"
+    script="carolingian-insular minuscule"
+    medium="ink" scope="sole"> 
+-->
+  <xsl:template match="handNote">
+    <xsl:if test="not(preceding-sibling::handNote)">
+      <xsl:variable name="Notes">
+        <list type="ordered">
+          <xsl:for-each select="../handNote">
+            <item>
+              <xsl:copy-of select="*|text()"/>
+            </item>
+          </xsl:for-each>
+        </list>
+      </xsl:variable>
+      <xsl:apply-templates select="$Notes"/>
+    </xsl:if>
+  </xsl:template>
+</xsl:stylesheet>

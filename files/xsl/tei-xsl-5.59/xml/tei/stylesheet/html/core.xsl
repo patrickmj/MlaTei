@@ -31,18 +31,18 @@
     <xd:copyright>2008, TEI Consortium</xd:copyright>
   </xd:doc>
   <xd:doc>
-    <xd:short>Process elements *</xd:short>
+    <xd:short>Process elements tei:*</xd:short>
     <xd:param name="forcedepth">forcedepth</xd:param>
     <xd:detail>
       <p> anything with a head can go in the TOC </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="*" mode="maketoc">
+  <xsl:template match="tei:*" mode="maketoc">
     <xsl:param name="forcedepth"/>
     <xsl:variable name="myName">
       <xsl:value-of select="local-name(.)"/>
     </xsl:variable>
-    <xsl:if test="head or $autoHead='true'">
+    <xsl:if test="tei:head or $autoHead='true'">
       <xsl:variable name="Depth">
         <xsl:choose>
           <xsl:when test="not($forcedepth='')">
@@ -56,11 +56,11 @@
       <xsl:variable name="thislevel">
         <xsl:choose>
           <xsl:when test="$myName = 'div'">
-            <xsl:value-of select="count(ancestor::div)"/>
+            <xsl:value-of select="count(ancestor::tei:div)"/>
           </xsl:when>
           <xsl:when test="starts-with($myName,'div')">
             <xsl:choose>
-              <xsl:when test="ancestor-or-self::div0">
+              <xsl:when test="ancestor-or-self::tei:div0">
                 <xsl:value-of select="substring-after($myName,'div')"/>
               </xsl:when>
               <xsl:otherwise>
@@ -87,40 +87,40 @@
     </xsl:if>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements ab</xd:short>
+    <xd:short>Process elements tei:ab</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="ab">
+  <xsl:template match="tei:ab">
     <div>
       <xsl:call-template name="rendToClass"/>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements addrLine</xd:short>
+    <xd:short>Process elements tei:addrLine</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="addrLine">
+  <xsl:template match="tei:addrLine">
     <xsl:apply-templates/>
     <br/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements address</xd:short>
+    <xd:short>Process elements tei:address</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="address">
+  <xsl:template match="tei:address">
     <address>
       <xsl:call-template name="rendToClass"/>
       <xsl:apply-templates/>
     </address>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements bibl</xd:short>
+    <xd:short>Process elements tei:bibl</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="bibl">
+  <xsl:template match="tei:bibl">
     <xsl:choose>
-      <xsl:when test="parent::cit">
+      <xsl:when test="parent::tei:cit">
         <div class="citbibl">
           <xsl:text>(</xsl:text>
           <xsl:apply-templates/>
@@ -135,41 +135,41 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements byline</xd:short>
+    <xd:short>Process elements tei:byline</xd:short>
     <xd:detail>
       <p> </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="byline">
+  <xsl:template match="tei:byline">
     <div>
       <xsl:call-template name="rendToClass"/>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process element change</xd:short>
+    <xd:short>Process element tei:change</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="change">
+  <xsl:template match="tei:change">
     <tr>
       <td valign="top" width="15%">
-        <xsl:value-of select="date"/>
+        <xsl:value-of select="tei:date"/>
       </td>
       <td width="85%">
-        <xsl:value-of select="item"/>
+        <xsl:value-of select="tei:item"/>
       </td>
     </tr>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process element choice</xd:short>
+    <xd:short>Process element tei:choice</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="choice">
+  <xsl:template match="tei:choice">
     <xsl:choose>
-      <xsl:when test="abbr and expan">
-	<xsl:apply-templates select="expan"/>
+      <xsl:when test="tei:abbr and tei:expan">
+	<xsl:apply-templates select="tei:expan"/>
 	<xsl:text> (</xsl:text>
-	<xsl:apply-templates select="abbr"/>
+	<xsl:apply-templates select="tei:abbr"/>
 	<xsl:text>)</xsl:text>
       </xsl:when>
       <xsl:otherwise>
@@ -178,19 +178,19 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process element cit</xd:short>
+    <xd:short>Process element tei:cit</xd:short>
     <xd:detail>
       <p> quoting </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="cit">
+  <xsl:template match="tei:cit">
     <xsl:choose>
       <xsl:when test="@rend='display'">
         <blockquote>
 	  <xsl:call-template name="rendToClass"/>
           <p>
-            <xsl:apply-templates select="q|quote"/>
-            <xsl:apply-templates select="bibl"/>
+            <xsl:apply-templates select="tei:q|tei:quote"/>
+            <xsl:apply-templates select="tei:bibl"/>
           </p>
         </blockquote>
       </xsl:when>
@@ -201,29 +201,29 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements code</xd:short>
+    <xd:short>Process elements tei:code</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="code">
+  <xsl:template match="tei:code">
     <code>
       <xsl:apply-templates/>
     </code>
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements  corr</xd:short>
+    <xd:short>Process elements  tei:corr</xd:short>
     <xd:detail>Does not do anything yet.</xd:detail>
   </xd:doc>
-  <xsl:template match="corr">
+  <xsl:template match="tei:corr">
     <xsl:apply-templates/>
   </xsl:template>
 
 
   <xd:doc>
-    <xd:short>Process elements  del</xd:short>
+    <xd:short>Process elements  tei:del</xd:short>
     <xd:detail></xd:detail>
   </xd:doc>
-  <xsl:template match="del">
+  <xsl:template match="tei:del">
     <del>
       <xsl:apply-templates/>
     </del>
@@ -231,10 +231,10 @@
 
 
   <xd:doc>
-    <xd:short>Process elements eg</xd:short>
+    <xd:short>Process elements tei:eg</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="eg">
+  <xsl:template match="tei:eg">
     <div>
       <xsl:if test="$cssFile">
         <xsl:attribute name="class">
@@ -249,10 +249,10 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements emph</xd:short>
+    <xd:short>Process elements tei:emph</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="emph">
+  <xsl:template match="tei:emph">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>
@@ -270,27 +270,27 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements epigraph</xd:short>
+    <xd:short>Process elements tei:epigraph</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="epigraph">
+  <xsl:template match="tei:epigraph">
     <div>
       <xsl:call-template name="rendToClass"/>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements epigraph/lg</xd:short>
+    <xd:short>Process elements tei:epigraph/lg</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="epigraph/lg">
+  <xsl:template match="tei:epigraph/tei:lg">
       <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements foreign</xd:short>
+    <xd:short>Process elements tei:foreign</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="foreign">
+  <xsl:template match="tei:foreign">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>
@@ -309,26 +309,26 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements gap</xd:short>
+    <xd:short>Process elements tei:gap</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="gap">
+  <xsl:template match="tei:gap">
     <span class="gap">
-      <xsl:if test="desc">
+      <xsl:if test="tei:desc">
 	<xsl:attribute name="title">
-	  <xsl:value-of select="desc" />
+	  <xsl:value-of select="tei:desc" />
 	</xsl:attribute>
       </xsl:if>
       <xsl:text> [...]</xsl:text>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements gi</xd:short>
+    <xd:short>Process elements tei:gi</xd:short>
     <xd:detail>
       <p> special purpose </p >
     </xd:detail>
   </xd:doc>
-  <xsl:template match="gi">
+  <xsl:template match="tei:gi">
     <span class="gi">
       <xsl:text>&lt;</xsl:text>
       <xsl:apply-templates/>
@@ -336,10 +336,10 @@
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements gi</xd:short>
+    <xd:short>Process elements tei:gi</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="gi" mode="plain">
+  <xsl:template match="tei:gi" mode="plain">
     <span class="gi">
       <xsl:text>&lt;</xsl:text>
       <xsl:apply-templates/>
@@ -347,35 +347,35 @@
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements att</xd:short>
+    <xd:short>Process elements tei:att</xd:short>
     <xd:detail>
       <p> special purpose </p >
     </xd:detail>
   </xd:doc>
-  <xsl:template match="att">
+  <xsl:template match="tei:att">
     <span class="gi">
       <b>@<xsl:apply-templates/></b>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements  gloss</xd:short>
+    <xd:short>Process elements  tei:gloss</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="gloss">
+  <xsl:template match="tei:gloss">
     <span class="gloss">
       <xsl:apply-templates/>
     </span>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements head</xd:short>
+    <xd:short>Process elements tei:head</xd:short>
     <xd:detail>
       <p> headings etc </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="head">
+  <xsl:template match="tei:head">
     <xsl:variable name="parent" select="local-name(..)"/>
     <xsl:choose>
-      <xsl:when test="parent::body">
+      <xsl:when test="parent::tei:body">
 	<h1>
 	  <xsl:call-template name="rendToClass"/>
 	  <xsl:apply-templates/>
@@ -388,12 +388,12 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process element head in heading mode</xd:short>
+    <xd:short>Process element tei:head in heading mode</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="head" mode="makeheading">
+  <xsl:template match="tei:head" mode="makeheading">
     <xsl:choose>
-    <xsl:when test="preceding-sibling::head">
+    <xsl:when test="preceding-sibling::tei:head">
       <br/>
       <span>
 	<xsl:call-template name="rendToClass">
@@ -409,20 +409,20 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process element head in plain mode</xd:short>
+    <xd:short>Process element tei:head in plain mode</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="head" mode="plain">
-    <xsl:if test="preceding-sibling::head">
+  <xsl:template match="tei:head" mode="plain">
+    <xsl:if test="preceding-sibling::tei:head">
       <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:apply-templates mode="plain"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements hi</xd:short>
+    <xd:short>Process elements tei:hi</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="hi">
+  <xsl:template match="tei:hi">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>
@@ -441,10 +441,10 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements ident</xd:short>
+    <xd:short>Process elements tei:ident</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="ident">
+  <xsl:template match="tei:ident">
     <xsl:choose>
       <xsl:when test="@type">
         <span class="ident-{@type}">
@@ -459,24 +459,24 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements item</xd:short>
+    <xd:short>Process elements tei:item</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="item" mode="bibl">
+  <xsl:template match="tei:item" mode="bibl">
     <p>
       <xsl:call-template name="makeAnchor"/>
       <xsl:apply-templates/>
     </p>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements item</xd:short>
+    <xd:short>Process elements tei:item</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="item" mode="glosstable">
+  <xsl:template match="tei:item" mode="glosstable">
     <tr>
       <td valign="top">
         <strong>
-          <xsl:apply-templates mode="print" select="preceding-sibling::*[1]"
+          <xsl:apply-templates mode="print" select="preceding-sibling::tei:*[1]"
           />
         </strong>
       </td>
@@ -487,24 +487,24 @@
     </tr>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements item</xd:short>
+    <xd:short>Process elements tei:item</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="item" mode="gloss">
+  <xsl:template match="tei:item" mode="gloss">
     <dt>
       <xsl:call-template name="makeAnchor"/>
         <xsl:apply-templates mode="print"
-          select="preceding-sibling::label[1]"/>
+          select="preceding-sibling::tei:label[1]"/>
     </dt>
     <dd>
       <xsl:apply-templates/>
     </dd>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements item</xd:short>
+    <xd:short>Process elements tei:item</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="item">
+  <xsl:template match="tei:item">
     <li>
       <xsl:call-template name="rendToClass"/>
       <xsl:if test="@n">
@@ -532,22 +532,22 @@
     </li>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements item</xd:short>
+    <xd:short>Process elements tei:item</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="item" mode="inline">
-    <xsl:if test="preceding-sibling::item">, </xsl:if>
+  <xsl:template match="tei:item" mode="inline">
+    <xsl:if test="preceding-sibling::tei:item">, </xsl:if>
     <xsl:if
-      test="not(following-sibling::item) and preceding-sibling::item">
+      test="not(following-sibling::tei:item) and preceding-sibling::tei:item">
       and </xsl:if>
     <xsl:text>&#x2022; </xsl:text>
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements item/label</xd:short>
+    <xd:short>Process elements tei:item/label</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="item/label">
+  <xsl:template match="tei:item/tei:label">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>
@@ -566,19 +566,19 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements l</xd:short>
+    <xd:short>Process elements tei:l</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="l" mode="Copying">
+  <xsl:template match="tei:l" mode="Copying">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements l[@copyOf]|lg[@copyOf]</xd:short>
+    <xd:short>Process elements tei:l[@copyOf]|lg[@copyOf]</xd:short>
     <xd:detail>
       <p> copyOf handling </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="l[@copyOf]|lg[@copyOf]">
+  <xsl:template match="tei:l[@copyOf]|lg[@copyOf]">
     <xsl:variable name="W">
       <xsl:choose>
         <xsl:when test="starts-with(@copyof,'#')">
@@ -592,18 +592,18 @@
     <xsl:apply-templates mode="Copying" select="key('IDS',$W)"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements label</xd:short>
+    <xd:short>Process elements tei:label</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="label">
+  <xsl:template match="tei:label">
       <xsl:call-template name="makeAnchor"/>
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements label</xd:short>
+    <xd:short>Process elements tei:label</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="label" mode="print">
+  <xsl:template match="tei:label" mode="print">
     <xsl:call-template name="makeAnchor"/>
     <xsl:choose>
       <xsl:when test="@rend">
@@ -621,10 +621,10 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements lb</xd:short>
+    <xd:short>Process elements tei:lb</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="lb">
+  <xsl:template match="tei:lb">
     <br>
       <xsl:if test="@rend">
 	<xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
@@ -632,30 +632,30 @@
     </br>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements l</xd:short>
+    <xd:short>Process elements tei:l</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="l">
+  <xsl:template match="tei:l">
     <div>
       <xsl:call-template name="rendToClass"/>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements lg</xd:short>
+    <xd:short>Process elements tei:lg</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="lg">
+  <xsl:template match="tei:lg">
     <div>
       <xsl:call-template name="rendToClass"/>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements lg/l</xd:short>
+    <xd:short>Process elements tei:lg/tei:l</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="lg/l">
+  <xsl:template match="tei:lg/tei:l">
     <div>
         <xsl:choose>
 	  <xsl:when test="@rend">
@@ -697,14 +697,14 @@
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements lg</xd:short>
+    <xd:short>Process elements tei:lg</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="lg" mode="Copying">
+  <xsl:template match="tei:lg" mode="Copying">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements list</xd:short>
+    <xd:short>Process elements tei:list</xd:short>
     <xd:detail>
       <p>Lists. Depending on the value of the 'type' attribute, various HTML
         lists are generated: <dl>
@@ -731,10 +731,10 @@
       </p>
     </xd:detail>
   </xd:doc>
-  <xsl:template match="list">
-    <xsl:if test="head">
+  <xsl:template match="tei:list">
+    <xsl:if test="tei:head">
       <p class="listhead">
-	<xsl:apply-templates select="head"/>
+	<xsl:apply-templates select="tei:head"/>
       </p>
     </xsl:if>
     <xsl:choose>
@@ -743,7 +743,7 @@
           <dl>
             <xsl:call-template name="rendToClass">
 	    <xsl:with-param name="default"></xsl:with-param></xsl:call-template>
-            <xsl:for-each select="item">
+            <xsl:for-each select="tei:item">
               <p/>
               <xsl:apply-templates mode="gloss" select="."/>
             </xsl:for-each>
@@ -752,7 +752,7 @@
       </xsl:when>
       <xsl:when test="@type='gloss' and @rend='multicol'">
         <xsl:variable name="nitems">
-          <xsl:value-of select="count(item)div 2"/>
+          <xsl:value-of select="count(tei:item)div 2"/>
         </xsl:variable>
         <p>
           <table>
@@ -762,51 +762,51 @@
               <td valign="top">
                 <dl>
                   <xsl:apply-templates mode="gloss"
-                    select="item[position()&lt;=$nitems ]"/>
+                    select="tei:item[position()&lt;=$nitems ]"/>
                 </dl>
               </td>
               <td valign="top">
                 <dl>
                   <xsl:apply-templates mode="gloss"
-                    select="item[position() &gt;$nitems]"/>
+                    select="tei:item[position() &gt;$nitems]"/>
                 </dl>
               </td>
             </tr>
           </table>
         </p>
       </xsl:when>
-      <xsl:when test="@type='gloss' or  label">
+      <xsl:when test="@type='gloss' or  tei:label">
         <dl>
           <xsl:call-template name="rendToClass">
 	  <xsl:with-param name="default"></xsl:with-param></xsl:call-template>
-          <xsl:apply-templates mode="gloss" select="item"/>
+          <xsl:apply-templates mode="gloss" select="tei:item"/>
         </dl>
       </xsl:when>
       <xsl:when test="@type='glosstable' or @type='valList'">
         <table>
           <xsl:call-template name="rendToClass">
 	  <xsl:with-param name="default"></xsl:with-param></xsl:call-template>
-          <xsl:apply-templates mode="glosstable" select="item"/>
+          <xsl:apply-templates mode="glosstable" select="tei:item"/>
         </table>
       </xsl:when>
       <xsl:when test="@type='inline'">
-	<!--<xsl:if test="not(item)">None</xsl:if>-->
-        <xsl:apply-templates mode="inline" select="item"/>
+	<!--<xsl:if test="not(tei:item)">None</xsl:if>-->
+        <xsl:apply-templates mode="inline" select="tei:item"/>
       </xsl:when>
       <xsl:when test="@type='runin'">
         <p>
-          <xsl:apply-templates mode="runin" select="item"/>
+          <xsl:apply-templates mode="runin" select="tei:item"/>
         </p>
       </xsl:when>
       <xsl:when test="@type='unordered' or @type='simple'">
         <ul>
           <xsl:call-template name="rendToClass">
 	  <xsl:with-param name="default"></xsl:with-param></xsl:call-template>
-          <xsl:apply-templates select="item"/>
+          <xsl:apply-templates select="tei:item"/>
         </ul>
       </xsl:when>
       <xsl:when test="@type='bibl'">
-        <xsl:apply-templates mode="bibl" select="item"/>
+        <xsl:apply-templates mode="bibl" select="tei:item"/>
       </xsl:when>
       <xsl:when test="starts-with(@type,'ordered')">
         <ol>
@@ -817,36 +817,36 @@
               <xsl:value-of select="substring-after(@type,':')"/>
             </xsl:attribute>
           </xsl:if>
-          <xsl:apply-templates select="item"/>
+          <xsl:apply-templates select="tei:item"/>
         </ol>
       </xsl:when>
       <xsl:otherwise>
         <ul>
           <xsl:call-template name="rendToClass">
 	  <xsl:with-param name="default"></xsl:with-param></xsl:call-template>
-          <xsl:apply-templates select="item"/>
+          <xsl:apply-templates select="tei:item"/>
         </ul>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements list/label</xd:short>
+    <xd:short>Process elements tei:list/tei:label</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="list/label"/>
+  <xsl:template match="tei:list/tei:label"/>
 
   <xd:doc>
-    <xd:short>Process elements listBibl</xd:short>
+    <xd:short>Process elements tei:listBibl</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
 
-  <xsl:template match="listBibl">
+  <xsl:template match="tei:listBibl">
     <xsl:choose>
-      <xsl:when test="biblStruct">
+      <xsl:when test="tei:biblStruct">
 	<dl class="listBibl">
-	  <xsl:for-each select="biblStruct">
-	    <xsl:sort select="translate(*/author/surname|*[1]/author/orgName|*[1]/author/name|*[1]/editor/surname|*[1]/editor/name|*[1]/title,$uc,$lc)"/>
-	    <xsl:sort select="monogr/imprint/date"/>
+	  <xsl:for-each select="tei:biblStruct">
+	    <xsl:sort select="translate(tei:*/tei:author/tei:surname|tei:*[1]/tei:author/tei:orgName|tei:*[1]/tei:author/tei:name|tei:*[1]/tei:editor/tei:surname|tei:*[1]/tei:editor/tei:name|tei:*[1]/tei:title,$uc,$lc)"/>
+	    <xsl:sort select="tei:monogr/tei:imprint/tei:date"/>
 	    <dt>
 	      <xsl:call-template name="makeAnchor"/>
 	      <xsl:apply-templates select="." mode="xref"/>
@@ -859,7 +859,7 @@
       </xsl:when>
       <xsl:otherwise>
 	<ol class="listBibl">
-	  <xsl:for-each select="bibl|biblItem">
+	  <xsl:for-each select="tei:bibl|tei:biblItem">
 	    <li>
 	      <xsl:call-template name="makeAnchor">
 		<xsl:with-param name="name">
@@ -875,10 +875,10 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements mentioned</xd:short>
+    <xd:short>Process elements tei:mentioned</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="mentioned">
+  <xsl:template match="tei:mentioned">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>
@@ -897,10 +897,10 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements name in mode "plain"</xd:short>
+    <xd:short>Process elements tei:name in mode "plain"</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="name" mode="plain">
+  <xsl:template match="tei:name" mode="plain">
     <xsl:variable name="ident">
       <xsl:apply-templates mode="ident" select="."/>
     </xsl:variable>
@@ -913,14 +913,14 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements name and persName</xd:short>
+    <xd:short>Process elements tei:name and tei:persName</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="name|persName">
+  <xsl:template match="tei:name|tei:persName">
     <xsl:apply-templates/>
     <xsl:choose>
-      <xsl:when test="not(ancestor::person|ancestor::biblStruct)"/>
-      <xsl:when test="following-sibling::name|following-sibling::persName">
+      <xsl:when test="not(ancestor::tei:person|ancestor::tei:biblStruct)"/>
+      <xsl:when test="following-sibling::tei:name|following-sibling::tei:persName">
 	<xsl:text>, </xsl:text>
       </xsl:when>
       <xsl:otherwise>
@@ -930,16 +930,16 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements note</xd:short>
+    <xd:short>Process elements tei:note</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="note">
+  <xsl:template match="tei:note">
     <xsl:variable name="identifier">
       <xsl:text>Note</xsl:text>
       <xsl:call-template name="noteID"/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="ancestor::bibl"> (<xsl:apply-templates/>)
+      <xsl:when test="ancestor::tei:bibl"> (<xsl:apply-templates/>)
       </xsl:when>
       <xsl:when test="@place='marg'">
 	<span class="margnote">
@@ -1008,11 +1008,11 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements note</xd:short>
+    <xd:short>Process elements tei:note</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="note" mode="printnotes">
-    <xsl:if test="not(ancestor::bibl)">
+  <xsl:template match="tei:note" mode="printnotes">
+    <xsl:if test="not(ancestor::tei:bibl)">
       <xsl:variable name="identifier">
 	<xsl:text>Note</xsl:text>
         <xsl:call-template name="noteID"/>
@@ -1046,21 +1046,21 @@
     </xsl:if>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements note[@type='action']</xd:short>
+    <xd:short>Process elements tei:note[@type='action']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="note[@type='action']">
-    <div class="right"><b>Action <xsl:number count="note[@type='action']"
+  <xsl:template match="tei:note[@type='action']">
+    <div class="right"><b>Action <xsl:number count="tei:note[@type='action']"
           level="any"/></b>: <i>
         <xsl:apply-templates/>
       </i></div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process element pb</xd:short>
+    <xd:short>Process element tei:pb</xd:short>
     <xd:detail>Indication of a page break. For the purposes of HTML, we simply
       make it an anchor if it has an ID.</xd:detail>
   </xd:doc>
-  <xsl:template match="pb">
+  <xsl:template match="tei:pb">
     <xsl:choose>
       <xsl:when test="$pagebreakStyle='active'">
         <div class="pagebreak">
@@ -1086,20 +1086,20 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process element p</xd:short>
+    <xd:short>Process element tei:p</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="p">
+  <xsl:template match="tei:p">
     <xsl:variable name="wrapperElement">
       <xsl:choose>
         <xsl:when
-          test="specList|quote|moduleSpec|list|eg|teix:egXML|table|specGrp|specGrpRef|q[@rend='display']|figure">
+          test="tei:specList|tei:quote|tei:moduleSpec|tei:list|tei:eg|teix:egXML|tei:table|tei:specGrp|tei:specGrpRef|tei:q[@rend='display']|tei:figure">
           <xsl:text>div</xsl:text>
         </xsl:when>
-        <xsl:when test="parent::p">
+        <xsl:when test="parent::tei:p">
           <xsl:text>div</xsl:text>
         </xsl:when>
-        <xsl:when test="parent::remarks">
+        <xsl:when test="parent::tei:remarks">
           <xsl:text>div</xsl:text>
         </xsl:when>
         <xsl:otherwise>
@@ -1138,21 +1138,21 @@
     </xsl:element>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements p[@rend='box']</xd:short>
+    <xd:short>Process elements tei:p[@rend='box']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="p[@rend='box']">
+  <xsl:template match="tei:p[@rend='box']">
     <p class="box">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements q and said</xd:short>
+    <xd:short>Process elements tei:q and tei:said</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="q|said">
+  <xsl:template match="tei:q|tei:said">
     <xsl:choose>
-      <xsl:when test="p|l">
+      <xsl:when test="tei:p|tei:l">
         <blockquote>
 	  <xsl:call-template name="rendToClass"/>
           <xsl:apply-templates/>
@@ -1163,10 +1163,10 @@
           <xsl:apply-templates/>
         </p>
       </xsl:when>
-      <xsl:when test="text">
+      <xsl:when test="tei:text">
         <xsl:apply-templates/>
       </xsl:when>
-      <xsl:when test="lg">
+      <xsl:when test="tei:lg">
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise>
@@ -1175,14 +1175,14 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements q[@rend='display']</xd:short>
+    <xd:short>Process elements tei:q[@rend='display']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="q[@rend='display']">
+  <xsl:template match="tei:q[@rend='display']">
     <blockquote>
       <xsl:call-template name="rendToClass"/>
       <xsl:choose>
-        <xsl:when test="p">
+        <xsl:when test="tei:p">
           <xsl:apply-templates/>
         </xsl:when>
         <xsl:otherwise>
@@ -1194,10 +1194,10 @@
     </blockquote>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements q[@rend='eg']</xd:short>
+    <xd:short>Process elements tei:q[@rend='eg']</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="q[@rend='eg']">
+  <xsl:template match="tei:q[@rend='eg']">
     <div>
       <xsl:if test="$cssFile">
         <xsl:attribute name="class">eg</xsl:attribute>
@@ -1206,12 +1206,12 @@
     </div>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements quote</xd:short>
+    <xd:short>Process elements tei:quote</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="quote">
+  <xsl:template match="tei:quote">
     <xsl:choose>
-      <xsl:when test="parent::cit">
+      <xsl:when test="parent::tei:cit">
         <div class="citquote">
           <xsl:apply-templates/>
         </div>
@@ -1220,15 +1220,15 @@
         <xsl:value-of select="$preQuote"/>
         <xsl:apply-templates/>
         <xsl:value-of select="$postQuote"/>
-        <xsl:if test="following-sibling::bibl">
+        <xsl:if test="following-sibling::tei:bibl">
           <span class="quotedbibl">
             <xsl:text>(</xsl:text>
-            <xsl:apply-templates select="following-sibling::bibl"/>
+            <xsl:apply-templates select="following-sibling::tei:bibl"/>
             <xsl:text>)</xsl:text>
           </span>
         </xsl:if>
       </xsl:when>
-      <xsl:when test="parent::p or parent::note">
+      <xsl:when test="parent::tei:p or parent::tei:note">
 	<div class="blockquote">
 	  <xsl:apply-templates/>
 	</div>
@@ -1237,10 +1237,10 @@
         <blockquote>
 	  <xsl:call-template name="rendToClass"/>
           <xsl:choose>
-            <xsl:when test="p">
+            <xsl:when test="tei:p">
               <xsl:apply-templates/>
             </xsl:when>
-            <xsl:when test="l">
+            <xsl:when test="tei:l">
               <xsl:apply-templates/>
             </xsl:when>
             <xsl:otherwise>
@@ -1255,35 +1255,35 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements resp</xd:short>
+    <xd:short>Process elements tei:resp</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="resp">
+  <xsl:template match="tei:resp">
     <xsl:apply-templates/>
     <xsl:text> </xsl:text>
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements respStmt</xd:short>
+    <xd:short>Process elements tei:respStmt</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="respStmt">
+  <xsl:template match="tei:respStmt">
     <xsl:apply-templates/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements salute</xd:short>
+    <xd:short>Process elements tei:salute</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="salute">
+  <xsl:template match="tei:salute">
     <p class="left">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements seg</xd:short>
+    <xd:short>Process elements tei:seg</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="seg">
+  <xsl:template match="tei:seg">
     <span>
 	<xsl:choose>
 	  <xsl:when test="@type">
@@ -1302,28 +1302,28 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements  sic</xd:short>
+    <xd:short>Process elements  tei:sic</xd:short>
     <xd:detail>Does not do anything yet.</xd:detail>
   </xd:doc>
-  <xsl:template match="sic">
+  <xsl:template match="tei:sic">
     <xsl:apply-templates/>
     <xsl:text> (sic)</xsl:text>
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements signed</xd:short>
+    <xd:short>Process elements tei:signed</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="signed">
+  <xsl:template match="tei:signed">
     <p class="left">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements space</xd:short>
+    <xd:short>Process elements tei:space</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="space">
+  <xsl:template match="tei:space">
     <xsl:choose>
       <xsl:when test="@quantity|@extent">
         <xsl:call-template name="space_loop">
@@ -1337,10 +1337,10 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements term</xd:short>
+    <xd:short>Process elements tei:term</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="term">
+  <xsl:template match="tei:term">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>
@@ -1359,34 +1359,34 @@
     </xsl:choose>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements title</xd:short>
+    <xd:short>Process elements tei:title</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="title" mode="withbr">
+  <xsl:template match="tei:title" mode="withbr">
     <xsl:value-of select="."/>
     <br/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements witList</xd:short>
+    <xd:short>Process elements tei:witList</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="witList">
+  <xsl:template match="tei:witList">
     <xsl:apply-templates select="./witness"/>
   </xsl:template>
   <xd:doc>
-    <xd:short>Process elements witness</xd:short>
+    <xd:short>Process elements tei:witness</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="witness">
+  <xsl:template match="tei:witness">
     <p>
       <a name="{@sigil}"/>
       <b>Sigle: <xsl:value-of select="@sigil"/></b>
       <br/>
       <xsl:value-of select="text()"/>
       <br/>
-      <xsl:apply-templates select="biblStruct"/>
-      <xsl:if test="child::note"><br/>Zie noot: <xsl:apply-templates
-          select="child::note"/></xsl:if>
+      <xsl:apply-templates select="tei:biblStruct"/>
+      <xsl:if test="child::tei:note"><br/>Zie noot: <xsl:apply-templates
+          select="child::tei:note"/></xsl:if>
     </p>
   </xsl:template>
 
@@ -1494,10 +1494,10 @@
   </xd:doc>
   <xsl:template name="continuedToc">
     <xsl:if
-      test="div|div0|div1|div2|div3|div4|div5|div6">
+      test="tei:div|tei:div0|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
       <ul class="toc">
         <xsl:apply-templates mode="maketoc"
-          select="div|div0|div1|div2|div3|div4|div5|div6"
+          select="tei:div|tei:div0|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6"
         />
       </ul>
     </xsl:if>
@@ -1515,7 +1515,7 @@
         <xsl:value-of select="@n"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:number count="note" level="any"/>
+	<xsl:number count="tei:note" level="any"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -1531,25 +1531,25 @@
       </xsl:when>
       <xsl:when test="not(@place) and $consecutiveFNs='true'">
             <xsl:number 
-		count="note[not(@place)]" 
+		count="tei:note[not(@place)]" 
 		level="any"/>
       </xsl:when>
       <xsl:when test="not(@place)">
         <xsl:choose>
-          <xsl:when test="ancestor::front">
-            <xsl:number count="note[not(@place)]" 
-			from="front"
+          <xsl:when test="ancestor::tei:front">
+            <xsl:number count="tei:note[not(@place)]" 
+			from="tei:front"
 			level="any"/>
           </xsl:when>
-          <xsl:when test="ancestor::back">
-            <xsl:number count="note[not(@place)]" 
-			from="back"
+          <xsl:when test="ancestor::tei:back">
+            <xsl:number count="tei:note[not(@place)]" 
+			from="tei:back"
 			level="any"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:number 
-		count="note[not(@place)]" 
-		from="body"
+		count="tei:note[not(@place)]" 
+		from="tei:body"
 		level="any"/>
           </xsl:otherwise>
         </xsl:choose>
@@ -1558,21 +1558,21 @@
         <xsl:choose>
           <xsl:when test="$consecutiveFNs = 'true'">
             <xsl:number 
-		count="note[./@place='end']" 
+		count="tei:note[./@place='end']" 
 		level="any"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
-              <xsl:when test="ancestor::front">
-                <xsl:number count="note[./@place='end']" from="front"
+              <xsl:when test="ancestor::tei:front">
+                <xsl:number count="tei:note[./@place='end']" from="tei:front"
                   level="any"/>
               </xsl:when>
-              <xsl:when test="ancestor::back">
-                <xsl:number count="note[./@place='end']" from="back"
+              <xsl:when test="ancestor::tei:back">
+                <xsl:number count="tei:note[./@place='end']" from="tei:back"
                   level="any"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:number count="note[./@place='end']" from="body"
+                <xsl:number count="tei:note[./@place='end']" from="tei:body"
                   level="any"/>
               </xsl:otherwise>
             </xsl:choose>
@@ -1583,21 +1583,21 @@
         <xsl:choose>
           <xsl:when test="$consecutiveFNs = 'true'">
             <xsl:number 
-		count="note[@place='foot' or @place='bottom']" 
+		count="tei:note[@place='foot' or @place='bottom']" 
 		level="any"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
-              <xsl:when test="ancestor::front">
-                <xsl:number count="note[@place='foot' or @place='bottom']" from="front"
+              <xsl:when test="ancestor::tei:front">
+                <xsl:number count="tei:note[@place='foot' or @place='bottom']" from="tei:front"
                   level="any"/>
               </xsl:when>
-              <xsl:when test="ancestor::back">
-                <xsl:number count="note[@place='foot' or @place='bottom']" from="back"
+              <xsl:when test="ancestor::tei:back">
+                <xsl:number count="tei:note[@place='foot' or @place='bottom']" from="tei:back"
                   level="any"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:number count="note[@place='foot' or @place='bottom']" from="body"
+                <xsl:number count="tei:note[@place='foot' or @place='bottom']" from="tei:body"
                   level="any"/>
               </xsl:otherwise>
             </xsl:choose>
@@ -1619,7 +1619,7 @@
         <xsl:call-template name="printNotes"/>
       </xsl:when>
       <xsl:when test="$currentID=''">
-        <xsl:for-each select=" descendant::text">
+        <xsl:for-each select=" descendant::tei:text">
           <xsl:call-template name="printNotes"/>
         </xsl:for-each>
       </xsl:when>
@@ -1632,7 +1632,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:apply-templates mode="xpath"
-              select="ancestor-or-self::TEI/descendant::text">
+              select="ancestor-or-self::tei:TEI/descendant::tei:text">
               <xsl:with-param name="xpath" select="$currentID"/>
               <xsl:with-param name="action">notes</xsl:with-param>
             </xsl:apply-templates>
@@ -1649,7 +1649,7 @@
   <xsl:template name="printNotes">
       <xsl:choose>
 	<xsl:when test="$footnoteFile='true' and
-			ancestor-or-self::TEI/text/descendant::note[@place='foot'
+			ancestor-or-self::tei:TEI/tei:text/descendant::tei:note[@place='foot'
 			or @place='bottom'
 			or @place='end']">
 	  <xsl:variable name="BaseFile">
@@ -1665,14 +1665,14 @@
             </xsl:with-param>
           </xsl:call-template>
         </xsl:when>
-	<xsl:when test="self::div">
+	<xsl:when test="self::tei:div">
 	  <xsl:variable name="depth">
 	    <xsl:apply-templates mode="depth" select="."/>
 	  </xsl:variable>
 	  <xsl:choose>
 	    <xsl:when test="$depth &lt; $splitLevel ">
 	  <xsl:if
-	      test="child::*[not(self::div)]/descendant::note[@place='foot'
+	      test="child::*[not(self::tei:div)]/descendant::tei:note[@place='foot'
 		    or @place='bottom' or @place='end']">
 	    <div class="notes">
 	      <div class="noteHeading">
@@ -1682,13 +1682,13 @@
 	      </div>
 	      <xsl:apply-templates 
 		  mode="printnotes"
-		  select="child::*[not(self::div)]/descendant::note[@place='foot'
+		  select="child::*[not(self::tei:div)]/descendant::tei:note[@place='foot'
 			  or @place='bottom' or @place='end']"/>
 	    </div>
 	  </xsl:if>
 	    </xsl:when>
 	    <xsl:otherwise>
-	  <xsl:if test="descendant::note[@place='foot' or @place='bottom' or @place='end']">
+	  <xsl:if test="descendant::tei:note[@place='foot' or @place='bottom' or @place='end']">
 	    <div class="notes">
 	      <div class="noteHeading">
 		<xsl:call-template name="i18n">
@@ -1697,7 +1697,7 @@
 	      </div>
 	      <xsl:apply-templates 
 		  mode="printnotes"
-		  select="descendant::note[@place='foot' or @place='bottom' or @place='end']"/>
+		  select="descendant::tei:note[@place='foot' or @place='bottom' or @place='end']"/>
 	    </div>
 	  </xsl:if>
 	    </xsl:otherwise>
@@ -1705,7 +1705,7 @@
 	</xsl:when>
 	
 	<xsl:otherwise>
-	  <xsl:if test="descendant::note[@place='foot' or @place='bottom' or @place='end']">
+	  <xsl:if test="descendant::tei:note[@place='foot' or @place='bottom' or @place='end']">
 	    <div class="notes">
 	      <div class="noteHeading">
 		<xsl:call-template name="i18n">
@@ -1714,13 +1714,13 @@
 	      </div>
 	      <xsl:apply-templates 
 		  mode="printnotes"
-		  select="descendant::note[@place='foot' or @place='bottom'  or @place='end']"/>
+		  select="descendant::tei:note[@place='foot' or @place='bottom'  or @place='end']"/>
 	    </div>
 	  </xsl:if>
 	</xsl:otherwise>
       </xsl:choose>
       <xsl:if
-	  test="ancestor-or-self::TEI/text/descendant::app">
+	  test="ancestor-or-self::tei:TEI/tei:text/descendant::tei:app">
 	
 	<div class="notes">
 	  <div class="noteHeading">
@@ -1729,7 +1729,7 @@
 	    </xsl:call-template>
 	  </div>
 	  <xsl:apply-templates mode="printnotes"
-			       select="descendant::app"/>
+			       select="descendant::tei:app"/>
 	</div>
       </xsl:if>
       
@@ -1968,7 +1968,6 @@
     <xd:detail> </xd:detail>
   </xd:doc>
   <xsl:template name="space_loop">
-    <!--
     <xsl:param name="extent"/>
     <xsl:choose>
       <xsl:when test="$extent &lt; 1"> </xsl:when>
@@ -1982,7 +1981,6 @@
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
-    -->
   </xsl:template>
   <xd:doc>
     <xd:short>[html] Process unknown rend attribute by turning it into
@@ -2034,7 +2032,7 @@
       <head>
         <title>
           <xsl:apply-templates
-            select="descendant-or-self::text/front//docTitle//text()"/>
+            select="descendant-or-self::tei:text/tei:front//tei:docTitle//text()"/>
           <xsl:text>: </xsl:text>
           <xsl:call-template name="i18n">
             <xsl:with-param name="word">noteHeading</xsl:with-param>
@@ -2053,7 +2051,7 @@
         <xsl:call-template name="stdheader">
           <xsl:with-param name="title">
             <xsl:apply-templates
-              select="descendant-or-self::text/front//docTitle//text()"/>
+              select="descendant-or-self::tei:text/tei:front//tei:docTitle//text()"/>
             <xsl:text>: </xsl:text>
             <xsl:call-template name="i18n">
               <xsl:with-param name="word">noteHeading</xsl:with-param>
@@ -2068,7 +2066,7 @@
             </xsl:call-template>
           </div>
           <xsl:apply-templates mode="printnotes"
-            select="descendant::note[@place]"/>
+            select="descendant::tei:note[@place]"/>
         </div>
         <xsl:call-template name="stdfooter"/>
         <xsl:call-template name="bodyEndHook"/>
@@ -2138,10 +2136,10 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:short>Process elements soCalled</xd:short>
+    <xd:short>Process elements tei:soCalled</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="soCalled">
+  <xsl:template match="tei:soCalled">
     <xsl:choose>
       <xsl:when test="@rend">
         <xsl:call-template name="rendering"/>

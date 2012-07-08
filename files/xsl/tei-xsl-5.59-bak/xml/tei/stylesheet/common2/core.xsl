@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet xmlns:="http://www.-c.org/ns/1.0"
+                
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                exclude-result-prefixes=""
+                version="1.0">
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
+      <desc>
+         <p>  stylesheet dealing with elements from the core module. </p>
+         <p> This library is free software; you can redistribute it and/or
+      modify it under the terms of the GNU Lesser General Public License as
+      published by the Free Software Foundation; either version 2.1 of the
+      License, or (at your option) any later version. This library is
+      distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+      without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+      PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+      details. You should have received a copy of the GNU Lesser General Public
+      License along with this library; if not, write to the Free Software
+      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA </p>
+         <p>Author: See AUTHORS</p>
+         <p>Id: $Id: core.xsl 9513 2011-10-17 08:55:51Z rahtz $</p>
+         <p>Copyright: 2011,  Consortium</p>
+      </desc>
+   </doc>
+  <xsl:output indent="no"/>
+    <xsl:strip-space elements="author forename surname editor"/>
+
+  <xsl:key name="MNAMES"
+            match="monogr/author[surname]|monogr/editor[surname]"
+            use="ancestor::biblStruct/@xml:id"/>
+  <xsl:key name="ANAMES"
+            match="analytic/author[surname]|analytic/editor[surname]"
+            use="ancestor::biblStruct/@xml:id"/>
+  
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process all elements to find out their nesting depth</desc>
+   </doc>
+  <xsl:template match="*" mode="depth">99</xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process all elements in plain mode</desc>
+   </doc>
+  <xsl:template match="*" mode="plain">
+      <xsl:apply-templates mode="plain"/>
+  </xsl:template>
+  <xsl:template match="note" mode="plain"/>
+  <xsl:template match="app" mode="plain"/>
+  <xsl:template match="pb" mode="plain"/>
+  <xsl:template match="lb" mode="plain"/>
+  <xsl:template match="figure" mode="plain"/>
+  <xsl:template match="figDesc" mode="plain"/>
+  <xsl:template match="ptr" mode="plain"/>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process sic</desc>
+   </doc>
+  <xsl:template match="sic">
+      <xsl:apply-templates/>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process corr</desc>
+   </doc>
+  <xsl:template match="corr"/>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process item in runin mode</desc>
+   </doc>
+  <xsl:template match="item" mode="runin">
+      <xsl:text> • </xsl:text>
+      <xsl:apply-templates/>
+      <xsl:text>&#160;</xsl:text>
+  </xsl:template>
+
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element edition</desc>
+   </doc>
+  <xsl:template match="edition">
+      <xsl:apply-templates/>
+      <xsl:if test="ancestor::biblStruct or ancestor::biblFull">
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters">. </xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+  </xsl:template>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element imprint</desc>
+   </doc>
+  <xsl:template match="imprint">
+      <xsl:choose>
+         <xsl:when test="ancestor::biblStruct or ancestor::biblFull">
+	           <xsl:apply-templates select="date"/>
+	           <xsl:apply-templates select="pubPlace"/>
+	           <xsl:apply-templates select="publisher"/>
+	           <xsl:apply-templates select="biblScope"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:apply-templates/>
+         </xsl:otherwise>
+      </xsl:choose>
+
+  </xsl:template>
+
+
+   <!-- biblStruct -->
+<xsl:template match="biblStruct" mode="xref">
+      <xsl:choose>
+         <xsl:when test="count(key('ANAMES',@xml:id))=1">
+	           <xsl:value-of select="key('ANAMES',@xml:id)/surname"/>
+         </xsl:when>
+         <xsl:when test="count(key('ANAMES',@xml:id))=2">
+	           <xsl:value-of select="key('ANAMES',@xml:id)[1]/surname"/>
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> and </xsl:with-param>
+		   </xsl:call-template>
+	           <xsl:value-of select="key('ANAMES',@xml:id)[2]/surname"/>
+         </xsl:when>
+         <xsl:when test="count(key('ANAMES',@xml:id))&gt;2">
+	           <xsl:value-of select="key('ANAMES',@xml:id)[1]/surname"/>
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> et al.</xsl:with-param>
+		   </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="count(key('MNAMES',@xml:id))=1">
+	           <xsl:value-of select="key('MNAMES',@xml:id)/surname"/>
+         </xsl:when>
+         <xsl:when test="count(key('MNAMES',@xml:id))=2">
+	           <xsl:value-of select="key('MNAMES',@xml:id)[1]/surname"/>
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> and </xsl:with-param>
+		   </xsl:call-template>
+	           <xsl:value-of select="key('MNAMES',@xml:id)[2]/surname"/>
+         </xsl:when>
+         <xsl:when test="count(key('MNAMES',@xml:id))&gt;2">
+	           <xsl:value-of select="key('MNAMES',@xml:id)[1]/surname"/>
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> et al.</xsl:with-param>
+		   </xsl:call-template>
+         </xsl:when>
+         <xsl:when test=".//author[surname]">
+	           <xsl:value-of select=".//author/surname[1]"/>
+         </xsl:when>
+         <xsl:when test=".//author[orgName]">
+	           <xsl:value-of select=".//author/orgName[1]"/>
+         </xsl:when>
+         <xsl:when test=".//author">
+	           <xsl:value-of select=".//author[1]"/>
+         </xsl:when>
+         <xsl:when test=".//editor[surname]">
+	           <xsl:value-of select=".//editor/surname[1]"/>
+         </xsl:when>
+         <xsl:when test=".//editor">
+	           <xsl:value-of select=".//editor[1]"/>
+         </xsl:when>
+         <xsl:otherwise>
+	           <xsl:value-of select=".//title[1]"/>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+         <xsl:when test="count(*[1]/editor)=1">
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> (ed.)</xsl:with-param>
+		   </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="count(*[1]/editor)&gt;1">
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> (eds.)</xsl:with-param>
+		   </xsl:call-template>
+         </xsl:when>
+      </xsl:choose>
+      <xsl:choose>
+         <xsl:when test="monogr/imprint/date/@when">
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> (</xsl:with-param>
+		   </xsl:call-template>
+	           <xsl:value-of select="substring-before(monogr/imprint/date/@when,'-')"/>
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters">)</xsl:with-param>
+		   </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="monogr/imprint/date">
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters"> (</xsl:with-param>
+		   </xsl:call-template>
+	           <xsl:value-of select="monogr/imprint/date"/>
+	           <xsl:call-template name="makeText">
+		     <xsl:with-param name="letters">)</xsl:with-param>
+		   </xsl:call-template>
+         </xsl:when>
+      </xsl:choose>
+   </xsl:template>
+
+   <!-- authors and editors -->
+<xsl:template match="editor|author">
+  <xsl:choose>
+    <xsl:when test="ancestor::bibl">
+      <xsl:apply-templates/>
+    </xsl:when>
+    <xsl:when test="self::author and not(following-sibling::author)">
+      <xsl:apply-templates/>
+      <xsl:call-template name="makeText">
+	<xsl:with-param name="letters">. </xsl:with-param>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="self::editor and not(following-sibling::editor)">
+      <xsl:apply-templates/>
+      <xsl:call-template name="makeText">
+	<xsl:with-param name="letters"> (ed</xsl:with-param>
+      </xsl:call-template>
+      <xsl:if test="preceding-sibling::editor">s</xsl:if>
+      <xsl:call-template name="makeText">
+	<xsl:with-param name="letters">.) </xsl:with-param>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:apply-templates/>
+      <xsl:call-template name="makeText">
+	<xsl:with-param name="letters">, </xsl:with-param>
+      </xsl:call-template>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+   <xsl:template match="surname">
+      <xsl:if test="../forename">
+         <xsl:apply-templates select="../forename" mode="use"/>
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+      <xsl:if test="../nameLink">
+         <xsl:apply-templates select="../nameLink" mode="use"/>
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+      <xsl:apply-templates/>
+   </xsl:template>
+
+   <xsl:template match="forename">
+   </xsl:template>
+
+   <xsl:template match="nameLink">
+</xsl:template>
+
+   <xsl:template match="forename" mode="use">
+      <xsl:if test="preceding-sibling::forename">
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+      <xsl:apply-templates/>
+   </xsl:template>
+
+   <xsl:template match="nameLink" mode="use">
+      <xsl:apply-templates/>
+   </xsl:template>
+
+   <!-- title  -->
+   <xsl:template match="titlePart" mode="simple">
+      <xsl:if test="preceding-sibling::titlePart">
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters"> — </xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+      <xsl:value-of select="."/>
+   </xsl:template>
+
+   <xsl:template match="title" mode="simple">
+      <xsl:value-of select="."/>
+   </xsl:template>
+
+   <xsl:template match="titlePart">
+      <xsl:if test="preceding-sibling::titlePart">
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters"> — </xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+      <xsl:apply-templates/>
+   </xsl:template>
+
+   <xsl:template match="title">
+      <xsl:choose>
+         <xsl:when test="parent::titleStmt/parent::fileDesc">
+            <xsl:if test="preceding-sibling::title">
+	      <xsl:call-template name="makeText">
+		<xsl:with-param name="letters"> — </xsl:with-param>
+	      </xsl:call-template>
+            </xsl:if>
+            <xsl:apply-templates/>
+         </xsl:when>
+         <xsl:when test="@level='m' or not(@level)">
+	   <xsl:call-template name="emphasize">
+	     <xsl:with-param name="class">
+	       <xsl:text>titlem</xsl:text>
+	     </xsl:with-param>
+	     <xsl:with-param name="content">
+	       <xsl:apply-templates/>
+	     </xsl:with-param>
+	   </xsl:call-template>
+	   <xsl:if test="ancestor::biblStruct or ancestor::biblFull">
+	     <xsl:call-template name="makeText">
+	       <xsl:with-param name="letters">, </xsl:with-param>
+	     </xsl:call-template>
+	   </xsl:if>
+         </xsl:when>
+         <xsl:when test="@level='s'">
+	   <xsl:call-template name="emphasize">
+	     <xsl:with-param name="class">
+	       <xsl:text>titles</xsl:text>
+	     </xsl:with-param>
+	     <xsl:with-param name="content">
+	       <xsl:apply-templates/>
+	     </xsl:with-param>
+	   </xsl:call-template>
+	   <xsl:if test="following-sibling::* and
+			 (ancestor::biblStruct  or ancestor::biblFull)">
+	     <xsl:call-template name="makeText">
+	       <xsl:with-param name="letters">
+	       </xsl:with-param>
+	     </xsl:call-template>
+	   </xsl:if>
+         </xsl:when>
+         <xsl:when test="@level='j'">
+	   <xsl:call-template name="emphasize">
+	     <xsl:with-param name="class">
+	       <xsl:text>titlej</xsl:text>
+	     </xsl:with-param>
+	     <xsl:with-param name="content">
+	       <xsl:apply-templates/>
+	     </xsl:with-param>
+	   </xsl:call-template>
+	   <xsl:call-template name="makeText">
+	     <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	   </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="@level='a'">
+	   <xsl:call-template name="emphasize">
+	     <xsl:with-param name="class">
+	       <xsl:text>titlea</xsl:text>
+	     </xsl:with-param>
+	     <xsl:with-param name="content">
+	       <xsl:apply-templates/>
+	     </xsl:with-param>
+	   </xsl:call-template>
+	   <xsl:if test="ancestor::biblStruct or ancestor::biblFull">
+	     <xsl:call-template name="makeText">
+	       <xsl:with-param
+		   name="letters">. </xsl:with-param>
+	     </xsl:call-template>
+	   </xsl:if>
+         </xsl:when>
+         <xsl:when test="@level='u'">
+	   <xsl:call-template name="emphasize">
+	     <xsl:with-param name="class">
+	       <xsl:text>titleu</xsl:text>
+	     </xsl:with-param>
+	     <xsl:with-param name="content">
+	       <xsl:apply-templates/>
+	     </xsl:with-param>
+	   </xsl:call-template>
+	   <xsl:if test="ancestor::biblStruct  or ancestor::biblFull">
+	     <xsl:call-template name="makeText">
+	       <xsl:with-param
+		   name="letters">. </xsl:with-param>
+	     </xsl:call-template>
+	   </xsl:if>
+         </xsl:when>
+         <xsl:when test="ancestor::bibl">
+	   <xsl:apply-templates/>
+         </xsl:when>
+         <xsl:otherwise>
+	   <xsl:call-template name="emphasize">
+	     <xsl:with-param name="class">
+	       <xsl:text>titlem</xsl:text>
+	     </xsl:with-param>
+	     <xsl:with-param name="content">
+	       <xsl:apply-templates/>
+	     </xsl:with-param>
+	   </xsl:call-template>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   
+
+   <xsl:template match="meeting">
+      <xsl:call-template name="makeText">
+	<xsl:with-param name="letters"> (</xsl:with-param>
+      </xsl:call-template>
+      <xsl:apply-templates/>
+      <xsl:call-template name="makeText">
+	<xsl:with-param name="letters">)</xsl:with-param>
+      </xsl:call-template>
+      <xsl:if test="following-sibling::* and (ancestor::biblStruct  or ancestor::biblFull)">
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+   </xsl:template>
+
+   <xsl:template match="series">
+      <xsl:apply-templates/>
+   </xsl:template>
+
+   <xsl:template match="biblStruct//date|biblFull//date">
+     <!--
+	 <xsl:choose>
+	 <xsl:when test="starts-with(.,'$Date:')">
+	 <xsl:value-of select="substring-before(substring-after(.,'$Date:'),'$')"/>
+	 </xsl:when>
+	 <xsl:otherwise>
+	 <xsl:apply-templates/>
+	 </xsl:otherwise>
+	 </xsl:choose>
+     -->
+      <xsl:apply-templates/>
+     <xsl:call-template name="makeText">
+       <xsl:with-param name="letters">. </xsl:with-param>
+     </xsl:call-template>
+   </xsl:template>
+
+   <xsl:template match="byline">
+     <xsl:call-template name="makeSpan"/>
+   </xsl:template>
+
+   <xsl:template match="pubPlace">
+     <xsl:call-template name="makeSpan"/>
+     <xsl:choose>
+         <xsl:when test="ancestor::bibl"/>
+         <xsl:when test="following-sibling::pubPlace">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters">, </xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="../publisher">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters">: </xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters">. </xsl:with-param>
+	    </xsl:call-template>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+
+   <xsl:template match="publisher">
+     <xsl:call-template name="makeSpan"/>
+      <xsl:if test="ancestor::biblStruct or ancestor::biblFull">
+         <xsl:call-template name="makeText">
+	   <xsl:with-param name="letters">. </xsl:with-param>
+	 </xsl:call-template>
+      </xsl:if>
+   </xsl:template>
+
+   <!-- details and notes -->
+   <xsl:template match="biblScope">
+      <xsl:choose>
+         <xsl:when test="ancestor::bibl">
+            <xsl:apply-templates/>
+         </xsl:when>
+         <xsl:when test="@type='vol' or @type='volume'">
+            <xsl:call-template name="emphasize">
+               <xsl:with-param name="class">
+	                 <xsl:text>vol</xsl:text>
+               </xsl:with-param>
+               <xsl:with-param name="content">
+	                 <xsl:apply-templates/>
+               </xsl:with-param>
+            </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="@type='chap'">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters">chapter </xsl:with-param>
+	    </xsl:call-template>
+            <xsl:apply-templates/>
+         </xsl:when>
+         <xsl:when test="@type='issue' or @type='nr'">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters"> (</xsl:with-param>
+	    </xsl:call-template>
+            <xsl:apply-templates/>
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters">) </xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="@type='page_from'">
+	   <xsl:text>pp. </xsl:text>
+	   <xsl:apply-templates/>
+	 </xsl:when>
+         <xsl:when test="@type='page_to'">
+	   <xsl:text>-</xsl:text>
+	   <xsl:apply-templates/>
+	 </xsl:when>
+         <xsl:when test="@type='pp' or @type='pages'">
+            <xsl:choose>
+               <xsl:when test="contains(.,'-')">
+	                 <xsl:call-template name="makeText">
+			   <xsl:with-param
+			       name="letters">pp. </xsl:with-param>
+			 </xsl:call-template>
+               </xsl:when>
+               <xsl:when test="contains(.,'ff')">
+	                 <xsl:call-template name="makeText">
+			   <xsl:with-param
+			       name="letters">pp. </xsl:with-param>
+			 </xsl:call-template>
+               </xsl:when>
+               <xsl:when test="contains(.,' ')">
+	                 <xsl:call-template name="makeText">
+			   <xsl:with-param
+			       name="letters">pp. </xsl:with-param>
+			 </xsl:call-template>
+               </xsl:when>
+               <xsl:otherwise>
+	                 <xsl:call-template name="makeText">
+			   <xsl:with-param
+			       name="letters">p. </xsl:with-param>
+			 </xsl:call-template>
+               </xsl:otherwise>
+            </xsl:choose>
+            <xsl:apply-templates/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:apply-templates/>
+         </xsl:otherwise>
+      </xsl:choose>
+ 
+      <xsl:choose>
+         <xsl:when test="@type='vol' and      following-sibling::biblScope[@type='issue']">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="@type='vol' and following-sibling::biblScope">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="following-sibling::biblScope">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters"><xsl:text> </xsl:text></xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+         <xsl:when test="ancestor::biblStruct or ancestor::biblFull">
+            <xsl:call-template name="makeText">
+	      <xsl:with-param name="letters">. </xsl:with-param>
+	    </xsl:call-template>
+         </xsl:when>
+      </xsl:choose>
+
+   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element name and persName</desc>
+   </doc>
+  <xsl:template match="name|persName">
+      <xsl:apply-templates/>
+      <xsl:choose>
+         <xsl:when test="not(ancestor::person|ancestor::biblStruct)"/>
+         <xsl:when test="following-sibling::name|following-sibling::persName">
+	   <xsl:call-template name="makeText">
+	     <xsl:with-param name="letters">, </xsl:with-param>
+	   </xsl:call-template>
+         </xsl:when>
+      </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="bibl/note|biblStruct/note">
+    <xsl:call-template name="makeText">
+      <xsl:with-param name="letters"> (</xsl:with-param>
+    </xsl:call-template>
+      <xsl:apply-templates/>
+    <xsl:call-template name="makeText">
+      <xsl:with-param name="letters">)</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
+</xsl:stylesheet>

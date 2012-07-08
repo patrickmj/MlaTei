@@ -2,10 +2,16 @@
 
 class MlaTeiPlugin extends Omeka_Plugin_Abstract {
     
-    protected $_hooks = array('install');
+    protected $_hooks = array('install', 'public_theme_header');
     
     
-    
+    public function hookPublicThemeHeader()
+    {
+        queue_css('mlatei');
+        queue_js('mlatei');
+        
+        
+    }
     public function hookInstall()
     {
         $db = get_db();

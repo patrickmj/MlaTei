@@ -38,10 +38,10 @@
   <xsl:key name="RENDITION" match="@rendition[not(starts-with(.,'#'))]" use="."/>
 
   <xd:doc>
-    <xd:short>Process elements teiHeader</xd:short>
+    <xd:short>Process elements tei:teiHeader</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="teiHeader"/>
+  <xsl:template match="tei:teiHeader"/>
 
   <xd:doc>
     <xd:short>make a local style section from rendition elements in the header</xd:short>
@@ -50,10 +50,10 @@
   
   <xsl:template name="generateLocalCSS">
     <xsl:if
-	test="ancestor-or-self::TEI/teiHeader/encodingDesc/tagsDecl/rendition">
+	test="ancestor-or-self::tei:TEI/tei:teiHeader/tei:encodingDesc/tei:tagsDecl/tei:rendition">
       <style type="text/css">
 	<xsl:for-each
-	    select="ancestor-or-self::TEI/teiHeader/encodingDesc/tagsDecl/rendition">
+	    select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:encodingDesc/tei:tagsDecl/tei:rendition">
 	  <xsl:text>&#10;.</xsl:text>
 	  <xsl:value-of select="@xml:id"/>
 	  <xsl:text> {&#10;	</xsl:text>

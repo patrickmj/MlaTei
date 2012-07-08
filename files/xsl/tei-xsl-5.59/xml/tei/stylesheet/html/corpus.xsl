@@ -31,10 +31,10 @@
     <xd:copyright>2008, TEI Consortium</xd:copyright>
   </xd:doc>
   <xd:doc>
-    <xd:short>Process elements catRef</xd:short>
+    <xd:short>Process elements tei:catRef</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="catRef"><xsl:variable name="W">
+  <xsl:template match="tei:catRef"><xsl:variable name="W">
       <xsl:choose>
         <xsl:when test="starts-with(@target,'#')">
           <xsl:value-of select="substring-after(@target,'#')"/>
@@ -43,23 +43,23 @@
           <xsl:value-of select="@target"/>
         </xsl:otherwise>
       </xsl:choose>
-    </xsl:variable><xsl:if test="preceding-sibling::catRef">
+    </xsl:variable><xsl:if test="preceding-sibling::tei:catRef">
       <xsl:text> 
     </xsl:text>
     </xsl:if><em>
       <xsl:value-of select="@scheme"/>
     </em>: <xsl:apply-templates select="key('IDS',$W)/catDesc"/></xsl:template>
   <xd:doc>
-    <xd:short>Process elements teiCorpus</xd:short>
+    <xd:short>Process elements tei:teiCorpus</xd:short>
     <xd:detail> </xd:detail>
   </xd:doc>
-  <xsl:template match="teiCorpus">
+  <xsl:template match="tei:teiCorpus">
     <html>
       <xsl:call-template name="addLangAtt"/>
       <head>
         <title>
           <xsl:apply-templates
-            select="teiHeader/fileDesc/titleStmt/title/text()"/>
+            select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title/text()"/>
         </title>
         <xsl:call-template name="includeCSS"/>
         <xsl:call-template name="cssHook"/>
@@ -74,7 +74,7 @@
         <xsl:call-template name="stdheader">
           <xsl:with-param name="title">
             <xsl:apply-templates
-              select="teiHeader/fileDesc/titleStmt/title"/>
+              select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/>
           </xsl:with-param>
         </xsl:call-template>
 	</div>
@@ -84,7 +84,7 @@
       </body>
     </html>
   </xsl:template>
-  <xsl:template match="teiCorpus" mode="split">
+  <xsl:template match="tei:teiCorpus" mode="split">
     <xsl:variable name="BaseFile">
       <xsl:value-of select="$masterFile"/>
       <xsl:call-template name="addCorpusID"/>
@@ -109,7 +109,7 @@
       <head>
         <title>
           <xsl:apply-templates
-            select="teiHeader/fileDesc/titleStmt/title/text()"/>
+            select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title/text()"/>
         </title>
         <xsl:call-template name="includeCSS"/>
         <xsl:call-template name="cssHook"/>
@@ -124,7 +124,7 @@
         <xsl:call-template name="stdheader">
           <xsl:with-param name="title">
             <xsl:apply-templates
-              select="teiHeader/fileDesc/titleStmt/title[1]"/>
+              select="tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[1]"/>
           </xsl:with-param>
         </xsl:call-template>
 	</div>
@@ -140,7 +140,7 @@
       <xsl:message>TEI HTML: run end hook template teiEndHook</xsl:message>
     </xsl:if>
     <xsl:call-template name="teiEndHook"/>
-    <xsl:apply-templates select="TEI" mode="split"/>
+    <xsl:apply-templates select="tei:TEI" mode="split"/>
 
   </xsl:template>
   <xd:doc>
@@ -149,7 +149,7 @@
   </xd:doc>
   <xsl:template name="corpusBody">
     <ul>
-      <xsl:for-each select="TEI">
+      <xsl:for-each select="tei:TEI">
         <li>
           <a>
             <xsl:attribute name="href">

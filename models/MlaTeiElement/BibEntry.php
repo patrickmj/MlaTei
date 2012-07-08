@@ -9,11 +9,12 @@ class MlaTeiElement_BibEntry extends MlaTeiElement
     {
         $citoCitesPropId = record_relations_property_id(CITO, 'cites');
         $params = array(
-                'subject_record_type' => 'Item',
+                'subject_record_type' => 'MlaTeiElement_BibEntry',
                 'subject_id' => $this->id,
-                'object_record_type' => 'MlaTeiElement_BibEntry',
+                'object_record_type' =>  'Item' ,
                 'property_id' => $citoCitesPropId
                 );
-        return get_db()->getTable('RecordRelationsRelation')->findSubjectRecordsByParams($params);
+        $commentators = get_db()->getTable('RecordRelationsRelation')->findObjectRecordsByParams($params);
+        return $commentators;
     }
 }

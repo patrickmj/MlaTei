@@ -2,12 +2,12 @@
 
 class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
 {
-
+    public $xsl = "/component.xsl";
     
     public function importEl($mlaEl, $domNode)
     {
         $labelNode = $this->getFirstChildNodeByName('label', $domNode);        
-        $mlaEl->label = preg_replace( '/\s+/', ' ', $labelNode->textContent ); 
+        $mlaEl->label = $this->stripWhitespace($labelNode->textContent); 
         $mlaEl = parent::importEl($mlaEl, $domNode);
         return $mlaEl;
     }
@@ -45,6 +45,7 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
                 $commentatorItems = $biblRef->getCommentatorItems();
                 //while I have the biblRef, grab the commentators and build a 'shortcut' relation
                 //depends on the sequence of data import following the order of actions in the controller
+      
                 foreach($commentatorItems as $commentator) {
                     $this->buildRelation($commentator, $mlaEl, $citedInCommentaryNoteId);
                 }            

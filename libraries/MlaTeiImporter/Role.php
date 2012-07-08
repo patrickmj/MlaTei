@@ -7,7 +7,7 @@
  */
 
 class MlaTeiImporter_Role extends MlaTeiImporter
-{
+{    
 
     public function processXSL($domNode)
     {

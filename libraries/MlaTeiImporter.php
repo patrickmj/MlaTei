@@ -5,7 +5,7 @@ abstract class MlaTeiImporter
     public $dom;
     public $xpath;
     public $xslProcessor;
-    
+    public $xsl = '/tei-xsl-5.59-bak/xml/tei/stylesheet/html/tei.xsl';
     
 
     public function __construct($file)
@@ -16,10 +16,10 @@ abstract class MlaTeiImporter
         $this->xpath->registerNamespace('nvs', 'http://www.mla.org/NVSns');
         $this->xpath->registerNamespace('tei', "http://www.tei-c.org/ns/1.0");
 
-        $xsl = MLA_TEI_XSL_PATH . "/html/tei.xsl";
+        
         $this->xslProcessor = new XSLTProcessor();
         $xslDOM = new DOMDocument();
-        $xslDOM->load($xsl);
+        $xslDOM->load(MLA_TEI_XSL_PATH . $this->xsl);
         $this->xslProcessor->importStylesheet($xslDOM);
     }
     
@@ -27,12 +27,11 @@ abstract class MlaTeiImporter
     
     public function processXSL($domNode)
     {
-        //echo $this->dom->saveXml($domNode);
-//tei xsl files have had tei: prefix removed to make it go through the processor and match up correctly        
-        $wtfDoc = new DomDocument();
+        //processor tries to do the entire doc, even when just on node is passed to it, so create a temp Doc
+        $tempDoc = new DomDocument();
         $xml = '<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE container [
-<!ENTITY hellip     " &#x2E;&#xA0;&#x2E;&#xA0;&#x2E; ">
+<!ENTITY hellip     "... &#x2E;&#xA0;&#x2E;&#xA0;&#x2E; ">
 <!ENTITY inked     "&#x2759;">
 <!ENTITY caret     "&#x2038;">
 <!ENTITY minus     "&#x2212;">
@@ -47,10 +46,12 @@ abstract class MlaTeiImporter
                ';
         $xml .=  $this->dom->saveXml($domNode);
         
-        $wtfDoc->loadXml($xml);
-        $doc = $this->xslProcessor->transformToDoc($wtfDoc);
-
-        return $doc->saveHtml();
+        $tempDoc->loadXml($xml);
+        $htmlDoc = $this->xslProcessor->transformToDoc($tempDoc);
+        $this->postProcessHtml($htmlDoc);
+        $html = $htmlDoc->saveHtml();
+        
+        return $this->stripWhitespace($html);
         
         
         
@@ -107,4 +108,15 @@ abstract class MlaTeiImporter
     
         return $rel;
     }    
+    
+    public function stripWhitespace($text)
+    {
+        return preg_replace( '/\s+/', ' ', $text); 
+    }
+    
+    public function postProcessHtml($doc)
+    {
+       
+        
+    }
 }

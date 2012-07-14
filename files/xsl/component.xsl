@@ -1,3 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xsl:stylesheet [
+	<!ENTITY hellip     " &#x2E;&#xA0;&#x2E;&#xA0;&#x2E; ">
+	<!ENTITY inked     "&#x2759;">
+	<!ENTITY caret     "&#x2038;">
+	<!ENTITY minus     "&#x2212;">
+	<!ENTITY plus     "&#x002B;">
+	<!ENTITY shy     "&#x00AD;">
+	<!ENTITY sigrange     "&#x002D;">
+	<!ENTITY swdash     "&#x2002;&#x007E;&#x2002;">
+	<!ENTITY verbar     "&#x2002;&#x007C;&#x2002;">
+	<!ENTITY cmacr     "&#x63;&#x304;">
+]>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml">
 

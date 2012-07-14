@@ -2,13 +2,47 @@
 
 class MlaTeiPlugin extends Omeka_Plugin_Abstract {
     
-    protected $_hooks = array('install', 'public_theme_header');
+    protected $_hooks = array(
+            'install', 
+            'public_theme_header',
+            'item_browse_sql');
     
     
     public function hookPublicThemeHeader()
     {
         queue_css('mlatei');
         queue_js('mlatei');
+    }
+    
+    public function hookItemBrowseSql($select, $params) {
+        $sortDir = 'ASC';
+        $db = get_db();
+        if ($request = Zend_Controller_Front::getInstance()->getRequest()) {
+            $startsWithString = $request->get('starts_with');
+        }
+        
+        $startsWithData = isset($params['starts_with']) ? explode(',', $params['starts_with']) : explode(',', $startsWithString);
+      
+        if($startsWithData) {
+            //ItemTable builds in a order by id, which we don't want
+            $select->reset('order');
+            //data like 'Element Set', 'Element', 'Character'
+            if(count($startsWithData) == 3) {
+                $startsWith = $startsWithData[2];
+                $element = $db->getTable('Element')->findByElementSetNameAndElementName($startsWithData[0], $startsWithData[1]);
+                if ($element) {
+                    $recordTypeId = $db->getTable('RecordType')->findIdFromName('Item');
+                    $select->joinLeft(array('et_sort' => $db->ElementText),
+                                    "et_sort.record_id = i.id AND et_sort.record_type_id = {$recordTypeId} AND et_sort.element_id = {$element->id}",
+                                    array())
+                                    ->where("et_sort.text REGEXP '^$startsWith'")
+                                    ->group('i.id')                                    
+                                    ->order("et_sort.text $sortDir");
+                }                
+            } else {
+                throw new Exception("Starts With data must be like 'Element Set', 'Element', 'Character' ");
+            }
+        }
         
         
     }

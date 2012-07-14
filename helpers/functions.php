@@ -24,10 +24,12 @@ function mla_get_passages_for_discussion($discussion)
             'subject_id' => $discussion->id,
             'property_id' => $refsStageDirId,
             'object_record_type' => 'MlaTeiElement_StageDir'
-    );
-
-    $passages = $relTable->findObjectRecordsByParams($speechParams);
-    $passages .= $relTable->findObjectRecordsByParams($stageDirParams);
+    );  
+    $speeches = $relTable->findObjectRecordsByParams($speechParams);
+    $stageDirs = $relTable->findObjectRecordsByParams($stageDirParams);
+    print_r($speechParams);
+    $passages = array_merge($speeches, $stageDirs);
+  
     return $passages;
 }
 
@@ -54,7 +56,7 @@ function mla_get_bibliography_for_discussion($discussion)
     $params = array(
             'subject_record_type' => $type,
             'subject_id' => $discussion->id,
-            'property_id' => $refsBibl,
+            'property_id' => $refsBiblId,
             'object_record_type' => 'MlaTeiElement_BibEntry'
     );
     return $relTable->findObjectRecordsByParams($params);

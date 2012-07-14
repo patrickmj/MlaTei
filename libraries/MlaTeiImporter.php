@@ -20,6 +20,7 @@ abstract class MlaTeiImporter
         $this->xslProcessor = new XSLTProcessor();
         $xslDOM = new DOMDocument();
         $xslDOM->load(MLA_TEI_XSL_PATH . $this->xsl);
+        $xslDOM->substituteEntities = true;
         $this->xslProcessor->importStylesheet($xslDOM);
     }
     
@@ -29,9 +30,10 @@ abstract class MlaTeiImporter
     {
         //processor tries to do the entire doc, even when just on node is passed to it, so create a temp Doc
         $tempDoc = new DomDocument();
+        $tempDoc->substituteEntities = true;
         $xml = '<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE container [
-<!ENTITY hellip     "... &#x2E;&#xA0;&#x2E;&#xA0;&#x2E; ">
+<!ENTITY hellip     "&#x2E;&#xA0;&#x2E;&#xA0;&#x2E; ">
 <!ENTITY inked     "&#x2759;">
 <!ENTITY caret     "&#x2038;">
 <!ENTITY minus     "&#x2212;">

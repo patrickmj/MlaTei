@@ -19,13 +19,18 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
         $db = get_db();
         if ($request = Zend_Controller_Front::getInstance()->getRequest()) {
             $startsWithString = $request->get('starts_with');
+            if(!empty($startsWithString)) {
+                $startsWithData = explode(',', $startsWithString);
+            }            
         }
-        
-        $startsWithData = isset($params['starts_with']) ? explode(',', $params['starts_with']) : explode(',', $startsWithString);
       
+        if(!startsWithData) {
+            $startsWithData = isset($params['starts_with']) ? explode(',', $params['starts_with']) : false;
+        }
         if($startsWithData) {
             //ItemTable builds in a order by id, which we don't want
             $select->reset('order');
+
             //data like 'Element Set', 'Element', 'Character'
             if(count($startsWithData) == 3) {
                 $startsWith = $startsWithData[2];
@@ -44,8 +49,8 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
             }
         }
         
-        
     }
+    
     public function hookInstall()
     {
         $db = get_db();
@@ -94,7 +99,9 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
         
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_CommentaryNote` ( ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= " `label` text COLLATE utf8_unicode_ci NOT NULL,";
+        $sql .= " `label` text COLLATE utf8_unicode_ci NOT NULL,;
+        `target` text COLLATE utf8_unicode_ci NOT NULL,
+        `target_end` text COLLATE utf8_unicode_ci NULL";        
         $sql .= $this->finishSql();
         
         $db->query($sql);

@@ -27,8 +27,9 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
         $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
         $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
         
-        $biblRefs = $this->xpath->query("nvs:p/nvs:ref[@targType='bibl']", $domNode);
-        $lbRefs = $this->xpath->query("nvs:p/nvs:ref[@targType='lb']", $domNode);
+        $biblRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='bibl']", $domNode);
+        $lbRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='lb']", $domNode);
+
         
         foreach($biblRefs as $biblRefNode) {
             $biblXmlRefIdsRaw = $biblRefNode->getAttribute('target');
@@ -62,12 +63,12 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
             
             $context = $speechTable->findSurroundingSpeech($lineNum);
             if($context) {
-                $targets[$context->xml_id] = $context;
+                $targets[] = $context;
             } else {
                 //look in the stage directions                
                 $context = $stageDirTable->findSurroundingStageDir($lineNum);
                 if($context) {
-                    $targets[$context->xml_id] = $context;
+                    $targets[] = $context;
                 }                                
             }        
         }
@@ -77,7 +78,7 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
             $targetAtt = $lbRef->getAttribute('target');
             //some targets include more than one reference
             $targetsRaw = explode(' ', $targetAtt);
-            foreach($targetsRaw as $targetRaw) {
+            foreach($targetsRaw as $targetRaw) {           
                 //strip off the #tln_ in xml id references and cast to int to ignore leading 0
                 $lineNum = (int) substr($targetRaw, 5);
                 $context = $speechTable->findSurroundingSpeech($lineNum);
@@ -85,12 +86,11 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
                     //look in the stage directions
                     $context = $stageDirTable->findSurroundingStageDir($lineNum);                    
                 }
-                if(! array_key_exists($context->xml_id, $targets)) {
-                    $targets[$context->xml_id] = $context;
-                }
+
+                $targets[] = $context;
             }           
         }
-        
+
         foreach($targets as $target) {
             if(get_class($target) == 'MlaTeiElement_Speech') {
                 $propId = $refsSpeechId;

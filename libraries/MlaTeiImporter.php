@@ -26,7 +26,7 @@ abstract class MlaTeiImporter
     
     abstract public function parseToItem($domNode, $mlaEl);
     
-    public function processXSL($domNode)
+    public function processXSL($domNode, $mlaEl = null)
     {
         //processor tries to do the entire doc, even when just on node is passed to it, so create a temp Doc
         $tempDoc = new DomDocument();
@@ -50,12 +50,10 @@ abstract class MlaTeiImporter
         
         $tempDoc->loadXml($xml);
         $htmlDoc = $this->xslProcessor->transformToDoc($tempDoc);
-        $this->postProcessHtml($htmlDoc);
+        $this->postProcessHtml($htmlDoc, $mlaEl);
         $html = $htmlDoc->saveHtml();
         
         return $this->stripWhitespace($html);
-        
-        
         
     }
     
@@ -63,14 +61,13 @@ abstract class MlaTeiImporter
     {        
         $mlaEl->xml = $this->dom->saveXML($domNode);
         $mlaEl->xml_id = $this->getXmlId($domNode); 
-        $mlaEl->html = $this->processXSL($domNode);
+        $mlaEl->html = $this->processXSL($domNode, $mlaEl);
         $item = $this->parseToItem($domNode, $mlaEl);
         if(!$item) {
             $mlaEl->item_id = null;
         } else {
             $mlaEl->item_id = $item->id;
-        }
-        
+        }        
         return $mlaEl;
     }    
     
@@ -116,9 +113,8 @@ abstract class MlaTeiImporter
         return preg_replace( '/\s+/', ' ', $text); 
     }
     
-    public function postProcessHtml($doc)
+    public function postProcessHtml($doc, $mlaEl)
     {
-       
         
     }
 }

@@ -28,10 +28,48 @@ class MlaTeiImporter_AppendixNote extends MlaTeiImporter
         $commentsOnStageDirId = record_relations_property_id(MLATEINS, 'commentsOnStageDirection');
         $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter'); 
         $citedInAppendixNoteId = record_relations_property_id(MLATEINS, 'citedInAppendixNote'); 
-
+        $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
+        $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
+        
         
         //targets go to Speeches or StageDirections
+        $targetId = $domNode->getAttribute('target');
+        $lineNum = (int) substr($targetId, 5);
+        $targets = array();
+        $context = $speechTable->findSurroundingSpeech($lineNum);
+        if($context) {
+            $targets[] = $context;
+        } else {
+            //look in the stage directions
+            $context = $stageDirTable->findSurroundingStageDir($lineNum);
+            if($context) {
+                $targets[] = $context;
+            }
+        }        
         
+        foreach($targets as $target) {
+            if(get_class($target) == 'MlaTeiElement_Speech') {
+                $propId = $refsSpeechId;
+            } else {
+                $propId = $refsStageDirId;
+            }
+            $this->buildRelation($mlaEl, $target, $propId);
+        
+            //grab the commentators for the $mlaElement (CommentaryNote), and
+            //build more shortcuts between the commentator and the context (Speech or StageDir)
+        
+            //safe because the importController saves the mlaElement before building relations
+            //
+            $commentatorItems = $mlaEl->getCommentatorItems();
+            foreach($commentatorItems as $commentator) {
+                if(get_class($target) == 'MlaTeiElement_Speech') {
+                    $propId = $commentsOnSpeechId;
+                } else {
+                    $propId = $commentsOnStageDirId;
+                }
+                $this->buildRelation($commentator, $target, $propId);
+            }
+        }        
         
         //refs to bibEntries
         $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');

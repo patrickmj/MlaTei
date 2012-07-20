@@ -1,0 +1,98 @@
+div.p {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em;}
+
+div.blockquote {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #DDDDDD;
+    border-style: solid;
+    border-width: 1px 0;
+    font-style: italic;
+    margin-bottom: 1.5em;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    padding: 1.5em 0 0;
+    
+}
+
+blockquote.quote {
+    margin-bottom: .5em;
+    margin-left: 0;
+    margin-right: 0;
+
+}
+
+div.mlatei-discussion-wrap { margin-bottom: 1.5em; }
+
+div.mlatei-discussion-references {
+    float: right;
+    border: 1px solid black;
+    color: #A49D4C;
+}
+
+div.mlatei-discussion-references ul {
+    margin: 3px;
+}
+
+ul#mlatei-discussion-nav {
+    list-style: none;
+}
+
+ul.mlatei-discussion-nav li {
+    display: block;
+    cursor: pointer;
+}
+
+div.mlatei-discussion-bib-wrap {
+    display: none;
+}
+
+div.mlatei-discussion-passages-wrap {
+    display: none;
+}
+
+div.mlatei-bibliography-wrap {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em;}
+
+
+
+
+ul#mla-refs {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em; list-style:none; margin-left: 0px;}
+
+li.mla-ref {cursor: pointer; 
+    color: #A49D4C; 
+    font-size: 1em;
+    display: inline;
+    line-height: 1.2em; 
+}
+    
+li.mla-ref:hover {
+    font-size: 1.2em;
+
+}    
+    
+div.mla-bib-entry {
+    margin-top: 6px;
+}    
+
+div.mla-passage {
+    margin-top: 6px;
+}
+
+p.mla-passage-line {
+    float: left;
+}
+
+div.mla-passage-html {
+    margin-left: 40px;
+}
+
+span.line {
+    display:block;
+}
+
+span.stage {
+    font-family: monospace;
+    
+}

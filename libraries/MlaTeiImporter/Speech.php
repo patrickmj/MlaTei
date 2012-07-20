@@ -28,17 +28,57 @@ class MlaTeiImporter_Speech extends MlaTeiImporter
             $mlaEl->last_line_xml_id = $mlaEl->first_line_xml_id;
             $mlaEl->last_n = $mlaEl->n;
         }    
-        
-        
         return $mlaEl;        
     }
     
     public function getXmlId($domNode)
     {
         //get the previous sibling lb and use that id
-        $lb = $this->getPrevLb($domNode);       
-        return $lb->getAttribute("id");
+        $lb = $this->getPrevLb($domNode);  
+        return $lb->getAttribute("xml:id");
     }
+    
+    public function postProcessHtml($doc, $mlaEl)
+    {
+        //<dt> is the speaker, which gets a new line
+        $dtNodes = $doc->getElementsByTagName('dt');
+        $dt = $dtNodes->item(0);
+
+        $speakerLine = $doc->createElement('span');
+        $speakerLine->setAttribute('class', 'line');
+        $speakerLine->setAttribute('id', $mlaEl->xml_id);
+                
+        if($dt->firstChild) {
+            $speakerLine->appendChild($dt->removeChild($dt->firstChild));
+        } else {
+            $speakerLine->appendChild($doc->createTextNode(''));
+        }
+        
+        $dt->appendChild($speakerLine);
+        
+        
+        //change anchors into spans around the text node to the next anchor
+        $aNodes = $doc->getElementsByTagName('a');
+        
+        foreach($aNodes as $a) {
+            
+            $span = $doc->createElement('span');
+            $span->setAttribute('class', 'line');
+            $tlId = $a->getAttribute('xml:id');
+            $span->setAttribute('id', $tlId);
+            $textNode = $a->nextSibling;
+            $span->appendChild($textNode);
+            $a->parentNode->appendChild($span);
+        }
+
+        while($aNodes->length != 0) {
+            $a = $aNodes->item(0); 
+            $a->parentNode->removeChild($a);
+            $aNodes = $doc->getElementsByTagName('a');            
+        }
+    }
+    
+    
     public function getPrevLb($domNode)
     {
         $lbNodes = $this->xpath->query("preceding-sibling::nvs:lb[position() = 1]", $domNode);

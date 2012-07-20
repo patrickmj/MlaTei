@@ -25,12 +25,12 @@ function mla_get_passages_for_discussion($discussion)
             'property_id' => $refsStageDirId,
             'object_record_type' => 'MlaTeiElement_StageDir'
     );  
+    
     $speeches = $relTable->findObjectRecordsByParams($speechParams);
     $stageDirs = $relTable->findObjectRecordsByParams($stageDirParams);
-    print_r($speechParams);
     $passages = array_merge($speeches, $stageDirs);
-  
     return $passages;
+    return array_reverse($passages);
 }
 
 function mla_get_bibliography_for_commentator($commentator = null)
@@ -44,7 +44,7 @@ function mla_get_bibliography_for_commentator($commentator = null)
             'object_record_type' => 'Item',
             'subject_record_type' => 'MlaTeiElement_BibEntry'
     );
-    return $relTable->findSubjectRecordsByParams($params);    
+    return $relTable->findSubjectRecordsByParams($params);     
 }
 
 function mla_get_bibliography_for_discussion($discussion)
@@ -73,7 +73,8 @@ function mla_get_discussions_for_commentator($discussionType, $commentator = nul
             'subject_record_type' => 'Item',
             'object_record_type' => $discussionType
     );
-    return $relTable->findObjectRecordsByParams($params);
+    $discussions = $relTable->findObjectRecordsByParams($params); 
+    return array_reverse($discussions);
 }
 
 
@@ -161,4 +162,8 @@ function mla_count_discussions_for_commentator($discussionType, $commentator = n
             'object_record_type' => $discussionType
     );
     return $relTable->count($params);    
+}
+
+function mla_remove_id($html) {
+    return preg_replace('#\sid="[^"]+"#', '', $html);
 }

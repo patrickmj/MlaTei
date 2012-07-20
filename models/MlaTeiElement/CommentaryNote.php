@@ -3,6 +3,8 @@
 class MlaTeiElement_CommentaryNote extends MlaTeiElement
 {
     public $label;
+ //   public $target;
+  //  public $target_end;
        
     
     

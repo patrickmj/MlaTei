@@ -40,6 +40,7 @@
   <xsl:include href="textcrit.xsl"/>
   <xsl:include href="transcr.xsl"/>
   <xsl:include href="verse.xsl"/>
+  <xsl:include href="pmj_mods.xsl" />
   <xd:doc type="string">
 Stylesheet constant setting the name of the main output file.
 </xd:doc>

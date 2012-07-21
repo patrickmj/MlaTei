@@ -22,6 +22,10 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
         $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
         $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');        
         
+        //for tagging
+        $userOne = get_db()->getTable('User')->find(1);
+        $tags = $this->getTags($domNode);
+        $mlaEl->addTags($tags, $userOne);
         
         $lbRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='lb']", $domNode);        
         //targets go to Speeches or StageDirections
@@ -36,15 +40,16 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
             //can be multiple target ids
             $biblXmlRefIdsArrayRaw = explode(' ', $biblXmlRefIdsRaw);
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
-        
+       
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
                 $this->buildRelation($mlaEl, $biblRef, $refsBiblId);
                 
                 //while I have the biblRef, grab the commentators and build a 'shortcut' relation
                 //depends on the sequence of data import following the order of actions in the controller
                 $commentatorItems = $biblRef->getCommentatorItems();
+               
                 foreach($commentatorItems as $commentator) {
-                    $this->tagCommentator($commentator, $domNode);
+                    $commentator->addTags($tags, $userOne);
                     $this->buildRelation($commentator, $mlaEl, $citedInAppendixPId);
                 }
             }
@@ -97,22 +102,27 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
         }
     }
     
-    public function tagCommentator($commentator, $domNode)
+    public function getTags($domNode)
     {
-        $userOne = get_db()->getTable('User')->find(1);
+
         //the tags are the preceeding headings in the appendix
-        $headNodes = $this->xpath->query("preceding::nvs:head", $domNode);
+        //$headNodes = $this->xpath->query("preceding::nvs:head", $domNode);
+                
+        $headNodes = $this->xpath->query("ancestor::nvs:div/nvs:head", $domNode);
         $tags = array();
+        
         foreach($headNodes as $headNode) {
             $parentNode = $headNode->parentNode;
             //this should clean up most, but not all, the oddities. check the xml
             if($parentNode->nodeName == 'div') {
-                $tags[] = $headNode->textContent;
+                $tagString = $headNode->textContent;
+                if($tagString != 'Appendix') {
+                    $tags[] = $headNode->textContent;
+                }
+                
             }
-            
-            
         }
-        $commentator->addTags($tags, $userOne);
-        
+        return $tags;        
     }
+    
 }

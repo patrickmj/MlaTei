@@ -13,6 +13,7 @@ include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/Role.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/Speech.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/BibEntry.php');
+include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/WitnessBibEntry.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/CommentaryNote.php');
 $plugin = new MlaTeiPlugin;
 $plugin->setup();

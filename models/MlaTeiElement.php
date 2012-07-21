@@ -9,4 +9,12 @@ abstract class MlaTeiElement extends Omeka_Record
     public $html;
 
  
+    
+    protected $_related = array('Tags'=>'getTags');    
+    
+    protected function _initializeMixins()
+    {
+        $this->_mixins[] = new Taggable($this);
+    }
+            
 }

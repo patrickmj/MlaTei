@@ -791,11 +791,11 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
-
+<!--
 <xsl:template match="*">
 	<xsl:message><xsl:value-of select="local-name()"/></xsl:message>
 	<xsl:apply-templates></xsl:apply-templates>
 </xsl:template>
-
+-->
 
 </xsl:stylesheet>

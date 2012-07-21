@@ -2,15 +2,12 @@
 
 class MlaTeiImporter_BibEntry extends MlaTeiImporter
 {
-
-    
     
     public function parseToItem($domNode, $mlaEl)
     {        
         $bibEntryType = get_db()->getTable('ItemType')->findByName('Bibliography Entry');
         $metadataArray = array('public'=>true, 'item_type_id'=>$bibEntryType->id);
-        
-        
+                
         $titleNode = $this->getFirstChildNodeByName('title', $domNode);
         $authorNodes = $domNode->getElementsByTagName('author');
         $authorsArray = array();

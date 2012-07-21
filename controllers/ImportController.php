@@ -77,11 +77,33 @@ class MlaTei_ImportController extends Omeka_Controller_Action
                 $rel->save();
             }            
         }        
-    }    
+    }
+
+    public function witnessBibImportAction()
+    {
+        ini_set('max_execution_time', 600);
+        $importer = new MlaTeiImporter_WitnessBibEntry(MLA_TEI_FILES_PATH . '/coe_front.xml');
+        //there are bibls in the bibls, so use XPath
+        $nodes = $importer->xpath->query('//nvs:bibl');
+        foreach($nodes as $node) {
+            $mlaEl = new MlaTeiElement_BibEntry();
+            $mlaEl = $importer->importEl($mlaEl, $node);
+            $mlaEl->save();
+            //build the authors, and some relationships
+            $commentatorItems = $importer->getCommentators($node, $mlaEl);
+            $citoCitesId = record_relations_property_id(CITO, 'cites');
+            foreach($commentatorItems as $commentator) {
+                $rel = $importer->buildRelation($mlaEl, $commentator, $citoCitesId);
+                $rel->save();
+            }
+        }        
+        
+    }
+    
     
     public function commentaryImportAction()
     {
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
         $importer = new MlaTeiImporter_CommentaryNote(MLA_TEI_FILES_PATH . '/coe_commentary.xml');
         $nodes = $importer->dom->getElementsByTagName('note');
         foreach($nodes as $node) {
@@ -94,7 +116,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
     
     public function appendixPImportAction()
     {
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
         $importer = new MlaTeiImporter_AppendixP(MLA_TEI_FILES_PATH . '/coe_appendix.xml');
         $nodes = $importer->dom->getElementsByTagName('p');
         foreach($nodes as $node) {
@@ -107,7 +129,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
 
     public function appendixNoteImportAction()
     {
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
         $importer = new MlaTeiImporter_AppendixNote(MLA_TEI_FILES_PATH . '/coe_appendix.xml');
         $nodes = $importer->xpath->query('//nvs:div/nvs:note');
         foreach($nodes as $node) {

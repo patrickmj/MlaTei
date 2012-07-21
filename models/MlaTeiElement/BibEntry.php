@@ -2,7 +2,7 @@
 
 class MlaTeiElement_BibEntry extends MlaTeiElement
 {
-    
+    public $siglum;
     
     
     public function getCommentatorItems()

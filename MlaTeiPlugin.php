@@ -93,6 +93,7 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
         
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_BibEntry` ( ";
         $sql .= $this->coreMlaElementSql();
+        $sql .= " `siglum` text COLLATE utf8_unicode_ci NULL";
         $sql .= $this->finishSql();
         
         $db->query($sql);

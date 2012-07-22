@@ -61,14 +61,14 @@ div.mlatei-bibliography-wrap {font-size:1.2em; line-height:1.5em; margin-bottom:
 ul#mla-refs {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em; list-style:none; margin-left: 0px;}
 
 li.mla-ref {cursor: pointer; 
-    color: #A49D4C; 
-    font-size: 1em;
+    color: #843418; 
+    font-size: 1.2em;
     display: inline;
     line-height: 1.2em; 
 }
     
 li.mla-ref:hover {
-    font-size: 1.2em;
+    color: #7B8D78;
 
 }    
     
@@ -95,4 +95,12 @@ span.line {
 span.stage {
     font-family: monospace;
     
+}
+
+span.mla-title {
+    font-style: italic;
+}
+
+h2.mla-bib-entry {
+    font-style: italic;
 }

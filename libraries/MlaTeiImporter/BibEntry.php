@@ -14,10 +14,10 @@ class MlaTeiImporter_BibEntry extends MlaTeiImporter
         foreach($authorNodes as $authorNode) {
             $authorsArray[] = array('text'=>$authorNode->textContent, 'html'=>0);
         }
-        
+        $title = $this->normalizeText($titleNode->textContent);
         $elSetsArray = array(
                 'Dublin Core'=>array(
-                        'Title'=>array(array('text'=>$titleNode->textContent, 'html'=>0)),
+                        'Title'=>array(array('text'=>$title, 'html'=>0)),
                         'Contributor'=>$authorsArray,
                         'Date' => array(array('text'=>$this->getFirstChildNodeByName('data', $domNode)->textContent, 'html'=>0))
                         )

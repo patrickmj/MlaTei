@@ -61,7 +61,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
     
     public function bibImportAction()
     {
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
         $importer = new MlaTeiImporter_BibEntry(MLA_TEI_FILES_PATH . '/coe_bibliography.xml');
         //there are bibls in the bibls, so use XPath
         $nodes = $importer->xpath->query('//nvs:listBibl/nvs:bibl');
@@ -81,7 +81,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
 
     public function witnessBibImportAction()
     {
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
         $importer = new MlaTeiImporter_WitnessBibEntry(MLA_TEI_FILES_PATH . '/coe_front.xml');
         //there are bibls in the bibls, so use XPath
         $nodes = $importer->xpath->query('//nvs:bibl');

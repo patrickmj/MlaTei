@@ -53,7 +53,7 @@ abstract class MlaTeiImporter
         $this->postProcessHtml($htmlDoc, $mlaEl);
         $html = $htmlDoc->saveHtml();
         
-        return $this->stripWhitespace($html);
+        return $this->normalizeText($html);
         
     }
     
@@ -101,6 +101,7 @@ abstract class MlaTeiImporter
             $rel->save();
         } catch (Exception $e) {
             print_r($rel->toArray());
+            print_r($object->toArray());
             echo $e;
             die();
         }
@@ -108,9 +109,31 @@ abstract class MlaTeiImporter
         return $rel;
     }    
     
-    public function stripWhitespace($text)
+    public function normalizeText($text, $doArticles = false)
     {
-        return preg_replace( '/\s+/', ' ', $text); 
+        if($doArticles) {
+            $articles = array(
+                    
+                    array('article'=>'Der', 'l'=>3),
+                    array('article'=>'Die', 'l'=>3),
+                    array('article'=>'Das', 'l'=>3),
+                    array('article'=>'The', 'l'=>3),
+                    array('article'=>'A', 'l'=>1)
+                    
+                    );
+            foreach($articles as $article) {
+                if(substr($text, 0, $article['l']) == $article['article']) {
+                    $text = str_replace($text, $article . ' ');
+                    //@TODO: how do I uppercase just the first letter in the resulting $text?
+                    //
+                    $text .= ", " . $article['article'];
+                    
+                }
+            }
+        }
+            
+        $text = preg_replace( '/\s+/', ' ', $text);
+        return $text; 
     }
     
     public function postProcessHtml($doc, $mlaEl)

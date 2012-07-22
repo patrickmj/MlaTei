@@ -7,7 +7,7 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
     public function importEl($mlaEl, $domNode)
     {
         $labelNode = $this->getFirstChildNodeByName('label', $domNode);        
-        $mlaEl->label = $this->stripWhitespace($labelNode->textContent); 
+        $mlaEl->label = $this->normalizeText($labelNode->textContent); 
         $mlaEl = parent::importEl($mlaEl, $domNode);
         return $mlaEl;
     }
@@ -27,7 +27,7 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
         $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
         $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
         
-        $biblRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='bibl']", $domNode);
+        $biblRefs = $this->xpath->query("nvs:p//nvs:ref", $domNode);
         $lbRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='lb']", $domNode);
 
         
@@ -38,13 +38,15 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
                 
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
-                $this->buildRelation($mlaEl, $biblRef, $refsBiblId);    
-                $commentatorItems = $biblRef->getCommentatorItems();
-                //while I have the biblRef, grab the commentators and build a 'shortcut' relation
-                //depends on the sequence of data import following the order of actions in the controller
-      
-                foreach($commentatorItems as $commentator) {
-                    $this->buildRelation($commentator, $mlaEl, $citedInCommentaryNoteId);
+                if($biblRef) {
+                    $this->buildRelation($mlaEl, $biblRef, $refsBiblId);    
+                    $commentatorItems = $biblRef->getCommentatorItems();
+                    //while I have the biblRef, grab the commentators and build a 'shortcut' relation
+                    //depends on the sequence of data import following the order of actions in the controller
+          
+                    foreach($commentatorItems as $commentator) {
+                        $this->buildRelation($commentator, $mlaEl, $citedInCommentaryNoteId);
+                    }
                 }            
             }
         }

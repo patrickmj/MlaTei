@@ -27,13 +27,13 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
         $tags = $this->getTags($domNode);
         $mlaEl->addTags($tags, $userOne);
         
-        $lbRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='lb']", $domNode);        
+        $lbRefs = $this->xpath->query("nvs:ref[@targType='lb']", $domNode);        
         //targets go to Speeches or StageDirections
         
         
         //refs to bibEntries
         $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
-        $biblRefs = $this->xpath->query("nvs:ref[@targType='bibl']", $domNode);
+        $biblRefs = $this->xpath->query("nvs:ref", $domNode);
         
         foreach($biblRefs as $biblRefNode) {
             $biblXmlRefIdsRaw = $biblRefNode->getAttribute('target');
@@ -42,15 +42,17 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
        
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
-                $this->buildRelation($mlaEl, $biblRef, $refsBiblId);
-                
-                //while I have the biblRef, grab the commentators and build a 'shortcut' relation
-                //depends on the sequence of data import following the order of actions in the controller
-                $commentatorItems = $biblRef->getCommentatorItems();
-               
-                foreach($commentatorItems as $commentator) {
-                    $commentator->addTags($tags, $userOne);
-                    $this->buildRelation($commentator, $mlaEl, $citedInAppendixPId);
+                if($biblRef) {
+                    $this->buildRelation($mlaEl, $biblRef, $refsBiblId);
+                    
+                    //while I have the biblRef, grab the commentators and build a 'shortcut' relation
+                    //depends on the sequence of data import following the order of actions in the controller
+                    $commentatorItems = $biblRef->getCommentatorItems();
+                   
+                    foreach($commentatorItems as $commentator) {
+                        $commentator->addTags($tags, $userOne);
+                        $this->buildRelation($commentator, $mlaEl, $citedInAppendixPId);
+                    }
                 }
             }
         }
@@ -68,12 +70,16 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
                 $context = $speechTable->findSurroundingSpeech($lineNum);
                 if(!$context) {
                     //look in the stage directions
-                    $context = $stageDirTable->findSurroundingStageDir($lineNum);
-        
+                    $context = $stageDirTable->findSurroundingStageDir($lineNum);        
                 }
-                if(! array_key_exists($context->xml_id, $targets)) {
-                    $targets[$context->xml_id] = $context;
+
+                
+                if($context) {
+                    //I'm missing cases where the lb is on a major division, like an act or a scene
+                    $targets[] = $context;
+                    
                 }
+                                
                 foreach($targets as $target) {
                     if(get_class($target) == 'MlaTeiElement_Speech') {
                         $propId = $refsSpeechId;
@@ -89,7 +95,7 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
                     //
                     $commentatorItems = $mlaEl->getCommentatorItems();
                     foreach($commentatorItems as $commentator) {
-                        $this->tagCommentator($commentator, $domNode);
+                        $commentator->addTags($tags, $userOne);
                         if(get_class($target) == 'MlaTeiElement_Speech') {
                             $propId = $commentsOnSpeechId;
                         } else {

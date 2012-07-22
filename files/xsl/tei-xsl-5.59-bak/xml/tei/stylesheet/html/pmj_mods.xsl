@@ -48,7 +48,7 @@
         </xsl:choose>
     </xsl:template>    
     
-    <xsl:template match="bibl/quote">
+    <xsl:template match="bibl//quote">
         <xsl:apply-templates></xsl:apply-templates>
     </xsl:template>        
         

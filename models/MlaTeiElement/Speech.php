@@ -8,7 +8,7 @@ class MlaTeiElement_Speech extends MlaTeiElement
     public $last_n;
     public $last_line_xml_id;
     public $n;
-    public $item_id; //this should go away and handle item_ids in most of the subclasses
+    public $item_id; 
     
     
     public function previousSpeech()

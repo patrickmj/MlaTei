@@ -791,6 +791,13 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
+
+<!-- Modifications by PMJ begin.....NOW -->
+		
+    <xsl:template match="bibl/quote">
+        <xsl:apply-templates></xsl:apply-templates>
+    </xsl:template> 		
+
 <!--
 <xsl:template match="*">
 	<xsl:message><xsl:value-of select="local-name()"/></xsl:message>

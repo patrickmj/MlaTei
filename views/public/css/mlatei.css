@@ -1,3 +1,8 @@
+body {width: 930px;}
+
+#secondary {width: 360px; }
+
+
 div.p {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em;}
 
 div.blockquote {
@@ -103,4 +108,17 @@ span.mla-title {
 
 h2.mla-bib-entry {
     font-style: italic;
+}
+
+
+
+
+li.mla-in-convo {
+    display: inline;
+
+}
+
+span.mla-convos {
+    cursor: pointer;
+
 }

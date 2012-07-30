@@ -3,7 +3,7 @@
 class MlaTeiImporter_AppendixP extends MlaTeiImporter
 {
     public $xsl = "/component.xsl";
-    
+    public $debug = array();
     public function parseToItem($domNode, $mlaEl)
     {
         //no item for appendix ps
@@ -15,6 +15,7 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
         $speechTable = $db->getTable('MlaTeiElement_Speech');
         $stageDirTable = $db->getTable('MlaTeiElement_StageDir');
         $bibEntryTable = $db->getTable('MlaTeiElement_BibEntry');
+        $editionEntryTable = $db->getTable('MlaTeiElement_EditionEntry');
         $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
         $commentsOnStageDirId = record_relations_property_id(MLATEINS, 'commentsOnStageDirection');
         $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter');
@@ -42,6 +43,12 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
        
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
+                
+
+                //try the editions if it isn't in the bibEntries
+                if(!$biblRef) {
+                    $biblRef = $editionEntryTable->findByXmlId(substr($hashedRefId, 1));
+                }                
                 if($biblRef) {
                     $this->buildRelation($mlaEl, $biblRef, $refsBiblId);
                     
@@ -129,6 +136,29 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
             }
         }
         return $tags;        
+    }
+    
+    public function getXmlId($domNode)
+    {
+        
+        //paragraphs in appendix don't have an id, so fake one here
+        $position = $this->xpath->evaluate("count(preceding-sibling::nvs:p)", $domNode);
+        $parentId = $this->xpath->query("parent::*/@xml:id", $domNode)->item(0);
+        $parentIdText = $parentId->textContent;
+        $id = "apara_" . $parentIdText . "_$position";
+
+        if(in_array($id, $this->debug)) {
+            //echo "pid: $parentId<br/>";
+            echo "pid: $parentIdText<br/>";
+            echo $id . "<br/>";           
+            echo $this->dom->saveXml($domNode); 
+            die();
+        } else {
+            $this->debug[] = $id;
+        }
+        
+        return $id;
+        
     }
     
 }

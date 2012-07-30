@@ -23,14 +23,16 @@
         </dl>
     </xsl:template>    
     
+    <xsl:template match="mileston"></xsl:template>
+    <xsl:template match="hi"></xsl:template>
     
     <xsl:template match="lb">
         <a class='lb'>
             <xsl:attribute name="xml:id"><xsl:value-of select="@xml:id"/></xsl:attribute>
         </a>
     </xsl:template>
-    
-    <xsl:template match="bibl">
+        
+    <xsl:template match="bibl">        
         <xsl:choose>
             <xsl:when test="parent::cit">
                 <div class="citbibl">

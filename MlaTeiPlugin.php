@@ -57,13 +57,13 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_Role` (                        
                         ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= $this->finishSql();
+        $sql .= ' , ' . $this->finishSql();
         $db->query($sql);
         
         //first part like coreMlaElementSql, but no item_id
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_Speech` ( ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= " 
+        $sql .= " ,
 
               `role_id` int(10) unsigned NOT NULL,
               `role_xml_id` text COLLATE utf8_unicode_ci NOT NULL,
@@ -81,7 +81,7 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_StageDir` ( ";
         $sql .= $this->coreMlaElementSql();
         $sql .= "                                
-              `first_line_xml_id` text COLLATE utf8_unicode_ci NOT NULL,
+              , `first_line_xml_id` text COLLATE utf8_unicode_ci NOT NULL,
               `last_line_xml_id` text COLLATE utf8_unicode_ci NOT NULL,                        
               `n` int(10) unsigned NOT NULL,
               `last_n` int(10) unsigned NOT NULL,     
@@ -90,19 +90,28 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
                         ";
         
         $db->query($sql);        
+
         
+
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_BibEntry` ( ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= " `siglum` text COLLATE utf8_unicode_ci NULL";
+        $sql .= ' , ' . $this->finishSql();
+        
+        $db->query($sql);        
+        
+        $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_EditionEntry` ( ";
+        $sql .= $this->coreMlaElementSql();
+        $sql .= " , `siglum` text COLLATE utf8_unicode_ci NULL, ";
+        $sql .= " `type` text COLLATE utf8_unicode_ci NULL , ";
         $sql .= $this->finishSql();
         
         $db->query($sql);
         
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_CommentaryNote` ( ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= " `label` text COLLATE utf8_unicode_ci NOT NULL,;
+        $sql .= " , `label` text COLLATE utf8_unicode_ci NOT NULL,
         `target` text COLLATE utf8_unicode_ci NOT NULL,
-        `target_end` text COLLATE utf8_unicode_ci NULL";        
+        `target_end` text COLLATE utf8_unicode_ci NULL , ";        
         $sql .= $this->finishSql();
         
         $db->query($sql);
@@ -110,14 +119,14 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
 
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_AppendixP` ( ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= $this->finishSql();
+        $sql .= ' , ' . $this->finishSql();
         
         $db->query($sql);
 
 
         $sql = "CREATE TABLE IF NOT EXISTS `$db->MlaTeiElement_AppendixNote` ( ";
         $sql .= $this->coreMlaElementSql();
-        $sql .= " `type` text COLLATE utf8_unicode_ci NULL,";
+        $sql .= " , `type` text COLLATE utf8_unicode_ci NULL,";
         $sql .= " `label` text COLLATE utf8_unicode_ci NULL,";
         $sql .= $this->finishSql();
         
@@ -213,8 +222,7 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
               `item_id` int(10) unsigned NULL,
               `xml` text COLLATE utf8_unicode_ci NOT NULL,
               `xml_id` text COLLATE utf8_unicode_ci NULL,
-              `html` text COLLATE utf8_unicode_ci NULL,
-                        ";
+              `html` text COLLATE utf8_unicode_ci NULL ";
         return $sql;
     }
     private function finishSql()

@@ -35,18 +35,23 @@ var MlaTei = {
         refClasses = target.attr('class').split(' ');
         ref = null;
         switch(refClasses[1]) {
-            //in xsl pmj_mod, bibls are given a class for what should be an id.
-            //this lets me have the bibl entry show up multiple times on commentator page
-            //and get selected via class
-            case 'bibl':
-                refClass = href.substr(1);
-                console.log(refClass);
-                ref = jQuery('.' + refClass);
-            break;
+
             //@TODO: possible danger of same line id showing up on pages
             case 'lb':
                 ref = jQuery(href);
-            break;
+                break;
+
+                
+                
+            //in xsl pmj_mod, bibls are given a class for what should be an id.
+            //this lets me have the bibl entry show up multiple times on commentator page
+            //and get selected via class
+            
+            default:
+                refClass = href.substr(1);
+                console.log(refClass);
+                ref = jQuery('.' + refClass);                
+                break;
         
         }      
         if(ref) {
@@ -58,6 +63,20 @@ var MlaTei = {
         }
 
         event.preventDefault();
+    },
+    
+    convoClick: function(event) {
+        target = jQuery(event.target);
+        jQuery('.mlatei-discussion-wrap').hide();
+        refClasses = target.attr('class').split(' ');
+        console.log('--------------');
+        refClasses.forEach(function(ref) {
+            
+            if((ref != 'mla-convos') && (ref != '')) {
+               jQuery('#' + ref).show();
+               console.log(ref);   
+           } 
+        });
     }
     
     
@@ -71,5 +90,8 @@ jQuery(document).ready(function() {
     jQuery('ul.mlatei-discussion-nav > li').click(MlaTei.toggleDiscussionDetail);
     jQuery('.ref').click(function(event) {
         MlaTei.refClick(event);
+    });
+    jQuery('.mla-convos').click(function(event) {
+        MlaTei.convoClick(event);
     });
 }); 

@@ -18,6 +18,7 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
         $speechTable = $db->getTable('MlaTeiElement_Speech');
         $stageDirTable = $db->getTable('MlaTeiElement_StageDir');
         $bibEntryTable = $db->getTable('MlaTeiElement_BibEntry');
+        $editionEntryTable = $db->getTable('MlaTeiElement_EditionEntry');
         $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
         $commentsOnStageDirId = record_relations_property_id(MLATEINS, 'commentsOnStageDirection');
         $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter'); //@TODO
@@ -38,6 +39,12 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
                 
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
+                
+                //try the editions if it isn't in the bibEntries
+                if(!$biblRef) {
+                    $biblRef = $editionEntryTable->findByXmlId(substr($hashedRefId, 1));
+                }
+                
                 if($biblRef) {
                     $this->buildRelation($mlaEl, $biblRef, $refsBiblId);    
                     $commentatorItems = $biblRef->getCommentatorItems();

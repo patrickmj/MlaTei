@@ -24,6 +24,7 @@ class MlaTeiImporter_AppendixNote extends MlaTeiImporter
         $speechTable = $db->getTable('MlaTeiElement_Speech');
         $stageDirTable = $db->getTable('MlaTeiElement_StageDir');
         $bibEntryTable = $db->getTable('MlaTeiElement_BibEntry');
+        $editionEntryTable = $db->getTable('MlaTeiElement_EditionEntry');
         $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
         $commentsOnStageDirId = record_relations_property_id(MLATEINS, 'commentsOnStageDirection');
         $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter'); 
@@ -80,15 +81,21 @@ class MlaTeiImporter_AppendixNote extends MlaTeiImporter
             //can be multiple target ids
             $biblXmlRefIdsArrayRaw = explode(' ', $biblXmlRefIdsRaw);
             foreach($biblXmlRefIdsArrayRaw as $hashedRefId) {
-        
                 $biblRef = $bibEntryTable->findByXmlId(substr($hashedRefId, 1));
-                $this->buildRelation($mlaEl, $biblRef, $refsBiblId);
-                $commentatorItems = $biblRef->getCommentatorItems();
-                //while I have the biblRef, grab the commentators and build a 'shortcut' relation
-                //depends on the sequence of data import following the order of actions in the controller
-                foreach($commentatorItems as $commentator) {
-                    $this->buildRelation($commentator, $mlaEl, $citedInAppendixNoteId);
+                //try the editions if it isn't in the bibEntries
+                if(!$biblRef) {
+                    $biblRef = $editionEntryTable->findByXmlId(substr($hashedRefId, 1));
+                }        
+                if($biblRef) {
+                    $this->buildRelation($mlaEl, $biblRef, $refsBiblId);
+                    $commentatorItems = $biblRef->getCommentatorItems();
+                    //while I have the biblRef, grab the commentators and build a 'shortcut' relation
+                    //depends on the sequence of data import following the order of actions in the controller
+                    foreach($commentatorItems as $commentator) {
+                        $this->buildRelation($commentator, $mlaEl, $citedInAppendixNoteId);
+                    }                    
                 }
+
             }
         }        
     }    

@@ -38,7 +38,7 @@ abstract class MlaTeiImporter
 <!ENTITY caret     "&#x2038;">
 <!ENTITY minus     "&#x2212;">
 <!ENTITY plus     "&#x002B;">
-<!ENTITY shy     "&#x00AD;">
+<!ENTITY shy     "-&#x00AD;">
 <!ENTITY sigrange     "&#x002D;">
 <!ENTITY swdash     "&#x2002;&#x007E;&#x2002;">
 <!ENTITY verbar     "&#x2002;&#x007C;&#x2002;">

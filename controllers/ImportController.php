@@ -79,14 +79,14 @@ class MlaTei_ImportController extends Omeka_Controller_Action
         }        
     }
 
-    public function witnessBibImportAction()
+    public function editionImportAction()
     {
         ini_set('max_execution_time', 6000);
-        $importer = new MlaTeiImporter_WitnessBibEntry(MLA_TEI_FILES_PATH . '/coe_front.xml');
+        $importer = new MlaTeiImporter_EditionEntry(MLA_TEI_FILES_PATH . '/coe_front.xml');
         //there are bibls in the bibls, so use XPath
         $nodes = $importer->xpath->query('//nvs:bibl');
         foreach($nodes as $node) {
-            $mlaEl = new MlaTeiElement_BibEntry();
+            $mlaEl = new MlaTeiElement_EditionEntry();
             $mlaEl = $importer->importEl($mlaEl, $node);
             $mlaEl->save();
             //build the authors, and some relationships
@@ -96,6 +96,13 @@ class MlaTei_ImportController extends Omeka_Controller_Action
                 $rel = $importer->buildRelation($mlaEl, $commentator, $citoCitesId);
                 $rel->save();
             }
+            /*
+            if($mlaEl->type == 'Edition') {
+                print_r($mlaEl->toArray());
+                echo $mlaEl->html;
+                die();
+            }
+            // */
         }        
         
     }
@@ -118,7 +125,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
     {
         ini_set('max_execution_time', 6000);
         $importer = new MlaTeiImporter_AppendixP(MLA_TEI_FILES_PATH . '/coe_appendix.xml');
-        $nodes = $importer->dom->getElementsByTagName('p');
+        $nodes = $importer->xpath->query("//nvs:div[@type !='']/nvs:p[descendant::nvs:ref]");
         foreach($nodes as $node) {
             $mlaEl = new MlaTeiElement_AppendixP();
             $mlaEl = $importer->importEl($mlaEl, $node);

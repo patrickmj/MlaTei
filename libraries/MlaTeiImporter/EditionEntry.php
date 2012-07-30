@@ -10,7 +10,7 @@
  *
  */
 
-class MlaTeiImporter_WitnessBibEntry extends MlaTeiImporter
+class MlaTeiImporter_EditionEntry extends MlaTeiImporter
 {
     
 
@@ -22,6 +22,19 @@ class MlaTeiImporter_WitnessBibEntry extends MlaTeiImporter
         if($siglumNode) {
             $mlaEl->siglum = $siglumNode->textContent;
         }
+        
+        $listWitNode = $this->xpath->query("parent::nvs:witness/parent::nvs:listWit", $domNode)->item(0);
+        if($listWitNode) {
+            $id = $listWitNode->getAttribute('xml:id');
+            if($id == 'listwit_editions') {
+                $mlaEl->type = 'Edition';
+            } else {
+                $mlaEl->type = 'Other';
+            }
+             
+        } else {
+            $mlaEl->type = 'Occasional';
+        }
         $mlaEl = parent::importEl($mlaEl, $domNode);
 
         return $mlaEl;        
@@ -29,7 +42,7 @@ class MlaTeiImporter_WitnessBibEntry extends MlaTeiImporter
     
     public function parseToItem($domNode, $mlaEl)
     {
-        $bibEntryType = get_db()->getTable('ItemType')->findByName('Bibliography Entry');
+        $bibEntryType = get_db()->getTable('ItemType')->findByName('Edition Entry');
         $metadataArray = array('public'=>true, 'item_type_id'=>$bibEntryType->id);
     
         $titleNode = $this->getFirstChildNodeByName('title', $domNode);
@@ -51,6 +64,7 @@ class MlaTeiImporter_WitnessBibEntry extends MlaTeiImporter
             //looks like a witness
             $elSetsArray['Dublin Core']['Type'][] = array('text'=>'witness', 'html'=>0);     
             $elSetsArray['Dublin Core']['Identifier'] = array(array('text'=>$mlaEl->siglum, 'html'=>0));
+            $elSetsArray['Item Type Metadata']['Siglum'] = array(array('text'=>$mlaEl->siglum, 'html'=>0));
         }
         return insert_item($metadataArray, $elSetsArray);
     }
@@ -89,6 +103,13 @@ class MlaTeiImporter_WitnessBibEntry extends MlaTeiImporter
         } else {
             return $commentatorItems[0];
         }
+    }
+    
+    public function postProcessHtml($doc, $mlaEl)
+    {
+        //stylesheet misses the id to stuff into the span class, so do that here.
+        $span = $doc->getElementsByTagName('span')->item(0);
+        $span->setAttribute('class', $mlaEl->xml_id);
     }
     
     public function getXmlId($domNode)

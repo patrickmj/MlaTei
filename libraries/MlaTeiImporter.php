@@ -52,9 +52,7 @@ abstract class MlaTeiImporter
         $htmlDoc = $this->xslProcessor->transformToDoc($tempDoc);
         $this->postProcessHtml($htmlDoc, $mlaEl);
         $html = $htmlDoc->saveHtml();
-        
-        return $this->normalizeText($html);
-        
+        return $this->normalizeText($html);        
     }
     
     public function importEl($mlaEl, $domNode) 
@@ -114,19 +112,19 @@ abstract class MlaTeiImporter
         if($doArticles) {
             $articles = array(
                     
-                    array('article'=>'Der', 'l'=>3),
-                    array('article'=>'Die', 'l'=>3),
-                    array('article'=>'Das', 'l'=>3),
-                    array('article'=>'The', 'l'=>3),
-                    array('article'=>'A', 'l'=>1)
+                    array('article'=>'Der ', 'l'=>4),
+                    array('article'=>'Die ', 'l'=>4),
+                    array('article'=>'Das ', 'l'=>4),
+                    array('article'=>'The ', 'l'=>4),
+                    array('article'=>'A ', 'l'=>2)
                     
                     );
             foreach($articles as $article) {
                 if(substr($text, 0, $article['l']) == $article['article']) {
-                    $text = str_replace($text, $article . ' ');
+                    $text = str_replace($article['article'], '', $text);
                     //@TODO: how do I uppercase just the first letter in the resulting $text?
                     //
-                    $text .= ", " . $article['article'];
+                    $text .= ", " . trim($article['article']);
                     
                 }
             }

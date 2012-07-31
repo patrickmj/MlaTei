@@ -29,7 +29,20 @@ function mla_get_passages_for_discussion($discussion)
     $speeches = $relTable->findObjectRecordsByParams($speechParams);
     $stageDirs = $relTable->findObjectRecordsByParams($stageDirParams);
     $passages = array_merge($speeches, $stageDirs);
+    uasort($passages, 'mla_passage_sort');
     return $passages;
+    
+}
+
+function mla_passage_sort($a, $b)
+{
+    $aLine = (int) $a->n;
+    $bLine = (int) $b->n;
+    if($aLine > $bLine) {
+        return 1;
+    } else {
+        return -1;
+    }
     
 }
 

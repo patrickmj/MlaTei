@@ -46,6 +46,7 @@ class MlaTeiImporter_EditionEntry extends MlaTeiImporter
         $metadataArray = array('public'=>true, 'item_type_id'=>$bibEntryType->id);
     
         $titleNode = $this->getFirstChildNodeByName('title', $domNode);
+        $titleNodeText = $this->normalizeText($titleNode->textContent, true);
         $authorNodes = $domNode->getElementsByTagName('name');
         $authorsArray = array();
         foreach($authorNodes as $authorNode) {

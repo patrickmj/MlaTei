@@ -12,9 +12,12 @@ class MlaTeiImporter_BibEntry extends MlaTeiImporter
         $authorNodes = $domNode->getElementsByTagName('author');
         $authorsArray = array();
         foreach($authorNodes as $authorNode) {
-            $authorsArray[] = array('text'=>$authorNode->textContent, 'html'=>0);
+            $text = $authorNode->textContent;
+            if($text != 'et al.') {
+                $authorsArray[] = array('text'=>$authorNode->textContent, 'html'=>0);
+            }            
         }
-        $title = $this->normalizeText($titleNode->textContent);
+        $title = $this->normalizeText($titleNode->textContent, true);
         $elSetsArray = array(
                 'Dublin Core'=>array(
                         'Title'=>array(array('text'=>$title, 'html'=>0)),
@@ -30,7 +33,9 @@ class MlaTeiImporter_BibEntry extends MlaTeiImporter
         $authorNodes = $domNode->getElementsByTagName('author');
         $commentatorItems = array(); //commentators only exist as Omeka Items, w/o a TEI representation
         foreach($authorNodes as $authorNode) {
-           $commentatorItems[] = $this->findCommentatorByNameOrNew($authorNode->textContent);            
+            if($authorNode->textContent != 'et al.') {
+                $commentatorItems[] = $this->findCommentatorByNameOrNew($authorNode->textContent);
+            }                        
         }
         return $commentatorItems;
     }

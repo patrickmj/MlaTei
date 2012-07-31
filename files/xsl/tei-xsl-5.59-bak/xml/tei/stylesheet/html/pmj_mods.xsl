@@ -23,13 +23,31 @@
         </dl>
     </xsl:template>    
     
-    <xsl:template match="mileston"></xsl:template>
+    <xsl:template match="sp/p">
+        <p>
+            <a class='lb'>
+                <xsl:attribute name="xml:id"><xsl:value-of select="preceding::lb[position() = '1']/@xml:id"/></xsl:attribute>
+            </a>            
+            <xsl:apply-templates></xsl:apply-templates>
+        </p>
+    </xsl:template>
+    
+    <xsl:template match="milestone"></xsl:template>
     <xsl:template match="hi"></xsl:template>
     
     <xsl:template match="lb">
-        <a class='lb'>
-            <xsl:attribute name="xml:id"><xsl:value-of select="@xml:id"/></xsl:attribute>
-        </a>
+        <xsl:choose>
+            <xsl:when test="preceding-sibling::speaker">
+                
+                
+            </xsl:when>
+            <xsl:otherwise>                
+                <a class='lb'>
+                    <xsl:attribute name="xml:id"><xsl:value-of select="@xml:id"/></xsl:attribute>
+                </a>                
+            </xsl:otherwise>
+        </xsl:choose>
+
     </xsl:template>
         
     <xsl:template match="bibl">        

@@ -21,9 +21,8 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
         $editionEntryTable = $db->getTable('MlaTeiElement_EditionEntry');
         $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
         $commentsOnStageDirId = record_relations_property_id(MLATEINS, 'commentsOnStageDirection');
-        $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter'); //@TODO
-        $citedInCommentaryNoteId = record_relations_property_id(MLATEINS, 'citedInCommentaryNote'); //@TODO
-        $citoCitesId = record_relations_property_id(CITO, 'cites');
+        $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter');
+        $citedInCommentaryNoteId = record_relations_property_id(MLATEINS, 'citedInCommentaryNote');
         $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl'); 
         $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
         $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
@@ -121,6 +120,31 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
                     $propId = $commentsOnStageDirId;
                 }
                     $this->buildRelation($commentator, $target, $propId);
+                }
+                if($target->role_id) {
+                    if($commentator) {
+                        
+                        
+                        $rel = new RecordRelationsRelation;
+                        $rel->subject_id = $commentator->id;
+                        $rel->subject_record_type = 'Item';
+                        $rel->object_id = $target->role_id;
+                        $rel->object_record_type = 'MlaTeiElement_Role';
+                        $rel->property_id = $commentsOnCharacterId;
+                        $rel->public = true;    
+                        try {
+                            $rel->save();
+                        } catch(Exception $e) {
+                            echo get_class($commentator);
+                            echo "commentator wtf: " . $commentator;
+                            if(!$commentator) {
+                                echo 'not comm???';
+                            }
+                            print_r($commentator->toArray());
+                            print_r($rel->toArray());
+                            die();
+                        }
+                    }       
                 }
             }                      
     }

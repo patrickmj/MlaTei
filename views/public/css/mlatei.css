@@ -2,6 +2,19 @@ body {width: 930px;}
 
 #secondary {width: 360px; }
 
+.mla-reveal-open {
+    padding-left: 18px;
+    background-image: url('../../../../../application/views/scripts/images/silk-icons/magnifier_zoom_in.png');
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.mla-reveal-close {
+    padding-left: 18px;
+    background-image: url('../../../../../application/views/scripts/images/silk-icons/magifier_zoom_out.png');
+    background-repeat: no-repeat;
+    background-position: left;
+}
 
 div.p {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em;}
 
@@ -61,7 +74,15 @@ div.mlatei-discussion-passages-wrap {
 div.mlatei-bibliography-wrap {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em;}
 
 
+#convo-reset {
+    cursor: pointer;
+}
 
+a.mla-toggle-details {
+    cursor: pointer;
+    font-size: 10px;    
+    
+}
 
 ul#mla-refs {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em; list-style:none; margin-left: 0px;}
 

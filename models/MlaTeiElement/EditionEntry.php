@@ -8,12 +8,12 @@ class MlaTeiElement_EditionEntry extends MlaTeiElement
     
     public function getCommentatorItems()
     {
-        $citoCitesPropId = record_relations_property_id(CITO, 'cites');
+        $dctContributorId = record_relations_property_id(DCTERMS, 'contributor');
         $params = array(
                 'subject_record_type' => 'MlaTeiElement_EditionEntry',
                 'subject_id' => $this->id,
                 'object_record_type' =>  'Item' ,
-                'property_id' => $citoCitesPropId
+                'property_id' => $dctContributorId
         );
         $commentators = get_db()->getTable('RecordRelationsRelation')->findObjectRecordsByParams($params);
         return $commentators;

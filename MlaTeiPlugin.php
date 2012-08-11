@@ -136,6 +136,20 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
         //insert some props for RecordRelations
         $properties = array(
                            array(
+                               'namespace_uri' => DCTERMS,
+                               'properties' => array(
+                                       array(
+                                           'local_part' => 'contributor',
+                                           'label' => 'contributor'
+                                       ),
+                                       array(
+                                           'local_part' => 'creator',
+                                           'label' => 'creator'
+                                       )
+                                   )      
+                           ),
+                
+                           array(
                             'name' => 'CITO',
                             'description' => '',
                             'namespace_prefix' => 'cito',

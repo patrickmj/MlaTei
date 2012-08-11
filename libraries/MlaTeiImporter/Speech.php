@@ -35,10 +35,10 @@ class MlaTeiImporter_Speech extends MlaTeiImporter
     {
         //get the previous sibling lb and use that id
         $lb = $this->getPrevLb($domNode);  
-        return $lb->getAttribute("xml:id");
+        return $lb->getAttribute("xml:id") . '-speech';
     }
     
-    public function postProcessHtml($doc, $mlaEl)
+    public function postProcessHtml($doc, $mlaEl, $domNode)
     {
         //<dt> is the speaker, which gets a new line
         $dtNodes = $doc->getElementsByTagName('dt');
@@ -56,6 +56,17 @@ class MlaTeiImporter_Speech extends MlaTeiImporter
         
         $dt->appendChild($speakerLine);
         
+        //all but the first speech has the closest lb before the speech, so outside the document
+        //so make an a and stuff it into the top of the dd
+        $lb = $this->getPrevLb($domNode);
+        $firstA = $doc->createElement('a');
+        $firstA->setAttribute('xml:id', $lb->getAttribute('xml:id'));
+        $firstA->setAttribute('class', 'line');
+        $p = $doc->getElementsByTagName('p')->item(0);
+        if($mlaEl->xml_id != 'tln_0004-speech') {            
+            $p->insertBefore($firstA, $p->firstChild);
+        }
+        
         
         //change anchors into spans around the text node to the next anchor
         $aNodes = $doc->getElementsByTagName('a');
@@ -67,7 +78,10 @@ class MlaTeiImporter_Speech extends MlaTeiImporter
             $tlId = $a->getAttribute('xml:id');
             $span->setAttribute('id', $tlId);
             $textNode = $a->nextSibling;
-            $span->appendChild($textNode);
+            if($textNode) {
+                $span->appendChild($textNode);
+            }
+            
             $a->parentNode->appendChild($span);
         }
 

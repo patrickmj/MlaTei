@@ -46,6 +46,21 @@ function mla_passage_sort($a, $b)
     
 }
 
+function mla_get_editions_for_commentator($commentator = null)
+{
+    if(!$commentator) {
+        $commentator = get_current_item();
+    }
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $params = array(
+            'object_id' => $commentator->id,
+            'object_record_type' => 'Item',
+            'subject_record_type' => 'MlaTeiElement_EditionEntry'
+    );
+    return $relTable->findSubjectRecordsByParams($params);
+}
+
+
 function mla_get_bibliography_for_commentator($commentator = null)
 {
     if(!$commentator) {
@@ -58,6 +73,25 @@ function mla_get_bibliography_for_commentator($commentator = null)
             'subject_record_type' => 'MlaTeiElement_BibEntry'
     );
     return $relTable->findSubjectRecordsByParams($params);     
+}
+
+function mla_get_commentators_for_bibliography($bibliography = null)
+{
+    $db = get_db();
+    if(!$bibliography) {
+        $bibliography = get_current_item();        
+    }
+    $bibEntry = $db->getTable('MlaTeiElement_BibEntry')->findByItemId($bibliography->id);
+    $relTable = $db->getTable('RecordRelationsRelation');
+    $dctCreatorId = record_relations_property_id(DCTERMS, 'creator');
+    $params = array(
+            'subject_id' => $bibEntry->id,
+            'subject_record_type' => 'MlaTeiElement_BibEntry',
+            'object_record_type' => 'Item',
+            'property_id' => $dctCreatorId
+            );
+    return $relTable->findObjectRecordsByParams($params);
+    
 }
 
 function mla_get_editions_for_discussion($discussion)
@@ -172,6 +206,31 @@ function mla_get_commentators_in_convo_with_commentator($commentator = null)
     return $commentators;    
 }
 
+function mla_get_commentators_for_speech_role($role = null)
+{
+    if(!$role) {
+        $role = get_current_item();
+    }
+    $commentsOnCharacterId = record_relations_property_id(MLATEINS, 'commentsOnCharacter');
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $relParams = array(
+                        'property_id' => $commentsOnCharacterId,
+                        'object_record_type' => 'MlaTeiElement_Role',
+                        'object_id'=> $role->id,
+                        'subject_record_type' => 'Item'
+            );
+    return $relTable->findSubjectRecordsByParams($relParams, array(), array('sort_field'=>'Dublin Core,Title'));
+    
+}
+
+
+function mla_count_speeches_for_role($role = null)
+{
+    if(!$role) {
+        $role = get_current_item();
+    }
+    return get_db()->getTable('MlaTeiElement_Speech')->count(array('role_id'=>$role->id));    
+}
 
 function mla_convo_sort($a, $b)
 {
@@ -282,3 +341,43 @@ function mla_count_discussions_for_commentator($discussionType, $commentator = n
 function mla_remove_id($html) {
     return preg_replace('#\sid="[^"]+"#', '', $html);
 }
+
+
+
+function mla_simple_search($buttonText = null, $formProperties=array('id'=>'simple-search'), $uri = null)
+{
+    if (!$buttonText) {
+        $buttonText = __('Search');
+    }
+
+    // Always post the 'items/browse' page by default (though can be overridden).
+    if (!$uri) {
+        $uri = apply_filters('simple_search_default_uri', uri('items/browse'));
+    }
+
+    $searchQuery = array_key_exists('search', $_GET) ? $_GET['search'] : '';
+    $formProperties['action'] = $uri;
+    $formProperties['method'] = 'get';
+    $html  = '<form ' . _tag_attributes($formProperties) . '>' . "\n";
+    $html .= '<fieldset>' . "\n\n";
+    $html .= __v()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput'));
+    $html .= __v()->formSubmit('submit_search', $buttonText);
+    $html .= '</fieldset>' . "\n\n";
+
+    // add hidden fields for the get parameters passed in uri
+    $parsedUri = parse_url($uri);
+    if (array_key_exists('query', $parsedUri)) {
+        parse_str($parsedUri['query'], $getParams);
+        foreach($getParams as $getParamName => $getParamValue) {
+            $html .= __v()->formHidden($getParamName, $getParamValue);
+        }
+    }
+    
+    //PMJ: only change to simple_search() is sorting by DC:Title
+    $html .= __v()->formHidden('sort_field', 'Dublin Core,Title');
+
+    $html .= '</form>';
+    return $html;
+}
+
+

@@ -24,10 +24,15 @@
     </xsl:template>    
     
     <xsl:template match="sp/p">
-        <p>
-            <a class='lb'>
-                <xsl:attribute name="xml:id"><xsl:value-of select="preceding::lb[position() = '1']/@xml:id"/></xsl:attribute>
-            </a>            
+        <p class='speech'>
+            <xsl:choose>
+                <!-- looks like this is a unique case for the very first speech on CoE -->
+                <xsl:when test="preceding::lb[position() = 1]">
+                    <a class='lb'>
+                        <xsl:attribute name="xml:id"><xsl:value-of select="preceding::lb[position() = '1']/@xml:id"/></xsl:attribute>                        
+                    </a>
+                </xsl:when>
+            </xsl:choose>
             <xsl:apply-templates></xsl:apply-templates>
         </p>
     </xsl:template>

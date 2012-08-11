@@ -50,7 +50,7 @@ abstract class MlaTeiImporter
         
         $tempDoc->loadXml($xml);
         $htmlDoc = $this->xslProcessor->transformToDoc($tempDoc);
-        $this->postProcessHtml($htmlDoc, $mlaEl);
+        $this->postProcessHtml($htmlDoc, $mlaEl, $domNode);
         $html = $htmlDoc->saveHtml();
         return $this->normalizeText($html);        
     }
@@ -109,14 +109,16 @@ abstract class MlaTeiImporter
     
     public function normalizeText($text, $doArticles = false)
     {
+        $text = trim($text);
+        $text = preg_replace( '/\s+/', ' ', $text);
         if($doArticles) {
-            $articles = array(
-                    
+            $articles = array(                    
                     array('article'=>'Der ', 'l'=>4),
                     array('article'=>'Die ', 'l'=>4),
                     array('article'=>'Das ', 'l'=>4),
                     array('article'=>'The ', 'l'=>4),
-                    array('article'=>'A ', 'l'=>2)
+                    array('article'=>'A ', 'l'=>2),
+                    array('article'=>'An ', 'l'=>3)
                     
                     );
             foreach($articles as $article) {
@@ -124,13 +126,12 @@ abstract class MlaTeiImporter
                     $text = str_replace($article['article'], '', $text);
                     //@TODO: how do I uppercase just the first letter in the resulting $text?
                     //
-                    $text .= ", " . trim($article['article']);
-                    
+                    $text .= ", " . trim($article['article']);   
                 }
             }
         }
             
-        $text = preg_replace( '/\s+/', ' ', $text);
+        
         return $text; 
     }
     

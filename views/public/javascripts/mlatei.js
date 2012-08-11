@@ -15,6 +15,12 @@ var MlaTei = {
     },
     
     toggleDiscussionDetail: function() {
+        var el = jQuery(this);
+
+        el.toggleClass('mla-reveal-open');
+        el.toggleClass('mla-reveal-close');
+        el.siblings().removeClass('mla-reveal-close');
+        el.siblings().addClass('mla-reveal-open');
         
         targetId = '#' + this.id.substring(0, this.id.length - 4) + '-wrap';
         
@@ -70,13 +76,27 @@ var MlaTei = {
         jQuery('.mlatei-discussion-wrap').hide();
         refClasses = target.attr('class').split(' ');
         console.log('--------------');
-        refClasses.forEach(function(ref) {
-            
+        
+        jQuery('li.mla-in-convo').not(target.parent()).hide();
+        refClasses.forEach(function(ref) {            
             if((ref != 'mla-convos') && (ref != '')) {
                jQuery('#' + ref).show();
                console.log(ref);   
            } 
         });
+    },
+    
+    /**
+     * toggleDetails
+     * assumes that the details in question are the next sibling div to the parent element
+     */
+    
+    toggleDetails: function() {
+        var el = jQuery(this);
+        el.toggleClass('mla-reveal-open');
+        el.toggleClass('mla-reveal-close');
+        
+        el.parent().next('div.mla-details').toggle();
     }
     
     
@@ -94,4 +114,9 @@ jQuery(document).ready(function() {
     jQuery('.mla-convos').click(function(event) {
         MlaTei.convoClick(event);
     });
+    jQuery('#convo-reset').click(function(event) {
+        jQuery('.mlatei-discussion-wrap').show(); 
+        jQuery('li.mla-in-convo').show();
+    });
+    jQuery('a.mla-toggle-details').click(MlaTei.toggleDetails);
 }); 

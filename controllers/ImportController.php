@@ -44,6 +44,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
             $mlaEl = new MlaTeiElement_Speech();
             $mlaEl = $importer->importEl($mlaEl, $node);
             $mlaEl->save();
+            //die();
         }
     }
     
@@ -65,15 +66,17 @@ class MlaTei_ImportController extends Omeka_Controller_Action
         $importer = new MlaTeiImporter_BibEntry(MLA_TEI_FILES_PATH . '/coe_bibliography.xml');
         //there are bibls in the bibls, so use XPath
         $nodes = $importer->xpath->query('//nvs:listBibl/nvs:bibl');
+        $dctCreatorId = record_relations_property_id(DCTERMS, 'creator');
+
         foreach($nodes as $node) {
             $mlaEl = new MlaTeiElement_BibEntry();
             $mlaEl = $importer->importEl($mlaEl, $node);
             $mlaEl->save();
             //build the authors, and some relationships
             $commentatorItems = $importer->getCommentators($node, $mlaEl);
-            $citoCitesId = record_relations_property_id(CITO, 'cites');
+            
             foreach($commentatorItems as $commentator) {
-                $rel = $importer->buildRelation($mlaEl, $commentator, $citoCitesId);
+                $rel = $importer->buildRelation($mlaEl, $commentator, $dctCreatorId);
                 $rel->save();
             }            
         }        
@@ -85,26 +88,18 @@ class MlaTei_ImportController extends Omeka_Controller_Action
         $importer = new MlaTeiImporter_EditionEntry(MLA_TEI_FILES_PATH . '/coe_front.xml');
         //there are bibls in the bibls, so use XPath
         $nodes = $importer->xpath->query('//nvs:bibl');
+        $dctContributorId = record_relations_property_id(DCTERMS, 'contributor');
         foreach($nodes as $node) {
             $mlaEl = new MlaTeiElement_EditionEntry();
             $mlaEl = $importer->importEl($mlaEl, $node);
             $mlaEl->save();
             //build the authors, and some relationships
             $commentatorItems = $importer->getCommentators($node, $mlaEl);
-            $citoCitesId = record_relations_property_id(CITO, 'cites');
             foreach($commentatorItems as $commentator) {
-                $rel = $importer->buildRelation($mlaEl, $commentator, $citoCitesId);
+                $rel = $importer->buildRelation($mlaEl, $commentator, $dctContributorId);
                 $rel->save();
             }
-            /*
-            if($mlaEl->type == 'Edition') {
-                print_r($mlaEl->toArray());
-                echo $mlaEl->html;
-                die();
-            }
-            // */
-        }        
-        
+        }                
     }
     
     

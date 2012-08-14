@@ -305,7 +305,8 @@ function mla_count_total_citations_for_commentator($commentator = null)
     );
     $count = get_db()->getTable('RecordRelationsRelation')->count($props); 
     $bibCount = mla_count_bibliography_for_commentator($commentator);
-    return $count + $bibCount;
+    $editionCount = mla_count_editions_for_commentator($commentator);
+    return $count + $bibCount + $editionCount;
     
 }
 
@@ -324,6 +325,22 @@ function mla_count_bibliography_for_commentator($commentator = null)
     
 }
 
+
+function mla_count_editions_for_commentator($commentator = null)
+{
+    if(!$commentator) {
+        $commentator = get_current_item();
+    }
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $params = array(
+            'object_id' => $commentator->id,
+            'object_record_type' => 'Item',
+            'subject_record_type' => 'MlaTeiElement_EditionEntry'
+    );
+    return $relTable->count($params);
+
+}
+
 function mla_count_discussions_for_commentator($discussionType, $commentator = null)
 {    
     if(!$commentator) {
@@ -337,6 +354,7 @@ function mla_count_discussions_for_commentator($discussionType, $commentator = n
     );
     return $relTable->count($params);    
 }
+
 
 function mla_remove_id($html) {
     return preg_replace('#\sid="[^"]+"#', '', $html);
@@ -360,6 +378,18 @@ function mla_simple_search($buttonText = null, $formProperties=array('id'=>'simp
     $formProperties['method'] = 'get';
     $html  = '<form ' . _tag_attributes($formProperties) . '>' . "\n";
     $html .= '<fieldset>' . "\n\n";
+    switch($formProperties['id']) {
+        case 'simple-search':
+            $html .= "<label for='simple-search'>Search Scholars and Bibliography</label>";
+            break;
+        case 'simple-search-commentary':
+            $html .= "<label for='simple-search-commentary'>Search Commentary</label>";
+            break;
+        case 'simple-search-appendix':
+            $html .= "<label for='simple-search-appendix'>Search Appendix</label>";
+            break;
+        
+    }
     $html .= __v()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput'));
     $html .= __v()->formSubmit('submit_search', $buttonText);
     $html .= '</fieldset>' . "\n\n";
@@ -374,7 +404,21 @@ function mla_simple_search($buttonText = null, $formProperties=array('id'=>'simp
     }
     
     //PMJ: only change to simple_search() is sorting by DC:Title
-    $html .= __v()->formHidden('sort_field', 'Dublin Core,Title');
+    //only applies to Items, and if not items, I don't use default uri
+    switch($uri) {
+        case 'mla-tei/search/appendix':
+            
+            break;
+        case 'mla-tei/search/commentary':
+            
+            break;
+            
+        default:
+            $html .= __v()->formHidden('sort_field', 'Dublin Core,Title');
+            
+    }
+
+    
 
     $html .= '</form>';
     return $html;

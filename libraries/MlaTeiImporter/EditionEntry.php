@@ -110,7 +110,7 @@ class MlaTeiImporter_EditionEntry extends MlaTeiImporter
                 $textContent = 'Bevington, David';
                 break;
             case 'Edmond Malone':
-            case 'Malone, Edmond (1741-1812)':
+            case 'Malone, Edmond (1741–1812)':
                 $textContent = 'Malone, Edmond';
                 break;
         

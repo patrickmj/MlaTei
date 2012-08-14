@@ -71,7 +71,8 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
               `last_line_xml_id` text COLLATE utf8_unicode_ci NOT NULL,
               `n` int(10) unsigned NOT NULL,
               `last_n` int(10) unsigned NOT NULL,
-              PRIMARY KEY (`id`)
+              PRIMARY KEY (`id`),
+              FULLTEXT KEY `html` (`html`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;               
         
         ";
@@ -243,7 +244,8 @@ class MlaTeiPlugin extends Omeka_Plugin_Abstract {
     {
         return "
               PRIMARY KEY (`id`),
-              UNIQUE KEY `item_id` (`item_id`)
+              UNIQUE KEY `item_id` (`item_id`),
+              FULLTEXT KEY `html` (`html`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;                        
                         ";
     }

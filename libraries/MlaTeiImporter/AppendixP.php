@@ -129,6 +129,8 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
             //this should clean up most, but not all, the oddities. check the xml
             if($parentNode->nodeName == 'div') {
                 $tagString = $headNode->textContent;
+                //commas in the text play havoc
+                //as does See Map sub elements
                 if($tagString != 'Appendix') {
                     $tags[] = $headNode->textContent;
                 }

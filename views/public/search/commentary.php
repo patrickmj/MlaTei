@@ -37,9 +37,7 @@ head(array('title'=>$pageTitle,'bodyid'=>'mla-tei-results','bodyclass' => 'brows
                         $bib = array_merge($discBib, $editions);
                         
                         foreach($bib as $entry) {
-                            $secondaryHTML .= "<div class='mla-bib-entry'>";
-                            $secondaryHTML .= $entry->html;
-                            $secondaryHTML .= "</div>";
+                            $secondaryHTML .= mla_bib_secondary_html($entry);
                         }
                         $secondaryHTML .= "</div>"; 
             

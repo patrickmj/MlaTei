@@ -5,6 +5,28 @@
 
 */
 
+function mla_bib_secondary_html($entry)
+{    
+    
+    $commentators = mla_get_commentators_for_bibliography($entry);
+    $secondaryHTML = "<div class='mla-bib-entry'>";
+    $secondaryHTML .= $entry->html;
+    $secondaryHTML .= ' ' . mla_link_to_item_by_id($entry->item_id, "View");
+    $secondaryHTML .= '<ul>';
+    foreach($commentators as $commentator) {
+        $secondaryHTML .= '<li>' . link_to_item(null, array(), 'show', $commentator) . '</li>';
+    }
+    $secondaryHTML .= '</ul>';
+    $secondaryHTML .= "</div>";        
+    return $secondaryHTML; 
+}
+
+function mla_link_to_item_by_id($itemId, $text = null) 
+{
+    $item = get_db()->getTable('Item')->find($itemId);
+    return link_to_item($text, array(), 'show', $item);    
+}
+
 function mla_get_passages_for_discussion($discussion)
 {
     $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
@@ -81,15 +103,35 @@ function mla_get_commentators_for_bibliography($bibliography = null)
     if(!$bibliography) {
         $bibliography = get_current_item();        
     }
-    $bibEntry = $db->getTable('MlaTeiElement_BibEntry')->findByItemId($bibliography->id);
+    
+    switch(get_class($bibliography)) {
+        case 'MlaTeiElement_BibEntry':
+            $bibEntry = $bibliography;
+            $subject_record_type = 'MlaTeiElement_BibEntry';
+            $propId = record_relations_property_id(DCTERMS, 'creator');
+            break;
+        case 'MlaTeiElement_EditionEntry':
+            $bibEntry = $bibliography;
+            $subject_record_type = 'MlaTeiElement_EditionEntry';
+            $propId = record_relations_property_id(DCTERMS, 'contributor');
+            break;
+        case 'Item':
+            $bibEntry = $db->getTable('MlaTeiElement_BibEntry')->findByItemId($bibliography->id);
+            $subject_record_type = 'MlaTeiElement_BibEntry';
+            $propId = record_relations_property_id(DCTERMS, 'creator');
+            break;
+    }
+    
+    
     $relTable = $db->getTable('RecordRelationsRelation');
-    $dctCreatorId = record_relations_property_id(DCTERMS, 'creator');
+    
     $params = array(
             'subject_id' => $bibEntry->id,
-            'subject_record_type' => 'MlaTeiElement_BibEntry',
+            'subject_record_type' => $subject_record_type,
             'object_record_type' => 'Item',
-            'property_id' => $dctCreatorId
+            'property_id' => $propId
             );
+
     return $relTable->findObjectRecordsByParams($params);
     
 }

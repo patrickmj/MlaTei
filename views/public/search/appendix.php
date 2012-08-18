@@ -26,9 +26,9 @@ head(array('title'=>$pageTitle,'bodyid'=>'mla-tei-results','bodyclass' => 'brows
                 <?php $tags = $discussion->getTags();
                
                 ?>
-                <div class='tags'>
+                <p class='tags'>
                     <?php echo tag_string($tags,  WEB_ROOT . '/items/browse/type/Commentator/sort_field/Dublin+Core,Title/tag/'); ?>
-                </div>
+                </p>
                 <div class='mlatei-discussion-content-wrap'>
                     <?php echo $discussion->html; ?>
                 </div>
@@ -42,9 +42,7 @@ head(array('title'=>$pageTitle,'bodyid'=>'mla-tei-results','bodyclass' => 'brows
                         $bib = array_merge($discBib, $editions);
                         
                         foreach($bib as $entry) {
-                            $secondaryHTML .= "<div class='mla-bib-entry'>";
-                            $secondaryHTML .= $entry->html;
-                            $secondaryHTML .= "</div>";
+                            $secondaryHTML .= mla_bib_secondary_html($entry);
                         }
                         $secondaryHTML .= "</div>"; 
             

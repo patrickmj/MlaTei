@@ -8,6 +8,21 @@ class MlaTei_ImportController extends Omeka_Controller_Action
         $this->_modelClass = 'MlaTeiImport';
     }
     
+    public function allAction()
+    {
+        $this->rolesImportAction();
+        $this->speechImportAction();
+        $this->stageDirectionImportAction();
+        $this->bibImportAction();
+        $this->editionImportAction();
+        $this->commentaryImportAction();
+        $this->appendixPImportAction();
+        $this->appendixNoteImportAction();
+        die();
+        
+        
+    }
+    
     public function rolesImportAction()
     {
         $importer = new MlaTeiImporter_Role(MLA_TEI_FILES_PATH . '/coe_playtext.xml');
@@ -44,7 +59,6 @@ class MlaTei_ImportController extends Omeka_Controller_Action
             $mlaEl = new MlaTeiElement_Speech();
             $mlaEl = $importer->importEl($mlaEl, $node);
             $mlaEl->save();
-            //die();
         }
     }
     

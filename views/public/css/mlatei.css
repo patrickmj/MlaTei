@@ -145,3 +145,8 @@ span.mla-convos {
     cursor: pointer;
 
 }
+
+p.tags {
+    margin-bottom: 6px;
+}
+

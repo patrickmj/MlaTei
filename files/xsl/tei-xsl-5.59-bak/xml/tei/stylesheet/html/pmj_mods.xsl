@@ -3,12 +3,6 @@
     version="1.0">
     
 
-    <xsl:template match="stage">
-            <span class="stage">
-                <xsl:apply-templates/>
-            </span>        
-    </xsl:template>
-
     <xsl:template match="sp">
         <dl>
             <dt>

@@ -19,13 +19,13 @@ var MlaTei = {
 
         el.toggleClass('mla-reveal-open');
         el.toggleClass('mla-reveal-close');
-        el.siblings().removeClass('mla-reveal-close');
-        el.siblings().addClass('mla-reveal-open');
+        var otherNav = jQuery("ul.mlatei-discussion-nav > li").not(el);
+        otherNav.removeClass('mla-reveal-close');
+        otherNav.addClass('mla-reveal-open');
+        var targetId = '#' + this.id.substring(0, this.id.length - 4) + '-wrap';
         
-        targetId = '#' + this.id.substring(0, this.id.length - 4) + '-wrap';
-        
-        target = jQuery(targetId);
-        offset = jQuery(this.parentNode).offset();
+        var target = jQuery(targetId);
+        var offset = jQuery(this.parentNode).offset();
         jQuery('#secondary').offset({top: offset.top});
         jQuery('#secondary > div').not(target).hide();
         target.toggle();
@@ -36,7 +36,6 @@ var MlaTei = {
     refClick: function(event) {
         target = jQuery(event.target);
         href = target.attr('href');
-        console.log(href);
         //do some branching based on the ref type, which is second part of class
         refClasses = target.attr('class').split(' ');
         ref = null;
@@ -55,7 +54,6 @@ var MlaTei = {
             
             default:
                 refClass = href.substr(1);
-                console.log(refClass);
                 ref = jQuery('.' + refClass);                
                 break;
         
@@ -74,14 +72,11 @@ var MlaTei = {
     convoClick: function(event) {
         target = jQuery(event.target);
         jQuery('.mlatei-discussion-wrap').hide();
-        refClasses = target.attr('class').split(' ');
-        console.log('--------------');
-        
+        refClasses = target.attr('class').split(' ');        
         jQuery('li.mla-in-convo').not(target.parent()).hide();
         refClasses.forEach(function(ref) {            
             if((ref != 'mla-convos') && (ref != '')) {
                jQuery('#' + ref).show();
-               console.log(ref);   
            } 
         });
     },

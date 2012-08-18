@@ -57,7 +57,6 @@ class MlaTei_ImportController extends Omeka_Controller_Action
             $mlaEl = $importer->importEl($mlaEl, $node);
             $mlaEl->save();
         }        
-        
     }
     
     public function bibImportAction()

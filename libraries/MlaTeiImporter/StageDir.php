@@ -30,7 +30,7 @@ class MlaTeiImporter_StageDir extends MlaTeiImporter
         
     }
     
-    public function processXSL($domNode) {}
+    
 
     public function getXmlId($domNode)
     {

@@ -37,8 +37,7 @@ class MlaTeiElementTable extends Omeka_Db_Table
         $db = get_db();
         $quotedTerms = $db->quote($terms);
     
-        $select->where("MATCH (html) AGAINST ($quotedTerms)");
-    
+        $select->where("MATCH (html) AGAINST ($quotedTerms)");    
     }    
     
 }

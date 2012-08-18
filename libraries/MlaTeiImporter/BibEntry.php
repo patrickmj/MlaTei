@@ -28,6 +28,20 @@ class MlaTeiImporter_BibEntry extends MlaTeiImporter
                         'Citation' => array(array('text'=>$mlaEl->html, 'html'=>1))
                         )
                 );
+        $journalTitle = $this->xpath->query("nvs:title[@level = 'j']", $domNode)->item(0);
+        
+        if($journalTitle) {
+            $elSetsArray['Dublin Core']['Type'] = array(array('text'=>'Journal Article', 'html'=>0));
+            $elSetsArray['Dublin Core']['Publisher'] = array(array('text'=>$journalTitle->textContent, 'html'=>0));
+            
+            $volume = $this->xpath->query("nvs:biblScope[@type = 'vol']", $domNode)->item(0);
+            $pages = $this->xpath->query("nvs:biblScope[@type = 'pages']", $domNode)->item(0);            
+            $elSetsArray['Item Type Metadata']['Volume'] = array(array('text'=>$volume->textContent, 'html'=>0));
+            $elSetsArray['Item Type Metadata']['Pages'] = array(array('text'=>$pages->textContent, 'html'=>0));
+            
+        } else {
+            $elSetsArray['Dublin Core']['Type'] = array(array('text'=>'Book', 'html'=>0));
+        }
         return insert_item($metadataArray, $elSetsArray);
     }
     

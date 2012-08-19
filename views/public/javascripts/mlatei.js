@@ -30,7 +30,7 @@ var MlaTei = {
         jQuery('#secondary > div').not(target).hide();
         target.toggle();
         content = jQuery('#content');
-        content.height(content[0].scrollHeight);
+        content.height(content[0].scrollHeight - 56);
     },
     
     refClick: function(event) {

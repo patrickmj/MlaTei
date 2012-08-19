@@ -105,7 +105,7 @@ class MlaTeiImporter_EditionEntry extends MlaTeiImporter
             case 'Charles J. Sisson':
                 $textContent = 'Sisson, Charles, J.';
                 break;
-                //filter Bevington et al. 1148
+                //@TODO: filter Bevington et al. 1148
             case 'David Bevington':
                 $textContent = 'Bevington, David';
                 break;
@@ -224,6 +224,92 @@ class MlaTeiImporter_EditionEntry extends MlaTeiImporter
             case 'Thomas Keightley':
                 $textContent = 'Keightley, Thomas';
                 break;
+                
+                //since I removed dates above, also remove other dates regardless of ambiguity
+                
+            case 'Blackstone, William (1723–80)':
+                $textContent = 'Blackstone, William';
+                break;
+                
+            case 'Brooks, Harold F. (1907–90)':
+                $textContent = 'Brooks, Harold F.';
+                break;
+                
+            case 'Craig, W[illiam] J. (1843–1906)':
+                $textContent = 'Craig, W[illiam] J.';
+                break;
+                
+            case 'Douce, Francis (1757–1834)':
+                $textContent= 'Douce, Francis';
+                break;
+                                
+            case 'Furnivall, Frederick J. (1825–1910)':
+                $textContent= 'Furnivall, Frederick J.';
+                break;
+            
+            case 'Henley, Samuel (1740–1815)':
+                $textContent= 'Henley, Samuel';
+                break;
+                case 'Ingleby, C[lement] M. (1823–86)':
+                    $textContent= 'Ingleby, C[lement] M.';
+                    break;
+                
+                case 'Jervis, Swynfen (1797–1867)':
+                    $textContent= 'Jervis, Swynfen';
+                    break;
+                
+                case 'Mason, John Monck (1726–1809)':
+                    $textContent= 'Mason, John Monck';
+                    break;
+                
+            
+                case 'McKerrow, R[onald] B. (1872–1940)':
+                    $textContent= 'McKerrow, R[onald] B.';
+                    break;
+                
+                case 'Nicholson, Brinsley (1824–92)':
+                    $textContent= 'Nicholson, Brinsley';
+                    break;
+                
+                case 'Perring, Philip. (1828–1920)':
+                    $textContent= 'Perring, Philip.';
+                    break;
+                
+            
+                case 'Ritson, Joseph (1752–1803)':
+                    $textContent= 'Ritson, Joseph';
+                    break;
+                
+                case 'Spedding, James (1808–81)':
+                    $textContent= 'Spedding, James';
+                    break;
+                
+                case 'Staunton, Howard (1810–74)':
+                    $textContent= 'Staunton, Howard';
+                    break;
+                
+        
+                case 'Seager, H[erbert] W. (1848–?)':
+                    $textContent= 'Seager, H[erbert] W.';
+                    break;
+                
+                case 'Tollet, George (1725–79)':
+                    $textContent= 'Tollet, George';
+                    break;
+                
+                case 'Tyrwhitt, Thomas (1730–86)':
+                    $textContent= 'Tyrwhitt, Thomas';
+                    break;
+                
+            
+                case 'Warburton, William (1698–1779)':
+                    $textContent= 'Warburton, William';
+                    break;
+                
+                case 'Weston, Stephen (1747–1830)':
+                    $textContent= 'Weston, Stephen';
+                    break;
+
         }
         
         

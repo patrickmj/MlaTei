@@ -16,16 +16,15 @@ var MlaTei = {
     
     toggleDiscussionDetail: function(el) {
         
-        var skipOpen = false;
         if(el instanceof jQuery) {
            var id = el.attr('id');
-           if(el.hasClass('mla-reveal-close')) {
-               //it's already open
-               skipOpen = true;
+           if(el.hasClass('mla-reveal-close')) {               ;
+               var isOpen = true;
            }
         } else {
             el = jQuery(this);
             var id = this.id;
+            var isOpen = false;
         }
 
         var otherNav = jQuery("ul.mlatei-discussion-nav > li").not(el);
@@ -34,17 +33,16 @@ var MlaTei = {
         var offset = el.parent().offset();
         var content = jQuery('#content');
         
-        if(skipOpen) {
+        if(!isOpen) { 
             el.toggleClass('mla-reveal-open');
             el.toggleClass('mla-reveal-close');        
             otherNav.removeClass('mla-reveal-close');
             otherNav.addClass('mla-reveal-open');            
+            jQuery('#secondary > div').not(target).hide();
+            target.toggle();                
         }
 
         jQuery('#secondary').offset({top: offset.top});
-        jQuery('#secondary > div').not(target).hide();
-        target.toggle();
-        
         content.height(content[0].scrollHeight - 56);
     },
     
@@ -70,7 +68,7 @@ var MlaTei = {
             case 'bibl':
                 refClass = href.substr(1);
                 ref = jQuery('.' + refClass);
-                var navEl = jQuery('ul.mlatei-discussion-nav > li.mla-discussion-nav-lb', discussionWrap);
+                var navEl = jQuery('ul.mlatei-discussion-nav > li.mla-discussion-nav-bibl', discussionWrap);
                 break;
                 
             default:

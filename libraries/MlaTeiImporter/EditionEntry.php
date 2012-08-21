@@ -106,6 +106,7 @@ class MlaTeiImporter_EditionEntry extends MlaTeiImporter
                 $textContent = 'Sisson, Charles, J.';
                 break;
                 //@TODO: filter Bevington et al. 1148
+            case 'David Bevington et al.':                
             case 'David Bevington':
                 $textContent = 'Bevington, David';
                 break;
@@ -128,9 +129,9 @@ class MlaTeiImporter_EditionEntry extends MlaTeiImporter
         
             case 'George Steevens':
             case 'Steevens, George (1736–1800)';
-            $textContent = 'Steevens, George';
-            break;
-        
+                $textContent = 'Steevens, George';
+                break;
+            
             case 'Gerard Langbaine':
                 $textContent = 'Langbaine, Gerard';
                 break;

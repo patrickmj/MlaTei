@@ -19,8 +19,7 @@ class MlaTeiImporter_StageDir extends MlaTeiImporter
             $mlaEl->last_line_xml_id = $mlaEl->first_line_xml_id;
             $mlaEl->last_n = $mlaEl->n;
         }
-        
-        
+                
         return $mlaEl;        
     }
     
@@ -30,7 +29,40 @@ class MlaTeiImporter_StageDir extends MlaTeiImporter
         
     }
     
-    
+    public function postProcessHtml($doc, $mlaEl, $domNode)
+    {
+
+        //previous lb isn't in the current doc, so stuff in the a it would've made
+        $lb = $this->getPrevLb($domNode);
+        $firstA = $doc->createElement('a');
+        $firstA->setAttribute('xml:id', $lb->getAttribute('xml:id'));
+        $firstA->setAttribute('class', 'line');        
+        $span = $doc->getElementsByTagName('span')->item(0);
+        $span->insertBefore($firstA, $span->firstChild);
+        
+        
+        //change anchors into spans around the text node to the next anchor
+        $aNodes = $doc->getElementsByTagName('a');
+        
+        foreach($aNodes as $a) {
+        
+            $span = $doc->createElement('span');
+            $span->setAttribute('class', 'line');
+            $tlId = $a->getAttribute('xml:id');
+            $span->setAttribute('id', $tlId);
+            $textNode = $a->nextSibling;
+            if($textNode) {
+                $span->appendChild($textNode);
+            }        
+            $a->parentNode->appendChild($span);
+        }
+        
+        while($aNodes->length != 0) {
+            $a = $aNodes->item(0);
+            $a->parentNode->removeChild($a);
+            $aNodes = $doc->getElementsByTagName('a');
+        }               
+    }
 
     public function getXmlId($domNode)
     {

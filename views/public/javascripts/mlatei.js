@@ -43,11 +43,14 @@ var MlaTei = {
         }
 
         jQuery('#secondary').offset({top: offset.top});
-        content.height(content[0].scrollHeight - 56);
+        content.height(content[0].scrollHeight - 56);            
+
+
     },
     
     refClick: function(event) {
         var target = jQuery(event.target);
+        target.toggleClass('highlight');
         var discussionWrap = target.closest('.mlatei-discussion-wrap');
         var href = target.attr('href');
         //do some branching based on the ref type, which is second part of class
@@ -76,18 +79,23 @@ var MlaTei = {
         
         }      
         if(ref) {
-            if(ref.attr('style')) {
-                ref.attr('style', '');
-            } else {
-                ref.attr('style', 'color: red');    
-            }         
-            
+            ref.toggleClass('highlight');            
             //if the parent secondary html section isn't shown, show it by digging up the relevant element
-            MlaTei.toggleDiscussionDetail(navEl);
-            
-            
+            if(ref.hasClass('highlight')) {
+                MlaTei.toggleDiscussionDetail(navEl);    
+            }
+                                    
         }
 
+        if(target.hasClass('highlight')) {
+            var targetTop = target.offset().top;
+            var refTop = ref.offset().top;
+            var diff = targetTop - refTop;
+            var secondaryHtml = jQuery('#secondary');
+            var secTop = secondaryHtml.offset().top;
+            secondaryHtml.offset({top: secTop + diff});            
+        }
+        
         event.preventDefault();
     },
     
@@ -96,6 +104,7 @@ var MlaTei = {
         jQuery('.mlatei-discussion-wrap').hide();
         refClasses = target.attr('class').split(' ');        
         jQuery('li.mla-in-convo').not(target.parent()).hide();
+        jQuery('#secondary > div').hide();
         refClasses.forEach(function(ref) {            
             if((ref != 'mla-convos') && (ref != '')) {
                jQuery('#' + ref).show();
@@ -134,6 +143,7 @@ jQuery(document).ready(function() {
     jQuery('#convo-reset').click(function(event) {
         jQuery('.mlatei-discussion-wrap').show(); 
         jQuery('li.mla-in-convo').show();
+        jQuery('#secondary > div').hide();
     });
     jQuery('a.mla-toggle-details').click(MlaTei.toggleDetails);
 }); 

@@ -3,8 +3,8 @@
 class MlaTeiElement_CommentaryNote extends MlaTeiElement
 {
     public $label;
- //   public $target;
-  //  public $target_end;
+    public $target;
+    public $target_end;
        
     
     
@@ -25,5 +25,6 @@ class MlaTeiElement_CommentaryNote extends MlaTeiElement
             $commentatorItems = array_merge($commentatorItems, $commentators);
         }
         return $commentatorItems;
-    }    
+    }
+
 }

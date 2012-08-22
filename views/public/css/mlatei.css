@@ -134,7 +134,10 @@ h2.mla-bib-entry {
 }
 
 
-
+.highlight {
+    font-size: 1.5em;
+    color: #843418;
+}
 
 li.mla-in-convo {
     

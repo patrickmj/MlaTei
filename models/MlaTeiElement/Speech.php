@@ -11,6 +11,11 @@ class MlaTeiElement_Speech extends MlaTeiElement
     public $item_id; 
     
     
+    public function countLines()
+    {
+        return $this->last_n - $this->n;
+    }
+    
     public function previousSpeech()
     {
         return $this->neighborSpeech('previous');

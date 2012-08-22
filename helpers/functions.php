@@ -184,6 +184,18 @@ function mla_get_discussions_for_commentator($discussionType, $commentator = nul
     return $discussions;
 }
 
+function mla_get_commentators_for_discussion($discussion)
+{
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $discussionType = get_class($discussion);
+    $params = array(
+            'object_id' => $discussion->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => $discussionType
+    );
+    return $relTable->findSubjectRecordsByParams($params);
+}
+
 //horrible churn on the database with this, since it chains through two queries with a loop in between
 
 function mla_get_commentators_in_convo_with_commentator($commentator = null)
@@ -274,6 +286,9 @@ function mla_count_speeches_for_role($role = null)
     return get_db()->getTable('MlaTeiElement_Speech')->count(array('role_id'=>$role->id));    
 }
 
+
+
+
 function mla_convo_sort($a, $b)
 {
     $aTitle = item('Dublin Core', 'Title', array(), $a['item']);
@@ -311,6 +326,59 @@ function mla_count_speeches_for_commentator($commentator = null)
 }
 
 
+function mla_count_commentators_for_speech($speech)
+{
+    $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
+    $props = array(
+            'property_id'=>$commentsOnSpeechId,
+            'object_id' => $speech->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => 'MlaTeiElement_Speech'
+    );
+    return get_db()->getTable('RecordRelationsRelation')->count($props);
+
+}
+
+function mla_count_commentators_for_commentary_note($note)
+{
+
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $params = array(
+            'object_id' => $note->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => 'MlaTeiElement_CommentaryNote'
+    );
+    return $relTable->count($params);   
+}
+
+function mla_count_speeches_for_note($note)
+{
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
+
+    $params = array(
+            'subject_record_type' => 'MlaTeiElement_CommentaryNote',
+            'subject_id' => $note->id,
+            'property_id' => $refsSpeechId,
+            'object_record_type' => 'MlaTeiElement_Speech'
+    );
+    return $relTable->count($params);    
+}
+
+function mla_count_stagedirs_for_note($note)
+{
+    $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $params = array(
+            'subject_record_type' => 'MlaTeiElement_CommentaryNote',
+            'subject_id' => $note->id,
+            'property_id' => $refsStageDirId,
+            'object_record_type' => 'MlaTeiElement_Speech'
+    );
+    return $relTable->count($params);    
+    
+}
+
 function mla_count_stagedirections_for_commentator($commentator = null)
 {
     if(!$commentator) {
@@ -329,11 +397,44 @@ function mla_count_stagedirections_for_commentator($commentator = null)
 
 function mla_count_passages_for_commentator($commentator = null)
 {
+    if(!$commentator) {
+        $commentator = get_current_item();
+    }
+    
     return mla_count_stagedirections_for_commentator($commentator) + mla_count_speeches_for_commentator($commentator);    
 }
 
+function mla_count_appendix_ps_for_commentator($commentator = null)
+{
+    if(!$commentator) {
+        $commentator = get_current_item();
+    }
+    
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $params = array(
+            'subject_id' => $commentator->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => 'MlaTeiElement_AppendixP'
+    );
+    return $relTable->count($params);
+        
+}
 
+function mla_count_appendix_notes_for_commentator($commentator = null)
+{
+    if(!$commentator) {
+        $commentator = get_current_item();
+    }
 
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $params = array(
+            'subject_id' => $commentator->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => 'MlaTeiElement_AppendixNote'
+    );
+    return $relTable->count($params);
+
+}
 
 function mla_count_total_citations_for_commentator($commentator = null)
 {

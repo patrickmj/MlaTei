@@ -50,6 +50,7 @@ var MlaTei = {
     
     refClick: function(event) {
         var target = jQuery(event.target);
+        console.log(target);
         target.toggleClass('highlight');
         var discussionWrap = target.closest('.mlatei-discussion-wrap');
         var href = target.attr('href');
@@ -62,6 +63,7 @@ var MlaTei = {
             case 'lb':
                 ref = jQuery(href);
                 var navEl = jQuery('ul.mlatei-discussion-nav > li.mla-discussion-nav-lb', discussionWrap);
+                var bibWrapId = navEl.attr('id').replace('nav', 'wrap');                
                 break;                
                 
             //in xsl pmj_mod, bibls are given a class for what should be an id.
@@ -70,14 +72,21 @@ var MlaTei = {
             
             case 'bibl':
                 refClass = href.substr(1);
-                ref = jQuery('.' + refClass);
+                
+                bibWrapId = discussionWrap.attr('id').replace('wrap', 'nav');
+                
                 var navEl = jQuery('ul.mlatei-discussion-nav > li.mla-discussion-nav-bibl', discussionWrap);
+                var bibWrapId = navEl.attr('id').replace('nav', 'wrap');
+                console.log(bibWrapId);
+                //@TODO: this selector is ambiguous. need to select the bibwrap id
+                ref = jQuery('#' + bibWrapId + ' .' + refClass);
                 break;
                 
             default:
                 return;
         
         }      
+
         if(ref) {
             ref.toggleClass('highlight');            
             //if the parent secondary html section isn't shown, show it by digging up the relevant element
@@ -93,7 +102,10 @@ var MlaTei = {
             var diff = targetTop - refTop;
             var secondaryHtml = jQuery('#secondary');
             var secTop = secondaryHtml.offset().top;
-            secondaryHtml.offset({top: secTop + diff});            
+            secondaryHtml.offset({top: secTop + diff});    
+            console.log(diff);
+            console.log(secTop);
+            console.log(refTop)
         }
         
         event.preventDefault();

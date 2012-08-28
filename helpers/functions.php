@@ -97,6 +97,21 @@ function mla_get_bibliography_for_commentator($commentator = null)
     return $relTable->findSubjectRecordsByParams($params);     
 }
 
+
+function mla_get_commentators_for_speech($speech)
+{
+    $commentsOnSpeechId = record_relations_property_id(MLATEINS, 'commentsOnSpeech');
+    $props = array(
+            'property_id'=>$commentsOnSpeechId,
+            'object_id' => $speech->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => 'MlaTeiElement_Speech'
+    );
+    return get_db()->getTable('RecordRelationsRelation')->findSubjectRecordsByParams($props);
+
+}
+
+
 function mla_get_commentators_for_bibliography($bibliography = null)
 {
     $db = get_db();
@@ -151,6 +166,22 @@ function mla_get_editions_for_discussion($discussion)
     return $relTable->findObjectRecordsByParams($params);    
 }
 
+function mla_count_editions_for_discussion($discussion)
+{
+    
+    $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $type = get_class($discussion);
+    
+    $params = array(
+            'subject_record_type' => $type,
+            'subject_id' => $discussion->id,
+            'property_id' => $refsBiblId,
+            'object_record_type' => 'MlaTeiElement_EditionEntry'
+    );
+    return $relTable->count($params);    
+}
+
 function mla_get_bibliography_for_discussion($discussion)
 {
     $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
@@ -167,6 +198,22 @@ function mla_get_bibliography_for_discussion($discussion)
     uasort($result, 'mla_element_xml_id_sort'); 
     return $result;
 }
+
+function mla_count_bibliography_for_discussion($discussion)
+{
+    $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $type = get_class($discussion);
+
+    $params = array(
+            'subject_record_type' => $type,
+            'subject_id' => $discussion->id,
+            'property_id' => $refsBiblId,
+            'object_record_type' => 'MlaTeiElement_BibEntry'
+    );
+    return $relTable->count($params);
+}
+
 
 function mla_get_discussions_for_commentator($discussionType, $commentator = null)
 {
@@ -194,6 +241,19 @@ function mla_get_commentators_for_discussion($discussion)
             'object_record_type' => $discussionType
     );
     return $relTable->findSubjectRecordsByParams($params);
+}
+
+function mla_count_commentators_for_discussion($discussion)
+{
+    $relTable = get_db()->getTable('RecordRelationsRelation');
+    $discussionType = get_class($discussion);
+    $params = array(
+            'object_id' => $discussion->id,
+            'subject_record_type' => 'Item',
+            'object_record_type' => $discussionType
+    );
+    return $relTable->count($params);    
+    
 }
 
 //horrible churn on the database with this, since it chains through two queries with a loop in between

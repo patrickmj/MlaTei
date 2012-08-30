@@ -41,6 +41,8 @@ function mla_get_passages_for_discussion($discussion)
             'property_id' => $refsSpeechId,
             'object_record_type' => 'MlaTeiElement_Speech'
     );
+
+
     $stageDirParams = array(
             'subject_record_type' => $type,
             'subject_id' => $discussion->id,
@@ -52,6 +54,7 @@ function mla_get_passages_for_discussion($discussion)
     $stageDirs = $relTable->findObjectRecordsByParams($stageDirParams);
     $passages = array_merge($speeches, $stageDirs);
     uasort($passages, 'mla_passage_sort');
+    
     return $passages;
     
 }
@@ -302,7 +305,8 @@ function mla_get_commentators_in_convo_with_commentator($commentator = null)
                 
             default:
                 echo $class;
-                die();
+                echo 'uh-oh. fail in get_commentators_in_convo_with_commentator';
+                //die();
         }
         $params['property_id'] = $propId;
         $discCommentators = $relTable->findSubjectRecordsByParams($params);

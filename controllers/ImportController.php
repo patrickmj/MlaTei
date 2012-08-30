@@ -132,7 +132,7 @@ class MlaTei_ImportController extends Omeka_Controller_Action
     public function appendixPImportAction()
     {
         ini_set('max_execution_time', 6000);
-        $importer = new MlaTeiImporter_AppendixP(MLA_TEI_FILES_PATH . '/coe_appendix.xml');
+        $importer = new MlaTeiImporter_AppendixP(MLA_TEI_FILES_PATH . '/coe_appendix.xml');        
         $nodes = $importer->xpath->query("//nvs:div[@type !='']/nvs:p[descendant::nvs:ref]");
         foreach($nodes as $node) {
             $mlaEl = new MlaTeiElement_AppendixP();

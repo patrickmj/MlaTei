@@ -9,6 +9,7 @@ define('CITO', "http://purl.org/spar/cito");
 
 include_once('MlaTeiPlugin.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/helpers/functions.php');
+include_once(MLA_TEI_PLUGIN_DIR . '/helpers/NameNormalizer.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/Role.php');
 include_once(MLA_TEI_PLUGIN_DIR . '/libraries/MlaTeiImporter/Speech.php');

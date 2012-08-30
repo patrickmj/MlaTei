@@ -8,6 +8,18 @@ class MlaTei_CsvController extends Omeka_Controller_Action
         $this->_modelClass = null;
     }
     
+    public function allAction()
+    {
+        $this->notesAction();
+        $this->commentatorsAction();
+        $this->speechesAction();
+        $this->appendixPsAction();
+        $this->appendixNotesAction();
+        $this->rolesAction();
+        die();
+        
+    }
+    
     public function notesAction()
     {
         ini_set('max_execution_time', 6000);
@@ -43,7 +55,6 @@ class MlaTei_CsvController extends Omeka_Controller_Action
         ini_set('max_execution_time', 6000);
         $commentators = $this->getTable('Item')->findBy(array('type'=>'Commentator'));
         $csv = array(array('name', 
-                'count_notes',
                 'count_appendix_ps',
                 'count_appendix_notes',
                 'count_bib',
@@ -51,10 +62,12 @@ class MlaTei_CsvController extends Omeka_Controller_Action
                 'count_speeches',
                 'count_editions',                
                 'count_in_convo'));
+_log(count($commentators));
 
-        
+
         foreach($commentators as $commentator) {
             $name = item('Dublin Core', 'Title', array(), $commentator);
+_log('name: ' . $name);            
             $appendixPCount = mla_count_appendix_ps_for_commentator($commentator);
             $appendixNoteCount = mla_count_appendix_notes_for_commentator($commentator);
             $stageDirCount = mla_count_stagedirections_for_commentator($commentator);
@@ -75,7 +88,9 @@ class MlaTei_CsvController extends Omeka_Controller_Action
                     $editionCount,
                     $inConvoCount
                     );
+
         }
+
         $this->outputFile($csv, 'commentators.csv');
     }
     
@@ -89,7 +104,6 @@ class MlaTei_CsvController extends Omeka_Controller_Action
                 'count_lines', 
                 'text'                
                 ));
-
         foreach($speeches as $speech) {
             $commentatorsOnSpeechCount = mla_count_commentators_for_speech($speech);
             $linesCount = $speech->countLines();
@@ -146,12 +160,13 @@ class MlaTei_CsvController extends Omeka_Controller_Action
     
     private function outputFile($csv, $filename = 'output.csv')
     {
-
-        $fp = fopen(MLA_TEI_PLUGIN_DIR . "/csv/" . $filename, 'w');     
+_log('outputting');
+        $fp = fopen(MLA_TEI_PLUGIN_DIR . "/csv/" . $filename, 'w');
+ _log(count($csv));
         foreach ($csv as $row) {
             fputcsv($fp, $row);
         }
-        
+_log('closing');
         fclose($fp);
         /*
     	 header("Content-type: text/csv; name='$filename'");

@@ -7,8 +7,13 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
     public function importEl($mlaEl, $domNode)
     {
         $labelNode = $this->getFirstChildNodeByName('label', $domNode);        
-        $mlaEl->label = $this->normalizeText($labelNode->textContent); 
+        $mlaEl->label = $this->normalizeText($labelNode->textContent);
+        $targetAtt =  $this->xpath->query("@target", $domNode)->item(0);
+        $targetEndAtt =  $this->xpath->query("@targetEnd", $domNode)->item(0);
+        $mlaEl->target = $targetAtt->textContent;
+        $mlaEl->target_end = $targetEndAtt->textContent;
         $mlaEl = parent::importEl($mlaEl, $domNode);
+        
         return $mlaEl;
     }
     
@@ -27,8 +32,8 @@ class MlaTeiImporter_CommentaryNote extends MlaTeiImporter
         $refsSpeechId = record_relations_property_id(MLATEINS, 'refsSpeech');
         $refsStageDirId = record_relations_property_id(MLATEINS, 'refsStageDirection');
         
-        $biblRefs = $this->xpath->query("nvs:p//nvs:ref", $domNode);
-        $lbRefs = $this->xpath->query("nvs:p//nvs:ref[@targType='lb']", $domNode);
+        $biblRefs = $this->xpath->query(".//nvs:ref[@targType='bibl']", $domNode);
+        $lbRefs = $this->xpath->query(".//nvs:ref[@targType='lb']", $domNode);
 
         
         foreach($biblRefs as $biblRefNode) {

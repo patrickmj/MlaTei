@@ -28,13 +28,11 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
         $tags = $this->getTags($domNode);
         $mlaEl->addTags($tags, $userOne);
         
-        $lbRefs = $this->xpath->query("nvs:ref[@targType='lb']", $domNode);        
-        //targets go to Speeches or StageDirections
-        
-        
+        $lbRefs = $this->xpath->query(".//nvs:ref[@targType='lb']", $domNode); 
+             
         //refs to bibEntries
         $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
-        $biblRefs = $this->xpath->query("nvs:ref", $domNode);
+        $biblRefs = $this->xpath->query(".//nvs:ref[@targType='bibl']", $domNode);
         
         foreach($biblRefs as $biblRefNode) {
             $biblXmlRefIdsRaw = $biblRefNode->getAttribute('target');
@@ -64,7 +62,6 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
             }
         }
         
-
         foreach($lbRefs as $lbRef)
         {
             $targetAtt = $lbRef->getAttribute('target');
@@ -80,7 +77,7 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
                     $context = $stageDirTable->findSurroundingStageDir($lineNum);        
                 }
 
-                
+
                 if($context) {
                     //I'm missing cases where the lb is on a major division, like an act or a scene
                     $targets[] = $context;
@@ -93,8 +90,8 @@ class MlaTeiImporter_AppendixP extends MlaTeiImporter
                     } else {
                         $propId = $refsStageDirId;
                     }
-                    $this->buildRelation($mlaEl, $target, $propId);
-        
+                    $rel = $this->buildRelation($mlaEl, $target, $propId);
+     
                     //grab the commentators for the $mlaElement (CommentaryNote), and
                     //build more shortcuts between the commentator and the context (Speech or StageDir)
         

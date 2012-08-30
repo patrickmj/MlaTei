@@ -74,7 +74,7 @@ class MlaTeiImporter_AppendixNote extends MlaTeiImporter
         
         //refs to bibEntries
         $refsBiblId = record_relations_property_id(MLATEINS, 'refsBibl');
-        $biblRefs = $this->xpath->query("nvs:ref[@targType='bibl']", $domNode);   
+        $biblRefs = $this->xpath->query(".//nvs:ref[@targType='bibl']", $domNode);   
 
         foreach($biblRefs as $biblRefNode) {
             $biblXmlRefIdsRaw = $biblRefNode->getAttribute('target');

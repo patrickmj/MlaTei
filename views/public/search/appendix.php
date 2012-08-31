@@ -16,8 +16,8 @@ head(array('title'=>$pageTitle,'bodyid'=>'mla-tei-results','bodyclass' => 'brows
             <div class='mlatei-discussion-wrap' id='<?php echo $discussion->xml_id; ?>'>
                 <div class='mlatei-discussion-references'>
                     <ul class='mlatei-discussion-nav'>
-                        <li id='mlatei-discussion-bib-<?php echo $discussion->id; ?>-nav' class='mla-reveal-open' >Note Bibliography</li>
-                        <li id='mlatei-discussion-passages-<?php echo $discussion->id; ?>-nav' class='mla-reveal-open' >Passages Mentioned</li>                    
+                        <li id='mlatei-discussion-bib-<?php echo $discussion->id; ?>-nav' class='mla-reveal-open mla-discussion-nav-bibl ' >Note Bibliography</li>
+                        <li id='mlatei-discussion-passages-<?php echo $discussion->id; ?>-nav' class='mla-reveal-open mla-discussion-nav-lb' >Passages Mentioned</li>                    
                     </ul>
                 </div>     
             

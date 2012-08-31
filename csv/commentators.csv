@@ -51,7 +51,7 @@ Anon.,0,21,3,0,0,0,20
 "Brae, Andrew E.",0,1,2,0,2,0,6
 "Bräker, Ulrich",3,0,1,0,0,0,5
 "Brainerd, B.",1,0,1,0,0,0,4
-"Brink, Bernhard ten",1,0,1,0,3,0,5
+"ten Brink, Bernhard",1,0,2,0,3,0,5
 "Brooks, Charles",2,0,1,0,2,0,0
 "Brooks, Harold F.",12,0,3,0,16,0,16
 "Brown, Eric C.",0,0,1,5,10,0,13
@@ -68,7 +68,7 @@ Anon.,0,21,3,0,0,0,20
 "Byrne, Sr. St. Geraldine",0,0,1,0,3,0,0
 "Campbell, John",1,0,1,0,5,0,21
 "Campbell, Oscar J.",1,0,1,0,0,0,15
-"Edward G. Quinn",1,0,1,0,0,0,15
+"Quinn, Edward G.",1,0,1,0,0,0,15
 "Candido, Joseph",6,0,1,0,2,0,2
 "Cantrell, R. A.",0,0,1,1,2,0,8
 "Capell, Edward",1,0,1,3,87,2,49
@@ -91,10 +91,10 @@ Anon.,0,21,3,0,0,0,20
 "Clark, Cumberland",0,0,1,0,1,0,0
 "Clark, Eva T.",1,0,1,0,0,0,0
 "Clarke, Charles Cowden",1,0,2,0,22,0,14
-"Mary Cowden Clarke",0,0,1,0,21,0,14
+"Clarke, Mary Cowden",0,0,1,0,21,0,14
 "Clarke, Mary",1,0,1,0,0,0,0
 "Clarkson, Paul S.",1,0,1,0,1,0,16
-"Clyde T. Warren",1,0,1,0,1,0,16
+"Warren, Clyde T.",1,0,1,0,1,0,16
 "Claus, Wilhelm",3,0,1,0,1,0,24
 "Clayton, Thomas",0,0,1,0,3,0,1
 "Clemen, Wolfgang",1,0,1,0,1,0,1
@@ -108,7 +108,7 @@ Anon.,0,21,3,0,0,0,20
 "Cook, Judith",1,0,1,0,0,0,14
 "Cooper, Thomas",5,0,1,1,14,0,16
 "Courthope, W[illiam] J.",2,0,1,0,2,0,4
-"Cowden Clarke, Charles & Mary",0,0,1,0,0,0,0
+"Clarke, Charles & Mary Cowden",0,0,1,0,0,1,0
 "Cox, John D.",1,0,1,0,0,0,0
 "Craig, Hardin",7,0,1,0,0,0,0
 "Craig, W[illiam] J.",0,0,1,0,14,0,7
@@ -121,7 +121,7 @@ Anon.,0,21,3,0,0,0,20
 "Davies, W. Robertson",2,0,1,0,0,0,14
 "Davis, C[ushman] K.",1,0,1,0,2,0,16
 "Dawson, Anthony B.",1,0,1,0,2,0,1
-"Paul Yachnin",1,0,1,0,2,0,1
+"Yachnin, Paul",1,0,1,0,2,0,1
 "Deighton, K[enneth]",0,1,1,0,0,0,0
 "Demetz, Peter",0,0,1,0,1,0,5
 "Dent, R[obert] W.",0,0,1,0,25,0,12
@@ -196,7 +196,7 @@ Anon.,0,21,3,0,0,0,20
 "Gleichen-Russwurm, Alexander, Freiherr von",1,0,1,0,1,0,11
 "Glunz, H. H.",1,0,1,0,0,0,6
 "Gooch, Bryan N. S.",8,0,1,0,1,0,17
-"David Thatcher",8,0,1,0,1,0,17
+"Thatcher, David",8,0,1,0,1,0,17
 "Gould, George",0,11,1,0,0,0,9
 "Gray, Arthur",0,0,1,1,6,0,9
 "Gray, Henry D.",1,0,1,0,0,0,0
@@ -304,7 +304,7 @@ Anon.,0,21,3,0,0,0,20
 "Klingelhöffer, W.",2,0,1,0,1,0,1
 "Knapp, Jeffrey",0,0,1,0,2,0,1
 "Knapp, Margaret",4,0,1,0,0,0,5
-"Michael Kobialka",4,0,1,0,0,0,5
+"Kobialka, Michael",4,0,1,0,0,0,5
 "Knight, Charles",1,0,1,0,0,2,2
 "Knight, G[eorge] Wilson",1,0,1,0,7,0,0
 "Knight, W. Nicholas",1,0,1,0,3,0,20
@@ -391,7 +391,7 @@ Anon.,0,21,3,0,0,0,20
 "O’Donnell, Brennan",1,0,1,0,1,0,2
 "Oechelhäuser, Wilhelm",4,0,1,0,0,0,18
 "Ogburn, Dorothy",1,0,1,0,0,0,5
-"Charlton Ogburn, Jr",1,0,1,0,0,0,5
+"Ogburn, Charlton Jr.",1,0,1,0,0,0,5
 "Ogden, Dunbar",1,0,1,0,0,0,0
 "Oliphant, E. H. C.",2,0,1,0,1,0,4
 "Onions, C[harles] T.",0,0,1,0,41,0,11
@@ -444,7 +444,7 @@ Anon.,0,21,3,0,0,0,20
 "Rogoff, Gordon",1,0,1,0,0,0,0
 "Root, Robert K.",0,0,1,0,5,0,3
 "Rothwell, Kenneth S.",4,0,1,0,0,0,15
-"Annabelle Henkin Melzer",4,0,1,0,0,0,15
+"Melzer, Annabelle Henkin",4,0,1,0,0,0,15
 "Rudd, Niall",1,0,1,0,0,0,0
 "Rushton, W[illiam] L.",0,0,1,0,2,0,0
 "Rushton, William L.",1,0,2,0,4,0,19
@@ -524,7 +524,6 @@ Anon.,0,21,3,0,0,0,20
 "Tanselle, G. Thomas",1,0,1,0,0,0,2
 "Taylor, Gary",9,2,4,4,39,2,19
 "Teague, Francis",0,0,1,0,2,0,0
-"ten Brink, Bernhard",0,0,1,0,0,0,0
 "Tetzeli von Rosador, Kurt",1,0,3,0,0,1,0
 "Thaler, Alwin",1,0,1,0,0,0,0
 "Theobald, Lewis",2,5,2,0,38,5,38
@@ -564,7 +563,7 @@ Anon.,0,21,3,0,0,0,20
 "Walker, William S.",0,12,2,0,10,0,12
 "Waller, Frederick O.",1,0,1,0,0,0,1
 "Walsh, Groesbeck",0,0,1,0,1,0,2
-"R. M. Pool",0,0,1,0,1,0,2
+"Pool, R. M",0,0,1,0,1,0,2
 "Warburton, William",0,2,3,0,1,1,9
 "Warner, Richard.",0,0,1,0,5,0,1
 "Warren, Roger",0,0,1,0,1,0,2
@@ -576,7 +575,7 @@ Anon.,0,21,3,0,0,0,20
 "Weld, John [S.]",1,0,2,0,6,0,6
 "Weller, Barry [L.]",1,0,1,0,0,0,0
 "Wells, Stanley",14,2,6,3,42,3,24
-"John Jowett",4,2,1,3,37,0,15
+"Jowett, John",4,2,1,3,37,0,15
 "William Montgomery",4,2,1,3,37,0,15
 "Werstine, Paul",13,0,6,1,15,2,10
 "West, Gilian",0,0,1,0,3,0,3
@@ -616,7 +615,6 @@ Anon.,0,21,3,0,0,0,20
 "Clark, William George",0,0,0,0,0,2,0
 "Glover, John",0,0,0,0,0,1,0
 "Wright, William Aldis",0,0,0,0,0,3,0
-"Clarke, Charles & Mary Cowden",0,0,0,0,0,1,0
 "Rolfe, William J.",0,0,0,0,0,1,0
 "Irving, Henry",0,0,0,0,0,1,0
 "Marshall, Frank",0,0,0,0,0,1,0

@@ -11,11 +11,11 @@ class MlaTei_CsvController extends Omeka_Controller_Action
     public function allAction()
     {
         $this->notesAction();
-        $this->commentatorsAction();
         $this->speechesAction();
         $this->appendixPsAction();
         $this->appendixNotesAction();
         $this->rolesAction();
+        $this->commentatorsAction();        
         die();
         
     }
@@ -63,7 +63,7 @@ class MlaTei_CsvController extends Omeka_Controller_Action
                 'count_editions',                
                 'count_in_convo'));
 
-
+_log('count commentators: ' . count($commentators));
         foreach($commentators as $commentator) {
             $name = item('Dublin Core', 'Title', array(), $commentator);            
             $appendixPCount = mla_count_appendix_ps_for_commentator($commentator);
@@ -75,7 +75,7 @@ class MlaTei_CsvController extends Omeka_Controller_Action
             $inConvoCount = count($inConvo);
             $bibCount = mla_count_bibliography_for_commentator($commentator);
             $editionCount = mla_count_editions_for_commentator($commentator);
-                        
+_log($name);                        
             $csv[] = array(
                     $name,
                     $appendixPCount,

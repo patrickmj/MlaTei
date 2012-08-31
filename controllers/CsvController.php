@@ -62,12 +62,10 @@ class MlaTei_CsvController extends Omeka_Controller_Action
                 'count_speeches',
                 'count_editions',                
                 'count_in_convo'));
-_log(count($commentators));
 
 
         foreach($commentators as $commentator) {
-            $name = item('Dublin Core', 'Title', array(), $commentator);
-_log('name: ' . $name);            
+            $name = item('Dublin Core', 'Title', array(), $commentator);            
             $appendixPCount = mla_count_appendix_ps_for_commentator($commentator);
             $appendixNoteCount = mla_count_appendix_notes_for_commentator($commentator);
             $stageDirCount = mla_count_stagedirections_for_commentator($commentator);
